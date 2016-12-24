@@ -46,7 +46,7 @@ function clone(t, deepClone)
 	
     setmetatable(target, meta)
     
-	return target
+    return target
 end
 
 function lineIntersect(p1, len1, p2, len2)
