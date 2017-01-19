@@ -97,7 +97,7 @@ function World:loadFrom(filename)
 	
 end
 
-function World:saveTo(filename)
+function World:saveInto(filename)
 	local f = love.filesystem.newFile(filename)
 	
 	if f:open("w") == false then

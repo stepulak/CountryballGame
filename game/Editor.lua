@@ -362,13 +362,13 @@ function Editor:changeBackgroundTexture(words)
 	print("Background texture may have been set")
 end
 
-function Editor:saveWorldTo(words)
+function Editor:saveWorldInto(words)
 	if words[2] == nil then
 		print("Missing filename")
 		return
 	end
 	
-	self.world:saveTo(words[2])
+	self.world:saveInto(words[2])
 	
 	print("World may have been saved")
 end
@@ -405,7 +405,7 @@ function Editor:parseCommandFromConsole(cmd)
 		-- format: finish_line default|@tileX
 		self:setPlayersFinishLine(words)
 	elseif words[1] == "save" then
-		self:saveWorldTo(words)
+		self:saveWorldInto(words)
 	end
 end
 
