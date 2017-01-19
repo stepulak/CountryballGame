@@ -9,6 +9,7 @@ function Spiky:init(x, y, tileWidth, tileHeight, movementAnim)
 	
 	-- It is dangerous to step on it
 	self.isSteppable = false
+	self.activeAnim = movementAnim
 end
 
 function Spiky:instantDeath(particleSystem)

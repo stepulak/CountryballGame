@@ -46,12 +46,8 @@ function Editor:createUnitsGrid()
 		local unit = createUnitFromName(unitNames[i], 0, 0, 
 			self.world.tileWidth, self.world.tileHeight,
 			self.textureContainer, true)
-		
-		-- It's necessary to update animation once because
-		-- some units may need it for proper activeAnim after-settings
-		unit:updateAnimations(0)
 	
-		-- "hack"
+		-- "hack" cam
 		local fakeCam = { x = -unit.width/2, y = -unit.height/2 }
 		
 		local unX, unY = getScaleRealToVirtual(
@@ -366,6 +362,17 @@ function Editor:changeBackgroundTexture(words)
 	print("Background texture may have been set")
 end
 
+function Editor:saveWorldTo(words)
+	if words[2] == nil then
+		print("Missing filename")
+		return
+	end
+	
+	self.world:saveTo(words[2])
+	
+	print("World may have been saved")
+end
+
 function Editor:parseCommandFromConsole(cmd)
 	local words = splitStringBySpace(cmd)
 	
@@ -397,6 +404,8 @@ function Editor:parseCommandFromConsole(cmd)
 	elseif words[1] == "finish_line" then
 		-- format: finish_line default|@tileX
 		self:setPlayersFinishLine(words)
+	elseif words[1] == "save" then
+		self:saveWorldTo(words)
 	end
 end
 
@@ -453,7 +462,7 @@ function Editor:insertPick()
 		-- Center of the unit!
 		local cX = tx * self.world.tileWidth + data.width/2
 		local cY = ty * self.world.tileHeight + data.height/2
-
+		
 		local unit = createUnitFromName(data.name, cX, cY,
 			self.world.tileWidth, self.world.tileHeight,
 			self.textureContainer, self.insertDirection == "left")

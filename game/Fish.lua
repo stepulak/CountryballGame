@@ -18,6 +18,8 @@ function Fish:init(x, y, tileWidth, tileHeight, movementAnim)
 
 	self.pushHorTimer = 0
 	self.pushVerTimer = 0
+	
+	self.activeAnim = movementAnim
 end
 
 function Fish:instantDeath(particleSystem)

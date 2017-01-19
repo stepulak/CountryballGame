@@ -8,6 +8,7 @@ function BouncingZombie:init(x, y, tileWidth, tileHeight, movementAnim)
 		nil, movementAnim)
 	
 	self.texAngle = 0
+	self.activeAnim = movementAnim
 end
 
 function BouncingZombie:instantDeath(particleSystem)

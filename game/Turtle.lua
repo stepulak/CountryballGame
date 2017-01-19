@@ -15,6 +15,8 @@ function Turtle:init(x, y, tileWidth, tileHeight, movementAnim, shellTex)
 	self.coverTimer = 0
 	self.isMad = false
 	self.isFacingLeft = true
+	
+	self.activeAnim = movementAnim
 end
 
 -- Turtle function only!

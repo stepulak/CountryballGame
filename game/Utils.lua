@@ -212,3 +212,15 @@ function splitStringBySpace(s)
 	
 	return words
 end
+
+-- Try to write string into file
+-- If error occurs, write 
+function checkWriteLn(file, str)
+	local suc, err =  file:write(str .. "\n")
+	
+	if suc == false then
+		print("Error while writing string: " .. str ..
+			" into file: " .. file:getFilename() ..
+			" error: " .. err)
+	end
+end

@@ -10,6 +10,8 @@ function Zombie:init(x, y, tileWidth, tileHeight, movementAnim)
 	self:super("zombie", x, y, tileWidth, tileHeight,
 		UnitJumpingVelRecommended, UnitHorizontalVelRecommended,
 		nil, movementAnim)
+	
+	self.activeAnim = movementAnim
 end
 
 function Zombie:instantDeath(particleSystem)

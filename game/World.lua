@@ -89,13 +89,79 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 	self:loadSample()
 end
 
+--
+-- SAVE/LOAD SECTION BEGIN
+--
+
 function World:loadFrom(filename)
-	-- TODO
+	
 end
 
 function World:saveTo(filename)
-	-- TODO
+	local f = love.filesystem.newFile(filename)
+	
+	if f:open("w") == false then
+		print("World:saveTo() unable to open file " .. filename)
+		return
+	end
+	
+	self:saveGrid(f)
+	--[[self:saveAnimationObjects(f)
+	self:saveActiveObjects(f)
+	self:saveWaitingUnits(f)
+	self:saveActiveUnits(f)
+	self:saveBackgroundSettings(f)
+	self:savePlayer(f)]]
+	
+	f:flush()
+	f:close()
+	
+	print("World:saveTo() finished")
 end
+
+function World:saveGrid(file)
+	checkWriteLn(file, "Grid begin")
+	checkWriteLn(file, "Width: " .. self.numTilesWidth)
+	checkWriteLn(file, "Height: " .. self.numTilesHeight)
+	checkWriteLn(file, "Tile width: " .. self.tileWidth)
+	checkWriteLn(file, "Tile height: " .. self.tileHeight)
+	
+	-- Grid content
+	for x = 0, self.numTilesWidth-1 do
+		for y = 0, self.numTilesHeight-1 do
+			local tile = self.tiles[x][y]
+			
+			-- Collidable header name if any
+			local colHeaderName = tile.collidableTile ~= nil 
+				and tile.collidableTile.name or "@"
+			-- Background header name if any
+			local backHeaderName = tile.backgroundTile ~= nil 
+				and tile.backgroundTile.name or "@"
+			-- Water header name if any 
+			local waterHeaderName = tile.backgroundTile ~= nil 
+				and tile.backgroundTile.name or "@"
+			
+			-- Skip the foreground/background/active objects,
+			-- they will be saved later, separately
+			
+			if colHeaderName ~= "@" or backHeaderName ~= "@" or
+				waterHeaderName ~= "@" then
+				
+				checkWriteLn(file, "Tile: " ..
+					x .. " " .. y .. " " .. 
+					" collidable: " .. colHeaderName ..
+					" background: " .. backHeaderName ..
+					" water: " .. waterHeaderName)
+			end
+		end
+	end
+	
+	checkWriteLn(file, "Grid end")
+end
+
+--
+-- SAVE/LOAD SECTION END
+--
 
 function World:createCamera()
 	self.camera = Camera:new(0, 0, 
