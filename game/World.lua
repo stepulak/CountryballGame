@@ -50,6 +50,7 @@ function World:init(player,
 	self.shouldEnd = false 
 	
 	self.drawCounter = 0
+	self.saveCounter = 0
 end
 
 function World:createEmptyWorld(numTilesWidth, numTilesHeight)
@@ -93,70 +94,206 @@ end
 -- SAVE/LOAD SECTION BEGIN
 --
 
+-- Load given .lua file with @filename path.
+-- The file is proper lua source code, contains the world content
+-- and can be run dynamically.
 function World:loadFrom(filename)
+	--[[if love.filesystem.exists(filename) == false then
+		print("World:loadFrom() given file does not exist: " .. filename)
+		return false
+	end
 	
+	local load = dofile(filename)
+	
+	load.LoadWorldFunc(self)
+	-- prerun weather
+	]]
+	return true
 end
 
+-- Save whole world into human readable .lua file with given @filename
+-- so that when you can import the file back and load the world content.
+-- The file will be saved somewhere in %appdata%\LOVE\ for windows or
+-- ~/.local/share/love/ for linux
 function World:saveInto(filename)
 	local f = love.filesystem.newFile(filename)
 	
 	if f:open("w") == false then
-		print("World:saveTo() unable to open file " .. filename)
+		print("World:saveInto() unable to create file " .. filename)
 		return
 	end
 	
+	self.saveCounter = self.saveCounter + 1
+	
+	checkWriteLn(f, "\n-- Automatically generated world load function")
+	checkWriteLn(f, "-- Can be edited manually\n")
+	checkWriteLn(f, "\nrequire(world)\n")
+	
+	checkWriteLn(f, "LoadWorldFunc = function(world)")
+	checkWriteLn(f, "world:createEmptyWorld(" .. self.numTilesWidth .. 
+		", " .. self.numTilesHeight .. ")\n")
+	
 	self:saveGrid(f)
-	--[[self:saveAnimationObjects(f)
+	self:saveAnimationObjects(f)
 	self:saveActiveObjects(f)
-	self:saveWaitingUnits(f)
-	self:saveActiveUnits(f)
-	self:saveBackgroundSettings(f)
-	self:savePlayer(f)]]
+	self:saveUnits(f)
+	self.parallaxBackground:saveTo(f)
+	self:savePlayerSpawnPos(f)
+	self:savePlayerFinishLine(f)
+	
+	checkWriteLn(f, "end")
 	
 	f:flush()
 	f:close()
 	
-	print("World:saveTo() finished")
+	print("World:saveInto() finished")
 end
 
 function World:saveGrid(file)
-	checkWriteLn(file, "Grid begin")
-	checkWriteLn(file, "Width: " .. self.numTilesWidth)
-	checkWriteLn(file, "Height: " .. self.numTilesHeight)
-	checkWriteLn(file, "Tile width: " .. self.tileWidth)
-	checkWriteLn(file, "Tile height: " .. self.tileHeight)
+	checkWriteLn(file, "-- Grid begin")
+	
+	-- If you want to change the tile proportions manually
+	checkWriteLn(file, "world.tileWidth = " .. self.tileWidth)
+	checkWriteLn(file, "world.tileHeight = " .. self.tileHeight)
+	checkWriteLn(file, "local h1, h2, h3 = nil, nil, nil")
 	
 	-- Grid content
 	for x = 0, self.numTilesWidth-1 do
 		for y = 0, self.numTilesHeight-1 do
 			local tile = self.tiles[x][y]
 			
-			-- Collidable header name if any
-			local colHeaderName = tile.collidableTile ~= nil 
-				and tile.collidableTile.name or "@"
-			-- Background header name if any
-			local backHeaderName = tile.backgroundTile ~= nil 
-				and tile.backgroundTile.name or "@"
-			-- Water header name if any 
-			local waterHeaderName = tile.backgroundTile ~= nil 
-				and tile.backgroundTile.name or "@"
+			if tile.collidableTile ~= nil then
+				checkWriteLn(file, "h1 = world.headerContainer:getHeader(\""
+					.. tile.collidableTile.name .. "\")")
+			end
 			
-			-- Skip the foreground/background/active objects,
-			-- they will be saved later, separately
+			if tile.backgroundTile ~= nil then
+				checkWriteLn(file, "h2 = world.headerContainer:getHeader(\""
+					.. tile.backgroundTile.name .. "\")")
+			end
 			
-			if colHeaderName ~= "@" or backHeaderName ~= "@" or
-				waterHeaderName ~= "@" then
+			if tile.waterTile ~= nil then
+				checkWriteLn(file, "h3 = world.headerContainer:getHeader(\""
+					.. tile.waterTile.name .. "\")")
+			end
+			
+			if tile.collidableTile ~= nil or tile.backgroundTile ~= nil or
+				tile.waterTile ~= nil then
 				
-				checkWriteLn(file, "Tile: " ..
-					x .. " " .. y .. " " .. 
-					" collidable: " .. colHeaderName ..
-					" background: " .. backHeaderName ..
-					" water: " .. waterHeaderName)
+				checkWriteLn(file, "world.tiles[" .. x .. "][" .. y ..
+					"] = Tile:new(h1, h2, h3)")
+				checkWriteLn(file, "h1, h2, h3 = nil, nil, nil")
 			end
 		end
 	end
 	
-	checkWriteLn(file, "Grid end")
+	checkWriteLn(file, "-- Grid end\n")
+end
+
+function World:saveAnimationObject(file, type, x, y, obj)
+	if obj ~= nil and obj.saveCounter < self.saveCounter then
+		obj.saveCounter = self.saveCounter
+		
+		checkWriteLn(file, 
+			"world:fillObjectIntoGrid(createAnimationObjectFromName(\""
+			.. obj.name .. "\", " .. x .. ", " .. y .. ", self.tileWidth, " .. 
+			" self.tileHeight, self.textureContainer, self.animObjContainer), \""
+			.. type .. "\")")
+	end
+end
+
+function World:saveAnimationObjects(file)
+	checkWriteLn(file, "-- Animation objects begin")
+	
+	-- Iterate through grid and save all animation objects
+	for x = 0, self.numTilesWidth-1 do
+		for y = 0, self.numTilesHeight-1 do
+			local tile = self.tiles[x][y]
+			self:saveAnimationObject(file, "foregroundObj",
+				x, y, tile.foregroundObj)
+			self:saveAnimationObject(file, "backgroundObj",
+				x, y, tile.backgroundObj)
+		end
+	end
+	
+	checkWriteLn(file, "-- Animation objects end\n")
+end
+
+function World:saveActiveObjects(file)
+	checkWriteLn(file, "-- Active objects begin")
+	checkWriteLn(file, "local acObj")
+	
+	local it = self.activeObjects.head
+	
+	while it ~= nil do
+		local o = it.data
+		local dir = o:getDir() == "left" and "true" or "false"
+		local args = "nil" -- additional arguments
+		
+		if o.name == "canon" then
+			args = tostring(o.shootingCountdown)
+		end
+		
+		checkWriteLn(file,
+			"acObj = createActiveObjectFromName(\"" .. 
+			o.name .. "\", " .. o.x .. ", " .. o.y .. ", world.tileWidth, " ..
+			"world.tileHeight, world.textureContainer, " .. dir .. 
+			", " .. args .. ")")
+			
+		checkWriteLn(file, "world:addActiveObject(acObj)")
+		
+		if o.name == "teleport" and o.twin ~= nil then
+			checkWriteLn(file, "world:connectTeleports(acObj.x, acObj.y, " ..
+				o.twin.x .. ", " .. o.twin.y .. ")")
+		end
+		
+		it = it.next
+	end
+	checkWriteLn(file, "-- Active objects end\n")
+end
+
+function World:saveUnitsFromList(file, unitList)
+	local it = unitList.head
+	
+	while it ~= nil do
+	
+		-- Player is not saved, only his spawn position
+		if it.data.name ~= "player" then
+			local u = it.data
+			local dir = u:getFaceDir() == "left" and "true" or "false"
+			
+			checkWriteLn(file, "unit = createUnitFromName(\"" .. u.name ..
+				"\", " .. u.x .. ", " .. u.y .. ", world.tileWidth, " ..
+				"world.tileHeight, world.textureContainer, " .. dir .. ")")
+			checkWriteLn(file, "world:addUnit(unit)")
+		end
+		
+		it = it.next
+	end
+end
+
+function World:saveUnits(file)
+	-- You can mix active and waiting units together
+	-- Because when you add a new unit into the world,
+	-- it is always set into waiting list and then processed...
+	checkWriteLn(file, "-- Units begin")
+	checkWriteLn(file, "local unit")
+	self:saveUnitsFromList(file, self.waitingUnits)
+	self:saveUnitsFromList(file, self.activeUnits)
+	checkWriteLn(file, "-- Units end\n")
+end
+
+function World:savePlayerSpawnPos(file)
+	checkWriteLn(file, "-- Player spawn position begin")
+	checkWriteLn(file, "world.playerSpawnX = " .. self.playerSpawnX)
+	checkWriteLn(file, "world.playerSpawnY = " .. self.playerSpawnY)
+	checkWriteLn(file, "-- Player spawn position end\n")
+end
+
+function World:savePlayerFinishLine(file)
+	checkWriteLn(file, "-- Player finish line begin")
+	checkWriteLn(file, "world.playerFinishLine = " .. self.playerFinishLine)
+	checkWriteLn(file, "-- Player finish line end\n")
 end
 
 --
@@ -337,17 +474,17 @@ function World:loadSample()
 	
 	-- 1st background
 	self.parallaxBackground:setCameraVelocity(1, 0)
-	self.parallaxBackground:setBackgroundTexture(1, self.textureContainer:getTexture("background1_day"))
+	self:setBackgroundTexture(1, "background1_day")
 	
 	-- 2nd background
 	self.parallaxBackground:setCameraVelocity(2, 0.05)
 	self.parallaxBackground:enableClouds(2, false, 3)
-	self.parallaxBackground:setBackgroundTexture(2, self.textureContainer:getTexture("background2_snow_mountains"))
+	self:setBackgroundTexture(2, "background2_snow_mountains")
 	
 	-- 3rd background
 	self.parallaxBackground:setCameraVelocity(3, 0.2)
 	self.parallaxBackground:enableClouds(3, true, 10)
-	self.parallaxBackground:setBackgroundTexture(3, self.textureContainer:getTexture("background3_spring_forest"))
+	self:setBackgroundTexture(3, "background3_spring_forest")
 	
 	-- 4th background
 	self.parallaxBackground:setCameraVelocity(4, 0.3)
@@ -436,7 +573,7 @@ end
 -- @textureName name of the texture in textureContainer
 function World:setBackgroundTexture(backgroundLvl, textureName)
 	self.parallaxBackground:setBackgroundTexture(backgroundLvl,
-		self.textureContainer:getTexture(textureName))
+		self.textureContainer:getTexture(textureName), textureName)
 end
 
 function World:setBackgroundColor(backgroundLvl, r, g, b, a)
@@ -478,7 +615,7 @@ function World:findAndRemoveFirstUnit(list, x, y)
 	local it = list.head
 	
 	while it ~= nil do
-		if it.data:isPointInside(x, y) then
+		if it.data:isPointInside(x, y) and it.data.name ~= "player" then
 			list:deleteNode(it)
 			return true
 		end
@@ -563,39 +700,6 @@ function World:addUnit(unit)
 	
 	self:setupNewActiveUnits()
 end
-
---[[
--- Sort waiting unit's by their horizontal position
--- (From the nearest to the farest)
-function World:sortWaitingUnits()
-	-- Simple bubblesort O(N^2) cause there will never be 
-	-- thousands of units and it's still fast enough to
-	-- sort it quickly while loading
-	local it1 = self.waitingUnits.head
-	local change = false
-	
-	while it1 ~= nil do
-		local it2 = it1.next
-		
-		while it2 ~= nil do
-			if it1.data.x-it1.data.width/2 > it2.data.x-it2.data.width/2 then
-				-- Swap data
-				it1.data, it2.data = it2.data, it1.data
-				-- Change was made
-				change = true
-			end
-			it2 = it2.next
-		end
-		
-		if change == false then
-			break
-		end
-		
-		change = false
-		it1 = it1.next
-	end
-end
-]]
 
 -- Fill a new object into the grid.
 -- @objectPropertyName = collidableTile, foregroundObj,

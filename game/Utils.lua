@@ -151,6 +151,10 @@ function getRandomColor(r, g, b)
 	return r, g, b
 end
 
+function colorToString(col)
+	return col.r .. " " .. col.g .. " " .. col.b .. " " .. col.a
+end
+
 function getScaleVirtualToReal(realWidth, virtualWidth,
 	realHeight, virtualHeight)
 	
@@ -182,7 +186,7 @@ function max(v1, v2)
 	return v1 < v2 and v2 or v1
 end
 
--- @angle somewhere between [-360,720)
+-- @angle must be somewhere between [-360,720)
 function normalizeAngle(angle)
 	if angle < 0 then
 		return angle + 360

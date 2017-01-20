@@ -79,6 +79,9 @@ function ActiveObject:checkPointCollision(x, y)
 		self.realY - self.realHeight/2, self.realWidth, self.realHeight)
 end
 
+function ActiveObject:getDir()
+	return "unspecified"
+end
 
 function ActiveObject:canBeDrawn(drawFrameCounter)
 	return self.drawFrameCounter < drawFrameCounter

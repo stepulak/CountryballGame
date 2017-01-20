@@ -8,6 +8,8 @@ local Background = class:new()
 -- Separate background level info
 function Background:init()
 	self.texture = nil
+	self.textureName = nil
+	
 	self.color = nil
 	
 	self.cloudsEnabled = false
@@ -97,9 +99,12 @@ end
 
 -- Set background texture
 -- You can use both back. texture and color simultaneously
-function ParallaxBackground:setBackgroundTexture(backgroundLvl, texture)
+function ParallaxBackground:setBackgroundTexture(backgroundLvl,
+	texture, textureName)
+	
 	if self:validBackgroundLvl(backgroundLvl) then
 		self.backgrounds[backgroundLvl].texture = texture
+		self.backgrounds[backgroundLvl].textureName = textureName
 	end
 end
 
@@ -363,4 +368,56 @@ function ParallaxBackground:draw(camera)
 			camera:pop()
 		end
 	end
+end
+
+function ParallaxBackground:saveTo(file)
+	checkWriteLn(file, "-- Parallax background begin")
+	
+	for i = 1, self.numBackgrounds do
+		local b = self.backgrounds[i]
+		checkWriteLn(file, "-- Background begin: " .. i)
+		
+		-- Background texture
+		if b.texture ~= nil then
+			checkWriteLn(file, "world:setBackgroundTexture(" .. i ..
+				", \"" .. b.textureName .. "\")")
+		end
+		
+		-- Background color
+		if b.color ~= nil then
+			checkWriteLn(file, "world:setBackgroundColor(" .. i ..
+				", " .. b.color.r .. ", " .. b.color.g .. ", " ..
+				", " .. b.color.b .. ", " .. b.color.a .. ")")
+		end
+		
+		-- Clouds
+		if b.cloudsEnabled then
+			checkWriteLn(file, "world:enableWeather(" .. i ..
+				", Clouds, " .. tostring(b.bigClouds) .. ", " ..
+				b.numCloudsMax .. ")")
+		end
+		
+		-- Snow
+		if b.snowEnabled then
+			checkWriteLn(file, "world:enableWeather(" .. i .. ", Snow, "
+			.. tostring(b.numSnowFlakesMax == self.heavySnow) .. ")")
+		end
+		
+		-- Rain
+		if b.snowEnabled then
+			checkWriteLn(file, "world:enableWeather(" .. i .. ", Rain, "
+			.. tostring(b.numRainDropsMax == self.heavyRain) .. ")")
+		end
+		
+		checkWriteLn(file, "world:setCameraVelocityParallaxBackground(" ..
+			i .. ", " .. b.cameraVel .. ")")
+		
+		checkWriteLn(file, "-- Background end")
+	end
+	
+	checkWriteLn(file, "-- Parallax background end\n")
+end
+
+function ParallaxBackground:loadFrom(file, textureContainer)
+
 end

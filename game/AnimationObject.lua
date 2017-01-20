@@ -4,7 +4,13 @@ AnimationObject = class:new()
 
 -- Setup new visible animation-based object
 -- That can be placed into the map as a background/foreground object
-function AnimationObject:init(name, x, y, width, height, tileWidth, tileHeight, anim)
+function AnimationObject:init(name, x, y, width, height,
+	tileWidth, tileHeight, anim)
+	
+	-- Proportions could be stored somewhere in object header, but
+	-- I've decided to store it separately in each object, so that
+	-- it will be easier to draw both animation and active objects...
+	
 	self.name = name
 	self.x = x
 	self.y = y
@@ -18,6 +24,9 @@ function AnimationObject:init(name, x, y, width, height, tileWidth, tileHeight, 
 	
 	-- To tell the others that this object has beel already drawn
 	self.drawCounter = 0
+	
+	-- So that the save mechanism knows that this object has been already saved
+	self.saveCounter = 0
 end
 
 function AnimationObject:canBeDrawn(drawCounter)

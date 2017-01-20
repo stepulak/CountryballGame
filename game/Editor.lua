@@ -43,37 +43,39 @@ function Editor:createUnitsGrid()
 	local unitNames = getUnitNamesList()
 	
 	for i = 1, #unitNames do
-		local unit = createUnitFromName(unitNames[i], 0, 0, 
-			self.world.tileWidth, self.world.tileHeight,
-			self.textureContainer, true)
-	
-		-- "hack" cam
-		local fakeCam = { x = -unit.width/2, y = -unit.height/2 }
-		
-		local unX, unY = getScaleRealToVirtual(
-			unit.width, GridObjW, unit.height, GridObjH)
-		
-		local data = { 
-			name = unit.name,
-			width = unit.width,
-			height = unit.height,
-		}
-		
-		grid:addElement(
-			function()
-				love.graphics.push()
-				
-				-- Exception! Rotating ghost is tricky one
-				if unit.name == "rotating_ghost" then
-					unit.x, unit.y = 0, 0
-				else
-					love.graphics.scale(unX, unY)
-				end
-				
-				unit:draw(fakeCam, 0)
-				love.graphics.pop()
-			end,
-			unit.name, "", data)
+		if unitNames[i] ~= "player" then
+			local unit = createUnitFromName(unitNames[i], 0, 0, 
+				self.world.tileWidth, self.world.tileHeight,
+				self.textureContainer, true)
+			
+			-- "hack" cam
+			local fakeCam = { x = -unit.width/2, y = -unit.height/2 }
+			
+			local unX, unY = getScaleRealToVirtual(
+				unit.width, GridObjW, unit.height, GridObjH)
+			
+			local data = { 
+				name = unit.name,
+				width = unit.width,
+				height = unit.height,
+			}
+			
+			grid:addElement(
+				function()
+					love.graphics.push()
+					
+					-- Exception! Rotating ghost is tricky one
+					if unit.name == "rotating_ghost" then
+						unit.x, unit.y = 0, 0
+					else
+						love.graphics.scale(unX, unY)
+					end
+					
+					unit:draw(fakeCam, 0)
+					love.graphics.pop()
+				end,
+				unit.name, "", data)	
+		end
 	end
 end
 
@@ -362,6 +364,19 @@ function Editor:changeBackgroundTexture(words)
 	print("Background texture may have been set")
 end
 
+function Editor:loadWorldFrom(words)
+	if words[2] == nil then
+		print("Missing filename")
+		return
+	end
+	
+	if self.world:loadFrom(words[2]) then
+		print("World has been loaded")
+	else
+		print("World hasn't been loaded")
+	end
+end
+
 function Editor:saveWorldInto(words)
 	if words[2] == nil then
 		print("Missing filename")
@@ -406,6 +421,8 @@ function Editor:parseCommandFromConsole(cmd)
 		self:setPlayersFinishLine(words)
 	elseif words[1] == "save" then
 		self:saveWorldInto(words)
+	elseif words[1] == "load" then
+		self:loadWorldFrom(words)
 	end
 end
 
@@ -463,6 +480,9 @@ function Editor:insertPick()
 		local cX = tx * self.world.tileWidth + data.width/2
 		local cY = ty * self.world.tileHeight + data.height/2
 		
+		-- Remember, that changing the insert direction is only 
+		-- applicable on some units, whereas most of them have
+		-- their default movement direction set to left
 		local unit = createUnitFromName(data.name, cX, cY,
 			self.world.tileWidth, self.world.tileHeight,
 			self.textureContainer, self.insertDirection == "left")

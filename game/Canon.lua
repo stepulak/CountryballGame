@@ -62,6 +62,10 @@ function Canon:spawnNewCanonBall()
 	end
 end
 
+function Canon:getDir()
+	return self.leftDir and "left" or "right"
+end
+
 function Canon:update(camera, particleSystem, deltaTime)
 	self.countdown = self.countdown - deltaTime
 	

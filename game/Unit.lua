@@ -425,6 +425,10 @@ function Unit:isInsideDownWorld(camera)
 		camera.mapHeight + self.height/2 - upperBound)
 end
 
+function Unit:getFaceDir()
+	return self.isFacingLeft and "left" or "right"
+end
+
 -- Resolve collision with some generic rectangle
 -- If this unit is inside, move it a little bit away
 -- so the collision would disappear
