@@ -15,7 +15,7 @@ function Gameplay:init(world, fonts)
 end
 
 function Gameplay:handleKeyPress(key)
-	if self.world.player.isControllable then
+	if self.world.player ~= nil and self.world.player.isControllable then
 		if key == "space" then
 			if love.keyboard.isDown("s") then
 				self.world.player:tryToJumpOffPlatform()
@@ -41,7 +41,7 @@ function Gameplay:handleKeyPress(key)
 end
 
 function Gameplay:handleKeysStillPressed(deltaTime)
-	if self.world.player.isControllable then
+	if self.world.player ~= nil and self.world.player.isControllable then
 		if love.keyboard.isDown("a") then
 			self.world.player:moveHorizontally(true)
 		end
@@ -81,7 +81,7 @@ function Gameplay:update(deltaTime)
 	self.world:update(deltaTime)
 	
 	-- Is the player dead?
-	if self.world.player.dead == true then
+	if self.world.player ~= nil and self.world.player.dead == true then
 		self:handlePlayersDeath(deltaTime)
 	end
 end

@@ -145,7 +145,6 @@ function ParallaxBackground:disableClouds(backgroundLvl)
 	if self:validBackgroundLvl(backgroundLvl) then
 		self.backgrounds[backgroundLvl].cloudsEnabled = false
 		self.backgrounds[backgroundLvl].removeClouds = true
-		print(backgroundLvl)
 	end
 end
 
@@ -175,6 +174,13 @@ function ParallaxBackground:enableRain(backgroundLvl, heavy)
 			heavy and self.heavyRain or self.lightRain
 			
 		self:createParticleSystem(backgroundLvl)
+	end
+end
+
+-- Disable rain
+function ParallaxBackground:disableRain(backgroundLvl)
+	if self:validBackgroundLvl(backgroundLvl) then
+		self.backgrounds[backgroundLvl].rainEnabled = false
 	end
 end
 
@@ -271,8 +277,8 @@ function ParallaxBackground:updateRain(background, deltaTime,
 		
 		background.particleSystem:addRainParticle(self.rainDropTex,
 			x, y, 4, 20, snowRainParticleUpdate)
-			
-		self.numRainDrops = self.numRainDrops + 1
+		
+		background.numRainDrops = background.numRainDrops + 1
 	end
 end
 
@@ -393,19 +399,19 @@ function ParallaxBackground:saveTo(file)
 		-- Clouds
 		if b.cloudsEnabled then
 			checkWriteLn(file, "world:enableWeather(" .. i ..
-				", Clouds, " .. tostring(b.bigClouds) .. ", " ..
+				", \"Clouds\", " .. tostring(b.bigClouds) .. ", " ..
 				b.numCloudsMax .. ")")
 		end
 		
 		-- Snow
 		if b.snowEnabled then
-			checkWriteLn(file, "world:enableWeather(" .. i .. ", Snow, "
+			checkWriteLn(file, "world:enableWeather(" .. i .. ", \"Snow\", "
 			.. tostring(b.numSnowFlakesMax == self.heavySnow) .. ")")
 		end
 		
 		-- Rain
 		if b.snowEnabled then
-			checkWriteLn(file, "world:enableWeather(" .. i .. ", Rain, "
+			checkWriteLn(file, "world:enableWeather(" .. i .. ", \"Rain\", "
 			.. tostring(b.numRainDropsMax == self.heavyRain) .. ")")
 		end
 		

@@ -21,6 +21,7 @@ require "AnimationObjectsProperties"
 
 local WorldBouncingTileHeightQ = 2/3
 local WorldGravity = 2000
+local WorldLoadWeatherPreruns = 10
 
 World = class:new()
 
@@ -85,36 +86,34 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 	self:setPlayersSpawnPosition(1, 1)
 	self:setPlayersFinishLine(numTilesWidth - 3)
 	self:setupPlayer()
-	
-	-- TODO REMOVE
-	self:loadSample()
 end
 
 --
 -- SAVE/LOAD SECTION BEGIN
 --
 
--- Load given .lua file with @filename path.
+-- Load given .lua file with @filename path from 
+-- love.filesystem.getSaveDirectory().
 -- The file is proper lua source code, contains the world content
 -- and can be run dynamically.
-function World:loadFrom(filename)
-	--[[if love.filesystem.exists(filename) == false then
+function World:loadFromSaveDir(filename)
+	if love.filesystem.exists(filename) == false then
 		print("World:loadFrom() given file does not exist: " .. filename)
 		return false
 	end
 	
-	local load = dofile(filename)
+	love.filesystem.load(filename)(self)
 	
-	load.LoadWorldFunc(self)
-	-- prerun weather
-	]]
+	for i = 1, WorldLoadWeatherPreruns do
+		self:preRunWeather()
+	end
+	
 	return true
 end
 
 -- Save whole world into human readable .lua file with given @filename
 -- so that when you can import the file back and load the world content.
--- The file will be saved somewhere in %appdata%\LOVE\ for windows or
--- ~/.local/share/love/ for linux
+-- The file will be saved somewhere in love.filesystem.getSaveDirectory().
 function World:saveInto(filename)
 	local f = love.filesystem.newFile(filename)
 	
@@ -125,11 +124,10 @@ function World:saveInto(filename)
 	
 	self.saveCounter = self.saveCounter + 1
 	
-	checkWriteLn(f, "\n-- Automatically generated world load function")
+	checkWriteLn(f, "\n-- Automatically generated world load file")
 	checkWriteLn(f, "-- Can be edited manually\n")
-	checkWriteLn(f, "\nrequire(world)\n")
 	
-	checkWriteLn(f, "LoadWorldFunc = function(world)")
+	checkWriteLn(f, "local world = ...")
 	checkWriteLn(f, "world:createEmptyWorld(" .. self.numTilesWidth .. 
 		", " .. self.numTilesHeight .. ")\n")
 	
@@ -140,8 +138,6 @@ function World:saveInto(filename)
 	self.parallaxBackground:saveTo(f)
 	self:savePlayerSpawnPos(f)
 	self:savePlayerFinishLine(f)
-	
-	checkWriteLn(f, "end")
 	
 	f:flush()
 	f:close()
@@ -196,8 +192,8 @@ function World:saveAnimationObject(file, type, x, y, obj)
 		
 		checkWriteLn(file, 
 			"world:fillObjectIntoGrid(createAnimationObjectFromName(\""
-			.. obj.name .. "\", " .. x .. ", " .. y .. ", self.tileWidth, " .. 
-			" self.tileHeight, self.textureContainer, self.animObjContainer), \""
+			.. obj.name .. "\", " .. x .. ", " .. y .. ", world.tileWidth, " .. 
+			" world.tileHeight, world.textureContainer, world.animObjContainer), \""
 			.. type .. "\")")
 	end
 end
@@ -224,6 +220,7 @@ function World:saveActiveObjects(file)
 	checkWriteLn(file, "local acObj")
 	
 	local it = self.activeObjects.head
+	local toWrite = {}
 	
 	while it ~= nil do
 		local o = it.data
@@ -243,12 +240,17 @@ function World:saveActiveObjects(file)
 		checkWriteLn(file, "world:addActiveObject(acObj)")
 		
 		if o.name == "teleport" and o.twin ~= nil then
-			checkWriteLn(file, "world:connectTeleports(acObj.x, acObj.y, " ..
-				o.twin.x .. ", " .. o.twin.y .. ")")
+			toWrite[#toWrite + 1] = "world:connectTeleports(" .. o.x .. ", " ..
+				o.y .. ", " .. o.twin.x .. ", " .. o.twin.y .. ")"
 		end
 		
 		it = it.next
 	end
+	
+	for i = 1, #toWrite do
+		checkWriteLn(file, toWrite[i])
+	end
+	
 	checkWriteLn(file, "-- Active objects end\n")
 end
 
@@ -345,152 +347,13 @@ function World:setPlayersFinishLine(x)
 	return false
 end
 
-function World:loadSample()
-	-- TODO REMOVE ALL
-	for i = 0, self.numTilesWidth-10 do
-		self.tiles[i][20] = Tile:new(self.headerContainer:getHeader("wood"))
+-- Primitive world with player and few blocks
+function World:createSampleWorld()
+	self:createEmptyWorld(20, 20)
+	
+	for x = 0, 5 do
+		self:setTile(x, 10, "collidable", "static_block_bright")
 	end
-	
-	self.tiles[5][19] = Tile:new(self.headerContainer:getHeader("snow_oblique_left"))
-	self.tiles[6][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[7][19] = Tile:new(self.headerContainer:getHeader("snow_oblique_right"))
-	
-	self.tiles[8][19] = Tile:new(self.headerContainer:getHeader("snow_oblique_left"))
-	self.tiles[9][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	self.tiles[10][19] = Tile:new(self.headerContainer:getHeader("snow_oblique_right"))
-	
-	self.tiles[9][18] = Tile:new(self.headerContainer:getHeader("snow_oblique_left"))
-	self.tiles[6][18] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	
-	self.tiles[16][18] = Tile:new(self.headerContainer:getHeader("snow"))
-	self.tiles[16][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	self.tiles[17][18] = Tile:new(self.headerContainer:getHeader("snow"))
-	self.tiles[17][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	self.tiles[15][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	self.tiles[18][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[14][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[15][18] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[16][17] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[17][17] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[18][18] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[19][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[25][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	self.tiles[2][10] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[37][19] = Tile:new(self.headerContainer:getHeader("lava_inside"))
-	self.tiles[36][19] = Tile:new(self.headerContainer:getHeader("lava_inside"))
-	self.tiles[38][19] = Tile:new(self.headerContainer:getHeader("lava_inside"))
-	self.tiles[36][18] = Tile:new(self.headerContainer:getHeader("lava_top"))
-	self.tiles[37][18] = Tile:new(self.headerContainer:getHeader("lava_top"))
-	self.tiles[38][18] = Tile:new(self.headerContainer:getHeader("lava_top"))
-	
-	self.tiles[39][19] = Tile:new(self.headerContainer:getHeader("snow"))
-	
-	self.tiles[13][19] = Tile:new(self.headerContainer:getHeader("snow_oblique_left"))
-	self.tiles[14][18] = Tile:new(self.headerContainer:getHeader("snow_oblique_left"))
-	self.tiles[15][17] = Tile:new(self.headerContainer:getHeader("snow_oblique_left"))
-	self.tiles[16][16] = Tile:new(self.headerContainer:getHeader("snow_oblique_left"))
-	
-	self.tiles[20][19] = Tile:new(self.headerContainer:getHeader("snow_oblique_right"))
-	self.tiles[19][18] = Tile:new(self.headerContainer:getHeader("snow_oblique_right"))
-	self.tiles[18][17] = Tile:new(self.headerContainer:getHeader("snow_oblique_right"))
-	self.tiles[17][16] = Tile:new(self.headerContainer:getHeader("snow_oblique_right"))
-	
-	self.tiles[10][16] = Tile:new(self.headerContainer:getHeader("brick_bright"))
-	self.tiles[11][16] = Tile:new(self.headerContainer:getHeader("brick_dark"))
-	self.tiles[0][15] = Tile:new(self.headerContainer:getHeader("brick_dark"))
-	
-	self.tiles[2][17] = Tile:new(self.headerContainer:getHeader("wooden_platform"))
-	self.tiles[3][17] = Tile:new(self.headerContainer:getHeader("wooden_platform"))
-	self.tiles[4][17] = Tile:new(self.headerContainer:getHeader("wooden_platform"))
-	
-	for x = 50, 60 do
-		self.tiles[x][18] = Tile:new(self.headerContainer:getHeader("wooden_platform"))
-	end
-	
-	for x = 50, 60 do
-		self.tiles[x][16] = Tile:new(self.headerContainer:getHeader("wooden_platform"))
-	end
-	
-	for x = 50, 60 do
-		self.tiles[x][14] = Tile:new(self.headerContainer:getHeader("wooden_platform"))
-	end
-	
-	for x = 65, 85 do
-		for y = 14, 19 do
-			self.tiles[x][y] = Tile:new(nil, nil, self.headerContainer:getHeader("water_inside"))
-		end
-	end
-	for x = 65, 85 do
-		self.tiles[x][13] = Tile:new(nil, nil,self.headerContainer:getHeader("water_top"))
-	end
-	
-	self.tiles[42][16] = Tile:new(self.headerContainer:getHeader("brick_dark_coins"))
-	self.tiles[130][19] = Tile:new(self.headerContainer:getHeader("brick_dark_coins"))
-	
-	--self.tiles[10][19] = Tile:new(self.headerContainer:getHeader("spikes"), nil, nil, nil, nil, nil)
-	
-	self:fillObjectIntoGrid(createAnimationObjectFromName("snow_blanket", 2, 19, self.tileWidth, self.tileHeight, self.textureContainer, self.animObjContainer), "foregroundObj")
-	self:fillObjectIntoGrid(createAnimationObjectFromName("torch", 22, 17, self.tileWidth, self.tileHeight, self.textureContainer, self.animObjContainer), "backgroundObj")
-	self:fillObjectIntoGrid(createAnimationObjectFromName("snow_blanket", 3, 19, self.tileWidth, self.tileHeight, self.textureContainer, self.animObjContainer), "foregroundObj")
-	self:fillObjectIntoGrid(createAnimationObjectFromName("grass_1_1", 4, 19, self.tileWidth, self.tileHeight, self.textureContainer, self.animObjContainer), "backgroundObj")
-		
-	local tramp = Trampoline:new(4, 16, self.tileWidth, self.tileHeight, self.textureContainer:getTexture("trampoline_platform"))
-	self:fillObjectIntoGrid(tramp, "activeObj")
-	self.activeObjects:pushBack(tramp)
-	
-	local tel = Teleport:new(3, 16, self.tileWidth, self.tileHeight, self.textureContainer:getAnimation("teleport"))
-	self:fillObjectIntoGrid(tel, "activeObj")
-	self.activeObjects:pushBack(tel)
-	
-	local tel2 = Teleport:new(40, 19, self.tileWidth, self.tileHeight, self.textureContainer:getAnimation("teleport")):setTwin(tel)
-	self:fillObjectIntoGrid(tel2, "activeObj")
-	self.activeObjects:pushBack(tel2)
-	tel:setTwin(tel2)
-	
-	--[[
-	local canon = Canon:new(10, 15, self.tileWidth, self.tileHeight, false, 3, self.textureContainer:getAnimation("canon"))
-	self:fillObjectIntoGrid(canon, "activeObj")
-	self.activeObjects:pushBack(canon)
-	]]
-	
-	self.tiles[0][17] = Tile:new(self.headerContainer:getHeader("brick_bright_mushroom_grow"))
-	self.tiles[1][17] = Tile:new(self.headerContainer:getHeader("brick_bright_iceflower"))
-	
-	--[[
-	local smoke = SmokeSource:new(3, 13, self.tileWidth, self.tileHeight, self.textureContainer:getTexture("smoke"))
-	self:fillObjectIntoGrid(smoke, "activeObj")
-	self.activeObjects:pushBack(smoke)
-	]]
-	
-	-- 1st background
-	self.parallaxBackground:setCameraVelocity(1, 0)
-	self:setBackgroundTexture(1, "background1_day")
-	
-	-- 2nd background
-	self.parallaxBackground:setCameraVelocity(2, 0.05)
-	self.parallaxBackground:enableClouds(2, false, 3)
-	self:setBackgroundTexture(2, "background2_snow_mountains")
-	
-	-- 3rd background
-	self.parallaxBackground:setCameraVelocity(3, 0.2)
-	self.parallaxBackground:enableClouds(3, true, 10)
-	self:setBackgroundTexture(3, "background3_spring_forest")
-	
-	-- 4th background
-	self.parallaxBackground:setCameraVelocity(4, 0.3)
-	self.parallaxBackground:enableSnow(4, true)
-	
-	self:preRunWeather()
 end
 
 function World:createGrid()

@@ -314,7 +314,8 @@ function Editor:changeWeather(words)
 	local backgroundLvl = tonumber(words[3])
 	
 	if operation == "enable" then
-		self.world:enableWeather(backgroundLvl, weatherName, words[4])
+		self.world:enableWeather(backgroundLvl, weatherName, 
+			words[4] == "true")
 		
 		print(weatherName .. " may have been enabled")
 	elseif operation == "disable" then
@@ -370,7 +371,7 @@ function Editor:loadWorldFrom(words)
 		return
 	end
 	
-	if self.world:loadFrom(words[2]) then
+	if self.world:loadFromSaveDir(words[2]) then
 		print("World has been loaded")
 	else
 		print("World hasn't been loaded")

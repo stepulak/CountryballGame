@@ -1,8 +1,8 @@
 require "Editor"
 require "Gameplay"
+require "Release"
 
 -- Constants
-local RELEASE_VERSION = false
 
 local tileWidth = 60
 local tileHeight = 60
@@ -23,7 +23,7 @@ function Game:init(screen, textureContainer, headerContainer,
 	
 	self:resetGameplay()
 	
-	if RELEASE_VERSION == false then
+	if IS_OFFICIAL_RELEASE == false then
 		self:resetEditor()
 	end
 	
@@ -42,7 +42,7 @@ function Game:newWorld()
 		self.textureContainer, self.headerContainer,
 		self.sinCosTable, self.fonts)
 	
-	self.world:createEmptyWorld(150, 25)
+	self.world:createSampleWorld()
 end
 
 function Game:newPlayer()
@@ -63,7 +63,7 @@ function Game:handleKeyPress(key)
 	if self.activeMode.handleKeyPress and 
 		self.activeMode:handleKeyPress(key) then
 		-- continue
-	elseif key == "`" and RELEASE_VERSION == false then
+	elseif key == "`" and IS_OFFICIAL_RELEASE == false then
 		-- "tilde" key
 		if self.activeMode == self.gameplay then
 			self.activeMode = self.editor
@@ -107,7 +107,7 @@ function Game:handleTodo()
 	if self.activeMode.todo == "reset_world" then
 		local activeModeName = self.activeMode.name
 		
-		if RELEASE_VERSION then
+		if IS_OFFICIAL_RELEASE then
 			self:newWorld()
 		else
 			self:resetWorld()
