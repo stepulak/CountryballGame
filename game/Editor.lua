@@ -74,7 +74,7 @@ function Editor:createUnitsGrid()
 					unit:draw(fakeCam, 0)
 					love.graphics.pop()
 				end,
-				unit.name, "", data)	
+				unit.name, "", data)
 		end
 	end
 end

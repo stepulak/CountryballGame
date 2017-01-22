@@ -137,7 +137,7 @@ function MultiImageGrid:draw(camera)
 			drawRect("fill", 
 				grid.button.x, grid.button.y,
 				grid.button.width, grid.button.height,
-				0, 0, 0, 120)
+				100, 100, 100, 120)
 		end
 		
 		grid.button:draw()
