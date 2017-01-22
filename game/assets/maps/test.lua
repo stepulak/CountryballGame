@@ -1,8 +1,8 @@
 
--- Automatically generated world load function
+-- Automatically generated world load file
 -- Can be edited manually
 
-LoadWorldFunc = function(world)
+local world = ...
 world:createEmptyWorld(150, 25)
 
 -- Grid begin
@@ -12,13 +12,13 @@ local h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("brick_dark")
 world.tiles[0][15] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("static_block_bright")
+h1 = world.headerContainer:getHeader("brick_bright_mushroom_grow")
 world.tiles[0][17] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("wood")
 world.tiles[0][20] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("static_block_bright")
+h1 = world.headerContainer:getHeader("brick_bright_iceflower")
 world.tiles[1][17] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("wood")
@@ -270,7 +270,7 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("wood")
 world.tiles[41][20] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("static_block_dark")
+h1 = world.headerContainer:getHeader("brick_dark_coins")
 world.tiles[42][16] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("wood")
@@ -1116,10 +1116,10 @@ h1, h2, h3 = nil, nil, nil
 -- Grid end
 
 -- Animation objects begin
-world:fillObjectIntoGrid(createAnimationObjectFromName("snow_blanket", 2, 19, self.tileWidth,  self.tileHeight, self.textureContainer, self.animObjContainer), "foregroundObj")
-world:fillObjectIntoGrid(createAnimationObjectFromName("snow_blanket", 3, 19, self.tileWidth,  self.tileHeight, self.textureContainer, self.animObjContainer), "foregroundObj")
-world:fillObjectIntoGrid(createAnimationObjectFromName("grass_1_1", 4, 19, self.tileWidth,  self.tileHeight, self.textureContainer, self.animObjContainer), "backgroundObj")
-world:fillObjectIntoGrid(createAnimationObjectFromName("torch", 22, 17, self.tileWidth,  self.tileHeight, self.textureContainer, self.animObjContainer), "backgroundObj")
+world:fillObjectIntoGrid(createAnimationObjectFromName("snow_blanket", 2, 19, world.tileWidth,  world.tileHeight, world.textureContainer, world.animObjContainer), "foregroundObj")
+world:fillObjectIntoGrid(createAnimationObjectFromName("snow_blanket", 3, 19, world.tileWidth,  world.tileHeight, world.textureContainer, world.animObjContainer), "foregroundObj")
+world:fillObjectIntoGrid(createAnimationObjectFromName("grass_1_1", 4, 19, world.tileWidth,  world.tileHeight, world.textureContainer, world.animObjContainer), "backgroundObj")
+world:fillObjectIntoGrid(createAnimationObjectFromName("torch", 22, 17, world.tileWidth,  world.tileHeight, world.textureContainer, world.animObjContainer), "backgroundObj")
 -- Animation objects end
 
 -- Active objects begin
@@ -1128,10 +1128,10 @@ acObj = createActiveObjectFromName("trampoline", 4, 16, world.tileWidth, world.t
 world:addActiveObject(acObj)
 acObj = createActiveObjectFromName("teleport", 3, 16, world.tileWidth, world.tileHeight, world.textureContainer, false, nil)
 world:addActiveObject(acObj)
-world:connectTeleports(acObj.x, acObj.y, 40, 19)
+--world:connectTeleports(acObj.x, acObj.y, 40, 19)
 acObj = createActiveObjectFromName("teleport", 40, 19, world.tileWidth, world.tileHeight, world.textureContainer, false, nil)
 world:addActiveObject(acObj)
-world:connectTeleports(acObj.x, acObj.y, 3, 16)
+--world:connectTeleports(acObj.x, acObj.y, 3, 16)
 -- Active objects end
 
 -- Units begin
@@ -1145,17 +1145,17 @@ world:setCameraVelocityParallaxBackground(1, 0)
 -- Background end
 -- Background begin: 2
 world:setBackgroundTexture(2, "background2_snow_mountains")
-world:enableWeather(2, Clouds, nil, 3)
+world:enableWeather(2, "Clouds", nil, 3)
 world:setCameraVelocityParallaxBackground(2, 0.05)
 -- Background end
 -- Background begin: 3
 world:setBackgroundTexture(3, "background3_spring_forest")
-world:enableWeather(3, Clouds, nil, 10)
+world:enableWeather(3, "Clouds", nil, 10)
 world:setCameraVelocityParallaxBackground(3, 0.2)
 -- Background end
 -- Background begin: 4
-world:enableWeather(4, Snow, true)
-world:enableWeather(4, Rain, false)
+world:enableWeather(4, "Snow", true)
+world:enableWeather(4, "Rain", false)
 world:setCameraVelocityParallaxBackground(4, 0.3)
 -- Background end
 -- Parallax background end
@@ -1169,4 +1169,3 @@ world.playerSpawnY = 90
 world.playerFinishLine = 8850
 -- Player finish line end
 
-end
