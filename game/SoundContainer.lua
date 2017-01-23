@@ -95,6 +95,14 @@ function SoundContainer:unmute()
 	end
 end
 
+function SoundContainer:pauseAll()
+	love.audio.pause()
+end
+
+function SoundContainer:resumeAll()
+	love.audio.resume()
+end
+
 function SoundContainer:stopEffects()
 	self:applyActionPlayingEffects(function(e) e:stop() end) 
 end
