@@ -91,8 +91,11 @@ function Fish:updateAnimations(deltaTime)
 	end
 end
 
-function Fish:update(deltaTime, gravityAcc, particleSystem, camera)
-	self:superUpdate(deltaTime, gravityAcc/5, particleSystem, camera)
+function Fish:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
+	self:superUpdate(deltaTime, gravityAcc/5, particleSystem,
+		camera, soundContainer)
 	
 	if self.insideWater then
 		self:updateFishMovement(deltaTime)

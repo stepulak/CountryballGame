@@ -6,7 +6,7 @@ local SoundContainerMusicVolume = 0.7
 
 SoundContainer = class:new()
 
-function SoundContainer:new()
+function SoundContainer:init()
 	self.effects = {}
 	self.music = {}
 	self.musicOn = nil
@@ -26,6 +26,14 @@ end
 -- There can be only one playing music in the background
 function SoundContainer:newMusic(name, source)
 	self.music[name] = source
+end
+
+function SoundContainer:loadEffect(name, path)
+	self:newEffect(name, love.audio.newSource(path))
+end
+
+function SoundContainer:loadMusic(name, path)
+	self:newMusic(name, love.audio.newSource(path))
 end
 
 function SoundContainer:playEffect(name)

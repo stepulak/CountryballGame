@@ -17,7 +17,7 @@ function CanonBall:init(x, y, tileWidth, tileHeight,
 	self.isFacingLeft = isFacingLeft
 end
 
-function CanonBall:instantDeath(particleSystem)
+function CanonBall:instantDeath(particleSystem, soundContainer)
 	local width = self.width * CanonBallSmashWidthQ
 	local x
 	
@@ -30,14 +30,14 @@ function CanonBall:instantDeath(particleSystem)
 	particleSystem:addUnitSmashEffect(self.movementAnim:firstTexture(),
 		x + width/2, self.y, width, self.height, self.isFacingLeft)
 	
+	soundContainer:playEffect("canonball_smash")
+	
 	self.dead = true
 end
 
-function CanonBall:hurt(type, particleSystem)
+function CanonBall:hurt(type, particleSystem, soundContainer)
 	-- CanonBall generally is easily killable
-	if type ~= nil then
-		self:instantDeath(particleSystem)
-	end
+	self:instantDeath(particleSystem, soundContainer)
 end
 
 function CanonBall:updateAnimations(deltaTime)
@@ -45,14 +45,18 @@ function CanonBall:updateAnimations(deltaTime)
 	self.activeAnim:update(deltaTime)
 end
 
-function CanonBall:update(deltaTime, gravityAcc, particleSystem, camera)
+function CanonBall:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	if self.collidedHorizontally == "left" or
 		self.collidedHorizontally == "right" then
-		self:instantDeath(particleSystem)
+		self:instantDeath(particleSystem, soundContainer)
 	end
 	
 	self:moveHorizontally(self.isFacingLeft)
 	self.isJumping = false
 	self.isFalling = false
-	self:superUpdate(deltaTime, gravityAcc)
+	
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
 end

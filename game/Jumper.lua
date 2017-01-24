@@ -51,10 +51,15 @@ function Jumper:updateAnimations(deltaTime)
 	self.activeAnim:update(deltaTime)
 end
 
-function Jumper:update(deltaTime, gravityAcc, particleSystem, camera)
+function Jumper:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	if self.keepIdleAnimTimer > 0 then
 		self.keepIdleAnimTimer = self.keepIdleAnimTimer - deltaTime
 	end
-	self:superUpdate(deltaTime, gravityAcc, particleSystem, camera)
+	
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
+	
 	self:tryToJumpNoTimer()
 end

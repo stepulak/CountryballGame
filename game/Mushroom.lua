@@ -14,10 +14,13 @@ function Mushroom:init(type, x, y, tileWidth, tileHeight, dirLeft, texture)
 	self.friendlyToPlayer = true
 end
 
-function Mushroom:update(deltaTime, gravityAcc, particleSystem, camera)
+function Mushroom:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	self:reverseDirectionAccordingToCollision()
 	self:moveHorizontally(self.isFacingLeft)
-	self:superUpdate(deltaTime, gravityAcc)
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
 end
 
 function Mushroom:draw(camera)

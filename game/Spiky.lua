@@ -32,8 +32,11 @@ function Spiky:updateAnimations(deltaTime)
 	self.activeAnim:update(deltaTime)
 end
 
-function Spiky:update(deltaTime, gravityAcc, particleSystem, camera)
+function Spiky:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	self:reverseDirectionAccordingToCollision()
 	self:moveHorizontally(self.isFacingLeft)
-	self:superUpdate(deltaTime, gravityAcc, particleSystem, camera)
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
 end

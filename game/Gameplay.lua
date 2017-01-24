@@ -25,7 +25,7 @@ function Gameplay:handleKeyPress(key)
 				self.world.player:tryToJump()
 			end
 		elseif key == "m" then
-			self.world.player:tryToAttack()
+			self.world.player:tryToAttack(self.world.soundContainer)
 		elseif key == "n" then
 			self.world.player:tryToEnableSprint()
 		else

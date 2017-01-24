@@ -27,7 +27,9 @@ local constructionList = {
 			p.tc:getAnimation("player_attacking"),
 			p.tc:getTexture("player_dead"),
 			p.tc:getTexture("players_helmet"),
-			p.tc:getTexture("star"))
+			p.tc:getTexture("star"),
+			p.tc:getTexture("bubble"),
+			p.tc:getTexture("smoke"))
 	end,
 	
 	["turtle"] = function(p)

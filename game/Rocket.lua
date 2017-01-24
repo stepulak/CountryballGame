@@ -90,8 +90,11 @@ function Rocket:startRocket()
 	self.started = true
 end
 
-function Rocket:update(deltaTime, gravityAcc, particleSystem, camera)
-	self:superUpdate(deltaTime, gravityAcc, particleSystem, camera)
+function Rocket:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
 	
 	if self.started then
 		self:updateShaking(deltaTime)

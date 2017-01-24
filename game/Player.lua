@@ -10,6 +10,7 @@ local PlayerJumpingVel = 1000
 local PlayerHorizontaVel = 200
 local PlayerStarParticleSize = 20
 local PlayerStarParticleSpawnProbabilityQ = 20
+local PlayerFartSize = 20
 
 Player = Unit:new()
 
@@ -18,13 +19,15 @@ function Player:init(x, y,
 	numLives, coins, 
 	idleAnim, walkingAnim, jumpingAnim, 
 	swimmingAnim, attackingAnim, 
-	deathTex, helmetTex, starTex)
+	deathTex, helmetTex, starTex, bubbleTex, smokeTex)
 	
 	self:super("player", x, y, tileWidth, tileHeight, 
 		PlayerJumpingVel, PlayerHorizontaVel, 
 		idleAnim, walkingAnim, jumpingAnim,
 		swimmingAnim, attackingAnim, nil)
 	
+	-- There is only one player in the world, so we can afford
+	-- storing such data as texture references etc... in it's table
 	self.deathTex = deathTex
 	self.starTex = starTex
 	self.helmetTex = helmetTex
@@ -32,6 +35,9 @@ function Player:init(x, y,
 	self.helmetHeight = self.height/2
 	self.helmetOffsetX = -self.helmetWidth/2
 	self.helmetOffsetY = -self.height/2.4 - self.helmetWidth/2
+	
+	self.bubbleTex = bubbleTex
+	self.smokeTex = smokeTex
 	
 	-- This animation must take exactly PlayerAttackingTime seconds.
 	self.attackingAnim.updateTime = PlayerAttackingTime 
@@ -71,6 +77,8 @@ function Player:resetStats()
 	self.helmetBlinkTimer = 0
 	self.flowerType = nil
 	
+	self.jumpEffectProcessed = true
+	
 	self.isControllable = true
 end
 
@@ -88,9 +96,10 @@ function Player:tryToJump()
 	-- When the player is on trampoline, increase the jumping speed
 	self.jumpingVelQ = self.onTrampoline and PlayerTrampolineVelQ or 1
 	self:superTryToJump()
+	self.jumpEffectProcessed = false
 end
 
-function Player:instantDeath(particleSystem)
+function Player:instantDeath(particleSystem, soundContainer)
 	particleSystem:addPlayersFallEffect(self.deathTex,
 		self.x, self.y, self.width, self.height, 
 			-- Update function
@@ -106,9 +115,11 @@ function Player:instantDeath(particleSystem)
 	
 	self.dead = true
 	self.numLives = self.numLives - 1
+	
+	soundContainer:playEffect("player_death")
 end
 
-function Player:dropHelmet(type, particleSystem)
+function Player:dropHelmet(type, particleSystem, soundContainer)
 	local dir = nil
 	
 	if type == "projectile_left" or type == "touch_left" then
@@ -123,17 +134,19 @@ function Player:dropHelmet(type, particleSystem)
 		self.y + self.helmetOffsetY,
 		self.helmetWidth, self.helmetHeight, dir, 2)
 	
+	soundContainer:playEffect("player_drop_helmet")
+	
 	self.helmetEnabled = false
 	self.flowerType = nil
 	self.invulnerableTimer = 0.8
 end
 
-function Player:hurt(type, particleSystem)
+function Player:hurt(type, particleSystem, soundContainer)
 	if self.disappeared == false and self.immuneToDeadlyObjects == false then
 		if self.helmetEnabled then
-			self:dropHelmet(type, particleSystem)
+			self:dropHelmet(type, particleSystem, soundContainer)
 		else
-			self:instantDeath(particleSystem)
+			self:instantDeath(particleSystem, soundContainer)
 		end
 	end
 end
@@ -158,10 +171,11 @@ function Player:getCreatedProjectile()
 end
 
 -- Player function only!
-function Player:tryToAttack()
+function Player:tryToAttack(soundContainer)
 	if self.helmetEnabled and self.flowerType ~= nil then
 		self.projectileFired = true
 		self.attackingTimer = PlayerAttackingTime
+		soundContainer:playEffect("player_shoot")
 	end
 end
 
@@ -202,7 +216,7 @@ function Player:disappear()
 	self.disappeared = true
 end
 
-function Player:boostPlayer(unit)
+function Player:boostPlayer(unit, soundContainer)
 	if unit.isFading then
 		-- Booster has been used already before
 		return
@@ -210,8 +224,10 @@ function Player:boostPlayer(unit)
 	
 	if unit.name == "mushroom_life" then
 		self:increaseNumLives()
+		soundContainer:playEffect("booster_pick")
 	elseif unit.name == "mushroom_grow" then
 		self:addHelmet()
+		soundContainer:playEffect("booster_pick")
 	elseif unit.name == "star" then
 		self:consumeStar()
 	elseif unit.name == "fireflower" or unit.name == "iceflower" then
@@ -219,8 +235,10 @@ function Player:boostPlayer(unit)
 			self:addHelmet()
 		end
 		self.flowerType = unit.name
+		soundContainer:playEffect("booster_pick")
 	elseif unit.name == "coin" then
 		self:increaseNumCoins()
+		soundContainer:playEffect("coin_pick")
 	elseif unit.name == "rocket" then
 		unit:startRocket()
 		self:disappear()
@@ -236,9 +254,11 @@ function Player:handleSpecialHorizontalCollision(unit, particleSystem)
 	return true
 end
 
-function Player:resolveUnitCollision(unit, particleSystem, deltaTime)
+function Player:resolveUnitCollision(unit, particleSystem, deltaTime,
+	soundContainer)
+	
 	if unit.friendlyToPlayer then
-		self:boostPlayer(unit)
+		self:boostPlayer(unit, soundContainer)
 	elseif unit.name == "rotating_ghost" and self.invulnerableRGTimer <= 0 then
 		-- HINT: remove if player has not circular shape!
 		if pointInCircle(unit.x, unit.y, self.x, self.y, self.width/2) then
@@ -246,7 +266,8 @@ function Player:resolveUnitCollision(unit, particleSystem, deltaTime)
 			self.invulnerableRGTimer = PlayerInvulnerabilityRGTime
 		end
 	else
-		self:superResolveUnitCollision(unit, particleSystem, deltaTime)
+		self:superResolveUnitCollision(unit, particleSystem,
+			deltaTime, soundContainer)
 	end
 end
 
@@ -299,14 +320,29 @@ function Player:spawnStars(deltaTime, particleSystem)
 	end
 end
 
-function Player:updatePlayer(deltaTime, particleSystem)
+function Player:addFartEffect(particleSystem, fartTex)
+	local x, angle
+	
+	if self.isFacingLeft then
+		x = self.x + self.width/4
+		angle = 20
+	else
+		x = self.x - self.width/4
+		angle = 160
+	end
+	
+	particleSystem:addSmokeParticle(fartTex, x, self.y + self.height/4,
+		PlayerFartSize, PlayerFartSize, angle, 0.5)
+end
+
+function Player:updatePlayer(deltaTime, particleSystem, soundContainer)
 	if self.attackingTimer > 0 then
 		self.attackingTimer = self.attackingTimer - deltaTime
 		
 		if self.attackingTimer < 0 then
 			self.attackingTimer = 0
 			-- You can't process the projectile anymore after
-			-- attacking process has ran out of time.
+			-- the attacking process has ran out of time.
 			self.projectileFired = false
 		end
 	end
@@ -334,6 +370,22 @@ function Player:updatePlayer(deltaTime, particleSystem)
 	if self.helmetBlinkTimer > 0 then
 		self.helmetBlinkTimer = self.helmetBlinkTimer - deltaTime
 	end
+	
+	-- Remember to play sound when player jumps or try to swim in the water
+	-- FYI this could not be done inside tryToJump(), because we don't know
+	-- when precisely will the player jump
+	if self.isJumping and self.jumpEffectProcessed == false then
+		self.jumpEffectProcessed = true
+		
+		-- "fart" effect
+		if self.insideWater then
+			soundContainer:playEffect("player_swim")
+			self:addFartEffect(particleSystem, self.bubbleTex)
+		else
+			soundContainer:playEffect("player_jump")
+			self:addFartEffect(particleSystem, self.smokeTex)
+		end
+	end
 end
 
 function Player:isIdle()
@@ -342,10 +394,14 @@ function Player:isIdle()
 		and self.isMovingHor == false
 end
 
-function Player:update(deltaTime, gravityAcc, particleSystem, camera)
+function Player:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	if self.disappeared == false then
-		self:superUpdate(deltaTime, gravityAcc, particleSystem, camera)
-		self:updatePlayer(deltaTime, particleSystem)
+		self:superUpdate(deltaTime, gravityAcc, particleSystem,
+			camera, soundContainer)
+		
+		self:updatePlayer(deltaTime, particleSystem, soundContainer)
 	end
 end
 

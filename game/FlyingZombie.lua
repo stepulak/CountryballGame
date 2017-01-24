@@ -65,8 +65,12 @@ function FlyingZombie:updateMovement(deltaTime)
 	end
 end
 
-function FlyingZombie:update(deltaTime, gravityAcc, particleSystem, camera)
-	self:superUpdate(deltaTime, gravityAcc, particleSystem, camera)
+function FlyingZombie:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
+		
 	self:updateMovement(deltaTime)
 	self.isJumping = self.directionUp
 	self.isFalling = not self.directionUp

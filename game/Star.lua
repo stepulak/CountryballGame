@@ -24,7 +24,9 @@ function Star:canBounceTiles()
 	return false
 end
 
-function Star:update(deltaTime, gravityAcc, particleSystem, camera)
+function Star:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+ 
 	self:reverseDirectionAccordingToCollision()
 	self:moveHorizontally(self.isFacingLeft)
 	
@@ -36,7 +38,8 @@ function Star:update(deltaTime, gravityAcc, particleSystem, camera)
 	self.color.r, self.color.g, self.color.b = 
 		getRandomColor(self.color.r, self.color.g, self.color.b)
 	
-	self:superUpdate(deltaTime, gravityAcc)
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
 end
 
 function Star:draw(camera)

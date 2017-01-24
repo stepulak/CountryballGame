@@ -50,11 +50,15 @@ function BouncingZombie:updateAnimations(deltaTime)
 	self.activeAnim:update(deltaTime)
 end
 
-function BouncingZombie:update(deltaTime, gravityAcc, particleSystem, camera)
+function BouncingZombie:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	self:reverseDirectionAccordingToCollision()
 	self:tryToJumpNoTimer()
 	self:moveHorizontally(self.isFacingLeft)
-	self:superUpdate(deltaTime, gravityAcc, particleSystem, camera)
+	
+	self:superUpdate(deltaTime, gravityAcc, particleSystem, 
+		camera, soundContainer)
 	
 	local a = 225 * deltaTime
 	

@@ -129,8 +129,12 @@ function Bomberman:handleSpecialHorizontalCollision(unit, particleSystem)
 	end
 end
 
-function Bomberman:update(deltaTime, gravityAcc, particleSystem, camera)
-	self:superUpdate(deltaTime, gravityAcc, particleSystem, camera)
+function Bomberman:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
+	self:superUpdate(deltaTime, gravityAcc, particleSystem, 
+		camera, soundContainer)
+	
 	self:handleBehaviour(deltaTime)
 end
 

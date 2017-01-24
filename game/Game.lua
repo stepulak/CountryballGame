@@ -9,11 +9,12 @@ local tileHeight = 60
 
 Game = class:new()
 
-function Game:init(screen, textureContainer, headerContainer,
-	sinCosTable, fonts)
+function Game:init(screen, textureContainer, soundContainer,
+	headerContainer, sinCosTable, fonts)
 	
 	self.screen = screen
 	self.textureContainer = textureContainer
+	self.soundContainer = soundContainer
 	self.headerContainer = headerContainer
 	self.sinCosTable = sinCosTable
 	self.fonts = fonts
@@ -39,8 +40,8 @@ end
 function Game:newWorld()
 	self.world = World:new(self.player, 
 		tileWidth, tileHeight, self.screen,
-		self.textureContainer, self.headerContainer,
-		self.sinCosTable, self.fonts)
+		self.textureContainer, self.soundContainer,
+		self.headerContainer, self.sinCosTable, self.fonts)
 	
 	self.world:createSampleWorld()
 end

@@ -47,8 +47,11 @@ function Zombie:updateAnimations(deltaTime)
 	self.movementAnim:update(deltaTime)
 end
 
-function Zombie:update(deltaTime, gravityAcc, particleSystem, camera)
+function Zombie:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	self:reverseDirectionAccordingToCollision()
 	self:moveHorizontally(self.isFacingLeft)
-	self:superUpdate(deltaTime, gravityAcc)
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
 end

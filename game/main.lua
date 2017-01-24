@@ -2,6 +2,7 @@ require "Game"
 require "TileHeader"
 require "Font"
 require "TexturesLoad"
+require "SoundsLoad"
 require "Utils"
 
 local screen = {
@@ -14,6 +15,7 @@ local screen = {
 local game
 local sinCosTable
 local textureContainer
+local soundContainer
 local headerContainer
 local fonts
 
@@ -49,10 +51,12 @@ function love.load()
 	
 	sinCosTable = SinCosTable:new()
 	textureContainer = loadTextures()
+	soundContainer = loadSounds()
 	loadTileHeaders()
 	loadFonts()
 	
-	game = Game:new(screen, textureContainer, headerContainer, sinCosTable, fonts)
+	game = Game:new(screen, textureContainer, soundContainer,
+		headerContainer, sinCosTable, fonts)
 end
 
 -- Transform mouse coordinates from real coordinates to virtual coordinates

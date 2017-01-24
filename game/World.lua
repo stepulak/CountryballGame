@@ -28,14 +28,15 @@ World = class:new()
 -- @screen must consist of virtual and real proportions
 function World:init(player, 
 	tileWidth, tileHeight, screen,
-	textureContainer, headerContainer, 
-	sinCosTable, fonts)
+	textureContainer, soundContainer,
+	headerContainer, sinCosTable, fonts)
 	
 	self.screen = screen
 	self.tileWidth = tileWidth
 	self.tileHeight = tileHeight
 	
 	self.textureContainer = textureContainer
+	self.soundContainer = soundContainer
 	self.sinCosTable = sinCosTable
 	self.headerContainer = headerContainer
 	self.fonts = fonts
@@ -649,6 +650,8 @@ function World:createCoinEffect(x, y)
 	
 	self.bParticleSystem:addCoinEffect(anim:getActiveTexture(), realX, realY,
 		self.tileWidth, self.tileHeight, CointParticleUpdate, anim)
+		
+	self.soundContainer:playEffect("coin_pick")
 end
 
 -- @x, @y = tile's coordinates
@@ -719,6 +722,9 @@ function World:resolveBounceBoostGenerator(x, y)
 	-- Do not forget to add the boost unit to the active units
 	self.activeUnits:pushBack(boost)
 	self:swapCollidableTileAfterGeneration(x, y)
+	
+	-- Make sound
+	self.soundContainer:playEffect("booster_spawn")
 end
 
 -- @x, y = world's real coordination of tile's top-left position
@@ -732,7 +738,7 @@ function World:killUnfriendlyUnitsOnTilePosition(x, y)
 			and math.abs(it.data.y + it.data.height/2 - y)
 				< self.tileHeight/5 then
 			-- Kill it
-			it.data:instantDeath(self.fParticleSystem)
+			it.data:instantDeath(self.fParticleSystem, self.soundContainer)
 		end
 		
 		it = it.next
@@ -899,7 +905,7 @@ function World:handleUnitCollisionUp(unit, deltaTime, distError)
 			
 			if isTileCollidable(tile) and isTilePlatform(tile) == false then
 				if isTileDeadly(tile) then
-					unit:hurt("deadly", self.fParticleSystem)
+					unit:hurt("deadly", self.fParticleSystem, self.soundContainer)
 					return
 				end
 				
@@ -953,7 +959,7 @@ function World:handleUnitCollisionDown(unit, deltaTime, distError)
 			
 			if isTileCollidable(tile) then
 				if isTileDeadly(tile) then
-					unit:hurt("deadly", self.fParticleSystem)
+					unit:hurt("deadly", self.fParticleSystem, self.soundContainer)
 					return
 				end
 				
@@ -1077,7 +1083,7 @@ function World:handleUnitCollisionLeft(unit, deltaTime, distError)
 			
 			if isTileCollidable(tile) then
 				if isTileDeadly(tile) then
-					unit:hurt("deadly", self.fParticleSystem)
+					unit:hurt("deadly", self.fParticleSystem, self.soundContainer)
 					return
 				elseif y == botTileY and isTileOblique(tile) == 1 then
 					-- There is right-sided oblique tile
@@ -1132,7 +1138,7 @@ function World:handleUnitCollisionRight(unit, deltaTime, distError)
 			
 			if isTileCollidable(tile) then
 				if isTileDeadly(tile) then
-					unit:hurt("deadly", self.fParticleSystem)
+					unit:hurt("deadly", self.fParticleSystem, self.soundContainer)
 					return
 				elseif y == botTileY and isTileOblique(tile) == -1 then
 					-- There is left-sided oblique tile
@@ -1206,7 +1212,10 @@ function World:handleUnitWaterCollision(unit)
 	end
 	
 	if waterPresent ~= unit.insideWater then
-		-- TODO splash sound
+		if waterPresent and unit.isFalling then
+			self.soundContainer:playEffect("splash")
+		end
+		
 		unit.insideWater = waterPresent
 	end
 end
@@ -1272,7 +1281,8 @@ function World:handleUnitUnitCollisions(unit, deltaTime)
 		if unit ~= unit2 and unit2.dead == false
 			and unit2.movementAndCollisionDisabled == false
 			and unit:doesCollideWithUnit(unit2) then
-			unit:resolveUnitCollision(unit2, self.fParticleSystem, deltaTime)
+			unit:resolveUnitCollision(unit2, self.fParticleSystem, 
+				deltaTime, self.soundContainer)
 		end
 		
 		it = it.next
@@ -1311,7 +1321,7 @@ function World:handleUnitAllSolidCollisions(unit, deltaTime)
 	self:handleUnitUnitCollisions(unit, deltaTime)
 	
 	if unit:isInsideDownWorld(self.camera) == false then
-		unit:instantDeath(self.fParticleSystem)
+		unit:instantDeath(self.fParticleSystem, self.soundContainer)
 	end
 end
 
@@ -1339,7 +1349,7 @@ function World:updateActiveUnit(unit, deltaTime)
 		unit:updateAnimations(deltaTime)
 		
 		unit:update(deltaTime, WorldGravity, 
-			self.fParticleSystem, self.camera)
+			self.fParticleSystem, self.camera, self.soundContainer)
 		
 		if unit.dead == false then		
 			self:specialUpdateUnit(unit, deltaTime)
@@ -1401,7 +1411,7 @@ function World:handleProjectileBadGuysCollisions(projectile)
 	while it do
 		if it.data.dead == false then
 			it.data:resolveProjectileCollision(projectile,
-				self.fParticleSystem, 
+				self.fParticleSystem, self.soundContainer,
 				self.textureContainer:getTexture("freezed_unit"))
 		end
 		
@@ -1415,7 +1425,7 @@ function World:handleProjectilePlayerCollisions(projectile)
 	end
 	
 	self.player:resolveProjectileCollision(projectile, self.fParticleSystem,
-		self.textureContainer:getTexture("freezed_unit"))
+		self.soundContainer, self.textureContainer:getTexture("freezed_unit"))
 end
 
 function World:handleProjectileTileCollisions(projectile, deltaTime)
@@ -1541,7 +1551,7 @@ function World:updateActiveObjects(deltaTime)
 		-- Canon update only!
 		-- Check whether you should spawn a new canonball
 		if it.data.name == "canon" then
-			local x, y = it.data:spawnNewCanonBall()
+			local x, y = it.data:spawnNewCanonBall(self.soundContainer)
 			
 			if x and y then
 				self.activeUnits:pushBack(createUnitFromName("canonball",

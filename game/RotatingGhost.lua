@@ -39,8 +39,12 @@ function RotatingGhost:updateRotatingMovement(deltaTime, sinCosTable)
 		RotatingGhostTexRotatingVel * deltaTime, 360)
 end
 
-function RotatingGhost:update(deltaTime, gravityAcc, particleSystem, camera)
-	self:superUpdate(deltaTime, gravityAcc, particleSystem, camera)
+function RotatingGhost:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
+	self:superUpdate(deltaTime, gravityAcc, particleSystem, 
+		camera, soundContainer)
+	
 	-- Make sure that movement will go unnoticed
 	self.isFalling = false
 	self.isJumping = false

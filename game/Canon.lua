@@ -49,11 +49,15 @@ end
 -- If the world should spawn new canon ball
 -- then this function returns it's position [x,y]
 -- otherwise it returns nil, nil
-function Canon:spawnNewCanonBall()
+function Canon:spawnNewCanonBall(soundContainer)
 	if self.shouldSpawnNewCanonBall == false then
 		return nil, nil
 	else
 		self.shouldSpawnNewCanonBall = false
+		
+		-- Create sound effect
+		soundContainer:playEffect("canon_shot")
+		
 		if self.dirLeft then
 			return self.realX - self.realWidth/2 + self.tileWidth, self.realY
 		else

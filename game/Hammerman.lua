@@ -91,6 +91,9 @@ function Hammerman:updateAnimations(deltaTime)
 	self.activeAnim:update(deltaTime)
 end
 
-function Hammerman:update(deltaTime, gravityAcc, particleSystem, camera)
-	self:superUpdate(deltaTime, gravityAcc)
+function Hammerman:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
 end

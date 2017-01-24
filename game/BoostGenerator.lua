@@ -28,7 +28,7 @@ function BoostGenerator:getTilePosition()
 end
 
 function BoostGenerator:update(deltaTime)
-	self.boostUnit.y = self.boostUnit.y - 100 * deltaTime
+	self.boostUnit.y = self.boostUnit.y - 300 * deltaTime
 	
 	if self:shouldBeDestroyed() then
 		self.boostUnit.y = self.y - self.height

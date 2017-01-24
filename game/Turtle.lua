@@ -87,7 +87,9 @@ function Turtle:updateAnimations(deltaTime)
 	end
 end
 
-function Turtle:update(deltaTime, gravityAcc, particleSystem, camera)
+function Turtle:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	if self.coverTimer > 0 and self.isCovered and self.isMad == false then
 		-- The unit cannot move now
 		self.coverTimer = self.coverTimer - deltaTime
@@ -107,7 +109,8 @@ function Turtle:update(deltaTime, gravityAcc, particleSystem, camera)
 		end
 	end
 	
-	self:superUpdate(deltaTime, gravityAcc)
+	self:superUpdate(deltaTime, gravityAcc, particleSystem,
+		camera, soundContainer)
 end
 
 function Turtle:draw(camera)

@@ -139,7 +139,7 @@ function Unit:isInvulnerable()
 	return false
 end
 
-function Unit:instantDeath(particleSystem)
+function Unit:instantDeath(particleSystem, soundContainer)
 	-- VIRTUAL
 end
 
@@ -153,7 +153,7 @@ end
 -- "touch_left" -> this unit has touched enemy unit from this unit's left side
 -- "touch_right" -> this unit has touched enemy unit from this unit's right side
 -- "deadly" -> this unit has touched something deadly (lava, etc...)
-function Unit:hurt(type, particleSystem)
+function Unit:hurt(type, particleSystem, soundContainer)
 	-- VIRTUAL, HAS TO BE IMPLEMENTED
 end
 
@@ -162,11 +162,13 @@ end
 -- Freeze does no damage to the unit.
 -- @freezedUnitTexture is optional, if it's passed then this texture
 -- will be added to the unit as "an freeze effect"
-function Unit:freeze(particleSystem, freezedUnitTexture)
+function Unit:freeze(particleSystem, soundContainer, freezedUnitTexture)
 	self.freezeTimer = 2 -- 2 seconds
 	
 	particleSystem:addFreezedUnitEffect(freezedUnitTexture,
 		self.x, self.y, self.width, self.height, self.freezeTimer)
+		
+	soundContainer:playEffect("freeze")
 end
 
 function Unit:isFreezed()
@@ -463,7 +465,9 @@ function Unit:resolveRectCollision(centerX, centerY, w, h, deltaTime)
 	end
 end
 
-function Unit:checkUnitCollisionInvulnerability(unit, particleSystem)
+function Unit:checkUnitCollisionInvulnerability(unit, particleSystem,
+	soundContainer)
+	
 	local selfInvul = self:isInvulnerable()
 	local enemyInvul = unit:isInvulnerable()
 	
@@ -472,11 +476,11 @@ function Unit:checkUnitCollisionInvulnerability(unit, particleSystem)
 		return true
 	elseif selfInvul then
 		unit:hurt(unit.isFacingLeft and "touch_left" or "touch_right",
-			particleSystem)
+			particleSystem, soundContainer)
 		return true
 	elseif enemyInvul then
 		self:hurt(self.isFacingLeft and "touch_left" or "touch_right",
-			particleSystem)
+			particleSystem, soundContainer)
 		return true
 	end
 	
@@ -486,7 +490,7 @@ end
 -- Determine the collision type, victim and killer and
 -- according to circumstances resolve the conflict
 function Unit:resolveUnitVerticalCollision(unit, dist,
-	particleSystem, deltaTime)
+	particleSystem, deltaTime, soundContainer)
 	
 	if dist > 0 then
 		-- Wasn't resolved
@@ -510,7 +514,7 @@ function Unit:resolveUnitVerticalCollision(unit, dist,
 			victim:stopJumping()
 		end
 		
-		victim:hurt("step_on", particleSystem)
+		victim:hurt("step_on", particleSystem, soundContainer)
 		killer:hop()
 		killer:moveSpecific(0, -maxDist)
 		
@@ -547,22 +551,27 @@ function Unit:shouldBeUnitCollisionSkipped(unit)
 end
 
 -- Special horizontal collision player - badguy, mad turtle - others etc...
-function Unit:handleSpecialHorizontalCollision(unit)
+function Unit:handleSpecialHorizontalCollision(unit, soundContainer)
 	-- HAS TO BE IMPLEMENTED SEPARATELY
 	return false
 end
 
 function Unit:resolveUnitHorizontalCollision(unit, dist, 
-	particleSystem, deltaTime)
+	particleSystem, deltaTime, soundContainer)
 	
 	if dist > 0 then
 		-- Wasn't resolved
 		return false
 	end
 	
-	if self:handleSpecialHorizontalCollision(unit, particleSystem) or 
-		unit:handleSpecialHorizontalCollision(self, particleSystem) then
-		return true -- Was handled
+	if self:handleSpecialHorizontalCollision(
+		unit, particleSystem, soundContainer) 
+		or 
+		unit:handleSpecialHorizontalCollision(
+		self, particleSystem, soundContainer) then
+		
+		-- Was handled
+		return true
 	else
 		if self.x < unit.x then
 			self.collidedHorizontally = "right"
@@ -579,12 +588,15 @@ function Unit:resolveUnitHorizontalCollision(unit, dist,
 end
 
 -- Resolve unit-unit collision
-function Unit:resolveUnitCollision(unit, particleSystem, deltaTime)
+function Unit:resolveUnitCollision(unit, particleSystem, deltaTime,
+	soundContainer)
+ 
 	if self:shouldBeUnitCollisionSkipped(unit) then
 		return
 	end
 	
-	if self:checkUnitCollisionInvulnerability(unit, particleSystem) then
+	if self:checkUnitCollisionInvulnerability(
+		unit, particleSystem, soundContainer) then
 		return
 	end
 	
@@ -593,17 +605,20 @@ function Unit:resolveUnitCollision(unit, particleSystem, deltaTime)
 		unit.x, unit.y, unit.width, unit.height)
 	
 	if self:resolveUnitVerticalCollision(unit, distY,
-		particleSystem, deltaTime) then
+		particleSystem, deltaTime, soundContainer) then
 		-- Was resolved succesfully
 		return
 	end
 	
-	self:resolveUnitHorizontalCollision(unit, distX, particleSystem, deltaTime)
+	self:resolveUnitHorizontalCollision(unit, distX, particleSystem,
+		deltaTime, soundContainer)
 end
 
 Unit.superResolveUnitCollision = Unit.resolveUnitCollision
 
-function Unit:resolveDeadlyProjectileCollision(projectile, particleSystem)
+function Unit:resolveDeadlyProjectileCollision(projectile, particleSystem,
+	soundContainer)
+	
 	local offsetX = projectile.x - self.x
 	local offsetY = projectile.y - self.y
 	
@@ -617,7 +632,7 @@ function Unit:resolveDeadlyProjectileCollision(projectile, particleSystem)
 			and "projectile_top" or "projectile_bottom"
 	end
 	
-	self:hurt(projectileDir, particleSystem)
+	self:hurt(projectileDir, particleSystem, soundContainer)
 end
 
 -- Check if this unit has collided with given projectile.
@@ -628,14 +643,16 @@ end
 -- if it's passed and the projectile is iceball, then this texture
 -- will be added to the unit as "an freeze effect"
 function Unit:resolveProjectileCollision(projectile, 
-	particleSystem, freezedUnitTexture)
+	particleSystem, soundContainer, freezedUnitTexture)
 	
 	if self:isPointInside(projectile.x, projectile.y) then
 		-- They have collided...
 		if projectile.type == "fireball" or projectile.type == "hammer" then
-			self:resolveDeadlyProjectileCollision(projectile, particleSystem)
+			self:resolveDeadlyProjectileCollision(projectile, particleSystem,
+				soundContainer)
+				
 		elseif projectile.type == "iceball" and self.notFreezable == false then
-			self:freeze(particleSystem, freezedUnitTexture)
+			self:freeze(particleSystem, soundContainer, freezedUnitTexture)
 		end
 		
 		-- This projectile will be removed... for sure
@@ -734,9 +751,11 @@ function Unit:updateFreezeTimer(deltaTime)
 	end
 end
 
--- Camera and particle system are not used right now, 
+-- Camera, particle system and soundContainer are not used right now, 
 -- but for some units they may come handy later
-function Unit:update(deltaTime, gravityAcc, particleSystem, camera)
+function Unit:update(deltaTime, gravityAcc, particleSystem,
+	camera, soundContainer)
+	
 	self:updateVerticalMovement(deltaTime, gravityAcc)
 	self:updateHorizontalMovement(deltaTime, gravityAcc)
 	self:updateBasicTimers(deltaTime)
