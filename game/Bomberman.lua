@@ -33,7 +33,7 @@ function Bomberman:init(x, y, tileWidth, tileHeight,
 	self.timer = 0
 end
 
-function Bomberman:instantDeath(type, particleSystem)
+function Bomberman:instantDeath(particleSystem, soundContainer)
 	if self.state == "exploding" then
 		return
 	end
@@ -47,6 +47,9 @@ function Bomberman:instantDeath(type, particleSystem)
 	-- will be skipped from now
 	self.width = self.width * BombermanProportionsInc
 	self.height = self.height * BombermanProportionsInc
+	
+	-- Make sound effect
+	soundContainer:playEffect("explosion")
 end
 
 function Bomberman:isInvulnerable()
@@ -63,16 +66,16 @@ function Bomberman:initCountdown()
 	self.timer = BombermanCountdownTime
 end
 
-function Bomberman:hurt(type, particleSystem)
+function Bomberman:hurt(type, particleSystem, soundContainer)
 	if self.state == "walking" then
 		if type == "step_on" then
 			self:initCountdown()
 		else
-			self:instantDeath(particleSystem)
+			self:instantDeath(particleSystem, soundContainer)
 		end
 	elseif self.state == "countdown" then
 		if type ~= "step_on" then
-			self:instantDeath(particleSystem)
+			self:instantDeath(particleSystem, soundContainer)
 		end
 	end
 end
@@ -92,7 +95,7 @@ function Bomberman:updateAnimations(deltaTime)
 end
 
 -- Bomberman function only!
-function Bomberman:handleBehaviour(deltaTime)
+function Bomberman:handleBehaviour(deltaTime, particleSystem, soundContainer)
 	self.timer = self.timer - deltaTime
 	
 	if self.state == "walking" then
@@ -100,7 +103,7 @@ function Bomberman:handleBehaviour(deltaTime)
 		self:reverseDirectionAccordingToCollision()
 	elseif self.state == "countdown" then
 		if self.timer <= 0 then
-			self:instantDeath()
+			self:instantDeath(particleSystem, soundContainer)
 		end
 	else
 		-- Make sure that world won't move and
@@ -114,7 +117,9 @@ function Bomberman:handleBehaviour(deltaTime)
 	end
 end
 
-function Bomberman:handleSpecialHorizontalCollision(unit, particleSystem)
+function Bomberman:handleSpecialHorizontalCollision(unit,
+	particleSystem, soundContainer)
+	
 	if self.state == "exploding" then
 		-- You have to get the face of collision
 		local touch
@@ -125,7 +130,7 @@ function Bomberman:handleSpecialHorizontalCollision(unit, particleSystem)
 			touch = "touch_right"
 		end
 		
-		unit:hurt(touch, particleSystem)
+		unit:hurt(touch, particleSystem, soundContainer)
 	end
 end
 
@@ -135,7 +140,7 @@ function Bomberman:update(deltaTime, gravityAcc, particleSystem,
 	self:superUpdate(deltaTime, gravityAcc, particleSystem, 
 		camera, soundContainer)
 	
-	self:handleBehaviour(deltaTime)
+	self:handleBehaviour(deltaTime, particleSystem, soundContainer)
 end
 
 function Bomberman:draw(camera)

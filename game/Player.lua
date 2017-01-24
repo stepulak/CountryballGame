@@ -224,10 +224,10 @@ function Player:boostPlayer(unit, soundContainer)
 	
 	if unit.name == "mushroom_life" then
 		self:increaseNumLives()
-		soundContainer:playEffect("booster_pick")
+		soundContainer:playEffect("boost_pick")
 	elseif unit.name == "mushroom_grow" then
 		self:addHelmet()
-		soundContainer:playEffect("booster_pick")
+		soundContainer:playEffect("boost_pick")
 	elseif unit.name == "star" then
 		self:consumeStar()
 	elseif unit.name == "fireflower" or unit.name == "iceflower" then
@@ -235,7 +235,7 @@ function Player:boostPlayer(unit, soundContainer)
 			self:addHelmet()
 		end
 		self.flowerType = unit.name
-		soundContainer:playEffect("booster_pick")
+		soundContainer:playEffect("boost_pick")
 	elseif unit.name == "coin" then
 		self:increaseNumCoins()
 		soundContainer:playEffect("coin_pick")
@@ -248,9 +248,12 @@ function Player:boostPlayer(unit, soundContainer)
 	unit:fadeOut()
 end
 
-function Player:handleSpecialHorizontalCollision(unit, particleSystem)
+function Player:handleSpecialHorizontalCollision(unit, particleSystem,
+	soundContainer)
+	
 	self:hurt(unit.isFacingLeft and "touch_right" or "touch_left",
-		particleSystem)
+		particleSystem, soundContainer)
+	
 	return true
 end
 
@@ -262,7 +265,7 @@ function Player:resolveUnitCollision(unit, particleSystem, deltaTime,
 	elseif unit.name == "rotating_ghost" and self.invulnerableRGTimer <= 0 then
 		-- HINT: remove if player has not circular shape!
 		if pointInCircle(unit.x, unit.y, self.x, self.y, self.width/2) then
-			self:hurt("projectile_bottom", particleSystem)
+			self:hurt("projectile_bottom", particleSystem, soundContainer)
 			self.invulnerableRGTimer = PlayerInvulnerabilityRGTime
 		end
 	else
@@ -320,7 +323,7 @@ function Player:spawnStars(deltaTime, particleSystem)
 	end
 end
 
-function Player:addFartEffect(particleSystem, fartTex)
+function Player:addFartTexEffect(particleSystem, fartTex)
 	local x, angle
 	
 	if self.isFacingLeft then
@@ -380,10 +383,10 @@ function Player:updatePlayer(deltaTime, particleSystem, soundContainer)
 		-- "fart" effect
 		if self.insideWater then
 			soundContainer:playEffect("player_swim")
-			self:addFartEffect(particleSystem, self.bubbleTex)
+			self:addFartTexEffect(particleSystem, self.bubbleTex)
 		else
 			soundContainer:playEffect("player_jump")
-			self:addFartEffect(particleSystem, self.smokeTex)
+			self:addFartTexEffect(particleSystem, self.smokeTex)
 		end
 	end
 end

@@ -311,6 +311,14 @@ function Unit:tryToEnableSprint()
 	-- VIRTUAL
 end
 
+function Unit:playSmashEffect(soundContainer)
+	if math.random() < 0.7 then
+		soundContainer:playEffect("smash")
+	else
+		soundContainer:playEffect("smash2")
+	end
+end
+
 -- Return new projectile's attributes created by this unit
 -- If the projectile's first attribute is nil, then this
 -- unit hasn't fired any projectile yet
@@ -487,6 +495,8 @@ function Unit:checkUnitCollisionInvulnerability(unit, particleSystem,
 	return false
 end
 
+local UnitMinVertDistCollision = 10
+
 -- Determine the collision type, victim and killer and
 -- according to circumstances resolve the conflict
 function Unit:resolveUnitVerticalCollision(unit, dist,
@@ -507,7 +517,9 @@ function Unit:resolveUnitVerticalCollision(unit, dist,
 		victim = unit
 	end
 	
-	local maxDist = killer:getVerticalDist(deltaTime)
+	local killerDist = killer:getVerticalDist(deltaTime)
+	local maxDist = killerDist < UnitMinVertDistCollision and
+		UnitMinVertDistCollision or killerDist
 	
 	if -dist <= maxDist and victim.isSteppable then	
 		if victim.isJumping then
@@ -604,14 +616,19 @@ function Unit:resolveUnitCollision(unit, particleSystem, deltaTime,
 		self.x, self.y, self.width, self.height,
 		unit.x, unit.y, unit.width, unit.height)
 	
+	print(distX, distY)
+	
 	if self:resolveUnitVerticalCollision(unit, distY,
 		particleSystem, deltaTime, soundContainer) then
 		-- Was resolved succesfully
 		return
 	end
 	
-	self:resolveUnitHorizontalCollision(unit, distX, particleSystem,
-		deltaTime, soundContainer)
+	-- Make sure it collided both vertically and horizontally
+	if distY < 0 then
+		self:resolveUnitHorizontalCollision(unit, distX,
+			particleSystem, deltaTime, soundContainer)
+	end
 end
 
 Unit.superResolveUnitCollision = Unit.resolveUnitCollision

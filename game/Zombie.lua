@@ -14,7 +14,7 @@ function Zombie:init(x, y, tileWidth, tileHeight, movementAnim)
 	self.activeAnim = movementAnim
 end
 
-function Zombie:instantDeath(particleSystem)
+function Zombie:instantDeath(particleSystem, soundContainer)
 	particleSystem:addUnitFallEffect(self.movementAnim:getActiveTexture(),
 		self.x, self.y, self.width, self.height, self.isFacingLeft, 
 		self.horizontalVel)
@@ -23,7 +23,7 @@ function Zombie:instantDeath(particleSystem)
 end
 
 -- Zombie function only!
-function Zombie:smash(particleSystem)
+function Zombie:smash(particleSystem, soundContainer)
 	local height = self.height * ZombieSmashHeightQ
 	
 	particleSystem:addUnitSmashStaticEffect(
@@ -31,14 +31,16 @@ function Zombie:smash(particleSystem)
 		self.y + self.height/2 - height/2, self.width, height,
 		self.isFacingLeft, ZombieSmashTime)
 	
+	self:playSmashEffect(soundContainer)
+	
 	self.dead = true
 end
 
-function Zombie:hurt(type, particleSystem)
+function Zombie:hurt(type, particleSystem, soundContainer)
 	if type == "step_on" then
-		self:smash(particleSystem)
+		self:smash(particleSystem, soundContainer)
 	else
-		self:instantDeath(particleSystem)
+		self:instantDeath(particleSystem, soundContainer)
 	end
 end
 

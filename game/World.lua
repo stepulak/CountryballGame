@@ -724,7 +724,7 @@ function World:resolveBounceBoostGenerator(x, y)
 	self:swapCollidableTileAfterGeneration(x, y)
 	
 	-- Make sound
-	self.soundContainer:playEffect("booster_spawn")
+	self.soundContainer:playEffect("boost_spawn")
 end
 
 -- @x, y = world's real coordination of tile's top-left position
@@ -750,7 +750,10 @@ function World:bounceTile(x, y)
 	local tile = self.tiles[x][y]
 	
 	-- Lets assume that this tile is valid and bouncable
-	if tile.isBouncing == false then
+	if tile and tile.isBouncing == false then
+		-- Play boucing effect
+		self.soundContainer:playEffect("block_bounce")
+		
 		-- Let's find out if this tile can generate coin(s)
 		if isTileSingleCoinGenerator(tile) then
 			self:resolveBounceSingleCoinGenerator(x, y)
@@ -792,6 +795,8 @@ function World:breakTile(x, y)
 	
 	-- delete the tile from grid
 	self:deleteCollidableTile(x, y)
+	
+	
 end
 
 -- Reveal all tiles marked as secret in one connected tile-area
