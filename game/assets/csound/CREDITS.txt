@@ -1,0 +1,21 @@
+fart.mp3: https://www.youtube.com/watch?v=B-uIfFgMPyw
+player_shoot.wav: Nathan McCoy (Super Tux)
+player_death.wav: MatzeB (Super Tux)
+splash.mp3: http://opengameart.org/content/water-splashes
+smash.mp3: http://opengameart.org/content/8-wet-squish-slurp-impacts
+smash_duck.mp3: https://www.youtube.com/watch?v=B-uIfFgMPyw
+canon_shot.ogg: http://opengameart.org/content/action-shooter-soundset-wwvi
+boost_spawn.mp3: http://opengameart.org/content/ui-and-item-sound-effect-jingles-sample-2
+boost_pick.mp3: http://opengameart.org/content/ui-and-item-sound-effect-jingles-sample-2
+freeze.mp3: http://opengameart.org/content/freeze-spell-0
+coin_pick.wav: http://opengameart.org/content/10-8bit-coin-sounds
+block_break.mp3: http://opengameart.org/content/5-break-crunch-impacts
+block_bounce.mp3: http://opengameart.org/content/35-wooden-crackshitsdestructions
+explosion.mp3: https://www.youtube.com/watch?v=B-uIfFgMPyw
+forest_rain.mp3: http://www.orangefreesounds.com/forest-rain-sound/ (CC BY-NC 4.0)
+canonball_smash.mp3: https://www.youtube.com/watch?v=B-uIfFgMPyw
+unit_death.wav: Nathan McCoy (Super Tux)
+lifeup.wav: Nathan McCoy (Super Tux)
+turtle_bump.wav: Some_Person (Super Tux)
+block_unable.wav: Yaniel, GPLv2+CC-by-sa (Super Tux)
+turtle_touch.wav: Some_Person (Super Tux)

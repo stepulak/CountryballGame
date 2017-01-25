@@ -52,6 +52,12 @@ function Bomberman:instantDeath(particleSystem, soundContainer)
 	soundContainer:playEffect("explosion")
 end
 
+function Bomberman:fallDown(particleSystem, soundContainer)
+	-- Instant death without explosion
+	self.state = "exploding"
+	self.timer = 0
+end
+
 function Bomberman:isInvulnerable()
 	return self.state == "exploding"
 end

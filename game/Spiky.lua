@@ -12,19 +12,22 @@ function Spiky:init(x, y, tileWidth, tileHeight, movementAnim)
 	self.activeAnim = movementAnim
 end
 
-function Spiky:instantDeath(particleSystem)
+function Spiky:instantDeath(particleSystem, soundContainer)
 	particleSystem:addUnitFallEffect(self.activeAnim:getActiveTexture(),
 		self.x, self.y, self.width, self.height, self.isFacingLeft, 
 		self.horizontalVel)
+	
+	self.dead = true
 end
 
-function Spiky:hurt(type, particleSystem)
+function Spiky:hurt(type, particleSystem, soundContainer)
 	if type == "step_on" or type == "touch_left" or type == "touch_right" then
 		-- You cannot kill spiky like this
 		return
 	end
 	
-	self:instantDeath(particleSystem)
+	self:instantDeath(particleSystem, soundContainer)
+	self:playStdHurtEffect(type, soundContainer)
 end
 
 function Spiky:updateAnimations(deltaTime)

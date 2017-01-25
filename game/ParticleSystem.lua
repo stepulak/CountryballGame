@@ -22,43 +22,83 @@ end
 function ParticleSystem:addBrokenWallEffect(texture, x, y, 
 	width, height, dirLeft)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0,
-		false, 0, (dirLeft and 115 or 65), 0, height*15, 0, 0.15, false,
-		false, -1, nil, "broken_wall")
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 0, false,
+		0,
+		(dirLeft and 115 or 65), 0,
+		height*15, 0,
+		0.15,
+		false, false, -1,
+		nil, "broken_wall")
 end
 
 -- Add new cloud
 function ParticleSystem:addCloudParticle(texture, x, y, 
 	width, height, dirLeft, userUpdate)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0,
-		false, 0, (dirLeft and 180 or 0), 0, 2 + math.random() * 5, 
-		0, -1, false, true, 5, userUpdate, "cloud")
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 0, false,
+		0,
+		(dirLeft and 180 or 0), 0,
+		2 + math.random() * 5, 0,
+		-1,
+		false, true, 5,
+		userUpdate, "cloud")
 end
 
 -- Add new snow flake
 function ParticleSystem:addSnowParticle(texture, x, y,
 	width, height, userUpdate)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 10,
-		false, 0, 250 + math.random() * 40, 0, 100, 0, -1, false,
-		false, 0, userUpdate, "snow")
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 10, false,
+		0,
+		250 + math.random() * 40, 0,
+		100, 0,
+		-1,
+		false, false, 0,
+		userUpdate, "snow")
 end
 
 -- Add new rain drop
 function ParticleSystem:addRainParticle(texture, x, y, 
 	width, height, userUpdate)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 15, 0, 
-		false, 0, 255, 0, 1000, 0, -1, false, false, 0, userUpdate, "rain")
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		15, 0, false,
+		0,
+		255, 0,
+		1000, 0,
+		-1,
+		false, false, 0,
+		userUpdate, "rain")
 end
 
 -- Add new bubble particle 
 -- Used when unit is inside water (gasping for air "effect")
 function ParticleSystem:addBubbleParticle(texture, x, y, width, height, time)
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0, false,
-		5, 90 + math.random(-45, 45), 0, 100, 0, time, true, true,
-		time/5, nil, nil)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 0, false,
+		5,
+		90 + math.random(-45, 45), 0,
+		100, 0,
+		time,
+		true, true, time/5)
 end
 
 -- Add smoke particle (particle is moving is specific direction)
@@ -66,23 +106,48 @@ end
 function ParticleSystem:addSmokeParticle(texture, x, y, width, height,
 	dirAngle, time)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 
-		180 * math.random(), false, 5, dirAngle, 0, 50, 0, time,
-		true, false, time/5, nil, nil)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 180 * math.random(), false,
+		5,
+		dirAngle, 0,
+		50,	0,
+		time,
+		true, false, time/5)
 end
 
+-- Little star with high velocity moving directly from given position
 function ParticleSystem:addStarParticle(texture, x, y, width, height,
 	dirAngle)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 
-		360, false, 2, dirAngle, 0, 500, 0, 0.3, true, true, 0.1, nil, nil)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height, 
+		0, 360, false,
+		2,
+		dirAngle, 0,
+		500, 0,
+		0.3,
+		true, true, 0.1)
 end
 
 function ParticleSystem:addCoinEffect(texture, x, y,
 	width, height, userUpdate, userData)
 
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0,
-		false, 0, 90, 0, 700, 0, 0.3, true, false, 0.3, userUpdate, userData)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 0, false,
+		0,
+		90, 0,
+		700, 0,
+		0.3,
+		true, false, 0.3,
+		userUpdate, userData)
 end
 
 -- Add an effect representing unit's (death) fall in specific direction
@@ -94,26 +159,40 @@ function ParticleSystem:addUnitFallEffect(texture, x, y,
 	
 	if dirLeft then
 		angle = 225
-		angleVel = 30
+		angleVel = 40
 	else
 		angle = 315
-		angleVel = -30
+		angleVel = -40
 	end
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0,
-		dirLeft, 0, angle, angleVel, unitVel*1.8, 800, 1, true, false, 0.5, 
-		nil, nil)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 0, dirLeft,
+		0,
+		angle, angleVel,
+		unitVel*1.8, 800,
+		1, 
+		true, false, 0.5)
 end
 
--- Create an effect that imitates a unit's smash 
+-- Create an effect that imitates a unit's smash (or crash)
 -- (into the wall or smashed by player's step)
--- @texAngle can be nil (not set)
+-- @texAngle and @dirAngle can be nil (not set)
 function ParticleSystem:addUnitSmashEffect(texture, x, y,
-	width, height, texDirLeft, texAngle)
+	width, height, texDirLeft, texAngle, dirAngle)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 
-		texAngle or 0, 0, texDirLeft, 0, angle or 270, 0, 0, 800,
-		1, true, false, 0.5, nil, nil)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height, 
+		texAngle or 0, 0, texDirLeft,
+		0,
+		dirAngle or 270, 0,
+		0, 800,
+		1,
+		true, false, 0.5)
 end
 
 -- Create an static effect with given texture
@@ -121,29 +200,85 @@ end
 function ParticleSystem:addUnitSmashStaticEffect(texture, x, y,
 	width, height, texDirLeft, time)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0,
-		texDirLeft, 0, 0, 0, 0, 0, time, false, false, 0, nil, nil)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 0, texDirLeft,
+		0,
+		0, 0,
+		0, 0,
+		time,
+		false, false, 0)
+end
+
+-- Smashed unit with rotation in specified direction
+function ParticleSystem:addUnitSmashRotationEffect(texture, x, y,
+	width, height, vel, texAngle, texAngleVel, leftDir)
+	
+	local angle, angleVel
+	
+	if leftDir then
+		angle = 235
+		angleVel = 40
+	else
+		angle = 315
+		angleVel = -40
+	end
+	
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		texAngle, texAngleVel, leftDir,
+		0,
+		angle, angleVel,
+		vel, 300,
+		1,
+		true, false, 0.5)
 end
 
 -- Add particle representing player's fall (death)
 function ParticleSystem:addPlayersFallEffect(texture, x, y, 
 	width, height, userUpdate)
 
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0,
-		false, 0, 90, 0, 1000, -2000, -1, false, false, 0, userUpdate, "up")
+	self:reserveNewParticle():fill(
+		texture, x, y,
+		width, height,
+		0, 0, false,
+		0,
+		90,	0,
+		1000, -2000,
+		-1,
+		false, false, 0,
+		userUpdate, "up")
 end
 
 -- Add a simple effect that imitates a fading out tile...
 function ParticleSystem:addTileFadeOutEffect(texture, x, y, width, height)
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0,
-		false, 0, 0, 0, 0, 0, 0.5, true, false, 0.5, nil, nil)
+	self:reserveNewParticle():fill(texture,
+		x, y,
+		width, height,
+		0, 0, false,
+		0,
+		0, 0,
+		0, 0,
+		0.5,
+		true, false, 0.5)
 end
 
-function ParticleSystem:addFreezedUnitEffect(texture, x, y, width, height,
+function ParticleSystem:addFrozenUnitEffect(texture, x, y, width, height,
 	time)
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 0,
-		false, 0, 0, 0, 0, 0, time, true, true, time/10, nil, nil)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 0, false, 0,
+		0, 0,
+		0, 0,
+		time,
+		true, true, time/10)
 end
 
 -- Create falling and rotation object
@@ -161,8 +296,16 @@ function ParticleSystem:addFallingRotatingObject(texture, x, y,
 		angleVel = -40
 	end
 	
-	self:reserveNewParticle():fill(texture, x, y, width, height, 0, 600, 
-		false, 0, angle, angleVel, 500, 600, time, true, false, 0.5, nil, nil)
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 600, false,
+		0,
+		angle, angleVel,
+		500, 600,
+		time,
+		true, false, 0.5)
 end
 
 -- Update particles (movement, behaviour, etc.)

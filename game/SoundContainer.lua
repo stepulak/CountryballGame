@@ -28,6 +28,14 @@ function SoundContainer:newMusic(name, source)
 	self.music[name] = source
 end
 
+function SoundContainer:getEffect(name)
+	return self.effects[name]
+end
+
+function SoundContainer:getMusic(name)
+	return self.music[name]
+end
+
 function SoundContainer:loadEffect(name, path)
 	self:newEffect(name, love.audio.newSource(path))
 end
@@ -91,7 +99,7 @@ end
 
 function SoundContainer:mute()
 	-- Change *master* volume to zero
-	-- Other custom volumes are preserved
+	-- The ratio between custom volumes is preserved
 	self.masterVolume = love.audio.getVolume()
 	love.audio.setVolume(0)
 end

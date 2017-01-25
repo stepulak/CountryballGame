@@ -224,7 +224,7 @@ function Player:boostPlayer(unit, soundContainer)
 	
 	if unit.name == "mushroom_life" then
 		self:increaseNumLives()
-		soundContainer:playEffect("boost_pick")
+		soundContainer:playEffect("lifeup")
 	elseif unit.name == "mushroom_grow" then
 		self:addHelmet()
 		soundContainer:playEffect("boost_pick")

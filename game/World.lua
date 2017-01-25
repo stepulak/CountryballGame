@@ -352,7 +352,7 @@ end
 function World:createSampleWorld()
 	self:createEmptyWorld(20, 20)
 	
-	for x = 0, 5 do
+	for x = 0, 10 do
 		self:setTile(x, 10, "collidable", "static_block_bright")
 	end
 end
@@ -740,7 +740,7 @@ function World:killUnfriendlyUnitsOnTilePosition(x, y)
 			-- Kill it
 			it.data:instantDeath(self.fParticleSystem, self.soundContainer)
 		end
-		
+			
 		it = it.next
 	end
 end
@@ -796,7 +796,8 @@ function World:breakTile(x, y)
 	-- delete the tile from grid
 	self:deleteCollidableTile(x, y)
 	
-	
+	-- Make sound effect
+	self.soundContainer:playEffect("block_break")
 end
 
 -- Reveal all tiles marked as secret in one connected tile-area
@@ -920,6 +921,9 @@ function World:handleUnitCollisionUp(unit, deltaTime, distError)
 					self:breakTile(x, tileYAfter)
 				elseif isTileBouncable(tile) and unit:canBounceTiles() then
 					self:bounceTile(x, tileYAfter)
+				else
+					-- Unable to bounce
+					self.soundContainer:playEffect("block_unable")
 				end
 				
 				-- Update distance from the tile
@@ -1326,7 +1330,7 @@ function World:handleUnitAllSolidCollisions(unit, deltaTime)
 	self:handleUnitUnitCollisions(unit, deltaTime)
 	
 	if unit:isInsideDownWorld(self.camera) == false then
-		unit:instantDeath(self.fParticleSystem, self.soundContainer)
+		unit:fallDown(self.fParticleSystem, self.soundContainer)
 	end
 end
 

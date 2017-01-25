@@ -31,7 +31,12 @@ function Zombie:smash(particleSystem, soundContainer)
 		self.y + self.height/2 - height/2, self.width, height,
 		self.isFacingLeft, ZombieSmashTime)
 	
-	self:playSmashEffect(soundContainer)
+	-- Smash effect (smash2 is a joke)
+	if math.random() < 0.7 then
+		soundContainer:playEffect("smash")
+	else
+		soundContainer:playEffect("smash2")
+	end
 	
 	self.dead = true
 end
@@ -41,6 +46,7 @@ function Zombie:hurt(type, particleSystem, soundContainer)
 		self:smash(particleSystem, soundContainer)
 	else
 		self:instantDeath(particleSystem, soundContainer)
+		self:playStdHurtEffect(type, soundContainer)
 	end
 end
 

@@ -143,6 +143,11 @@ function Unit:instantDeath(particleSystem, soundContainer)
 	-- VIRTUAL
 end
 
+-- Unit fell of the map
+function Unit:fallDown(particleSystem, soundContainer)
+	self:instantDeath(particleSystem, soundContainer)
+end
+
 -- Hurt this unit with several possibilites.
 -- @type:
 -- "step_on" -> another unit has stepped on this unit
@@ -157,6 +162,17 @@ function Unit:hurt(type, particleSystem, soundContainer)
 	-- VIRTUAL, HAS TO BE IMPLEMENTED
 end
 
+-- Play standart sound effect according to hurt @type
+function Unit:playStdHurtEffect(type, soundContainer)
+	if type == "deadly" or 
+		string.find(type, "projectile") or
+		string.find(type, "touch") then
+		soundContainer:playEffect("unit_death")
+	elseif type == "step_on" then
+		soundContainer:playEffect("smash")
+	end
+end
+
 -- Freeze unit
 -- If the unit is freezed, then it cannot move or do anything at all.
 -- Freeze does no damage to the unit.
@@ -165,7 +181,7 @@ end
 function Unit:freeze(particleSystem, soundContainer, freezedUnitTexture)
 	self.freezeTimer = 2 -- 2 seconds
 	
-	particleSystem:addFreezedUnitEffect(freezedUnitTexture,
+	particleSystem:addFrozenUnitEffect(freezedUnitTexture,
 		self.x, self.y, self.width, self.height, self.freezeTimer)
 		
 	soundContainer:playEffect("freeze")
@@ -271,6 +287,10 @@ function Unit:getHorizontalDist(deltaTime)
 	return self:getSpecificDist("horizontalVel", deltaTime)
 end
 
+function Unit:getOverallVelocity()
+	return math.sqrt(self.horizontalVel^2 + self.verticalVel^2)
+end
+
 -- Get simple velocity vector 
 -- @return horizontal_dir, vertical_dir
 -- The possibilities are: { [m, n] | m, n <- {-1, 0, 1} }
@@ -309,14 +329,6 @@ end
 
 function Unit:tryToEnableSprint()
 	-- VIRTUAL
-end
-
-function Unit:playSmashEffect(soundContainer)
-	if math.random() < 0.7 then
-		soundContainer:playEffect("smash")
-	else
-		soundContainer:playEffect("smash2")
-	end
 end
 
 -- Return new projectile's attributes created by this unit
@@ -615,8 +627,6 @@ function Unit:resolveUnitCollision(unit, particleSystem, deltaTime,
 	distX, distY = getDistanceRectRect(
 		self.x, self.y, self.width, self.height,
 		unit.x, unit.y, unit.width, unit.height)
-	
-	print(distX, distY)
 	
 	if self:resolveUnitVerticalCollision(unit, distY,
 		particleSystem, deltaTime, soundContainer) then

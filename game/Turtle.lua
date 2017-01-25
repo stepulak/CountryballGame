@@ -20,21 +20,21 @@ function Turtle:init(x, y, tileWidth, tileHeight, movementAnim, shellTex)
 end
 
 -- Turtle function only!
-function Turtle:instantDeathFallEffect(particleSystem)
+function Turtle:instantDeathFallEffect(particleSystem, soundContainer)
 	self.dead = true
 	
 	particleSystem:addUnitFallEffect(self.shellTex, self.x, self.y,
 		self.width, self.height, self.isFacingLeft, self.horizontalVel)
 end
 
-function Turtle:instantDeath(particleSystem)
+function Turtle:instantDeath(particleSystem, soundContainer)
 	self.dead = true
 	
 	particleSystem:addUnitSmashEffect(self.shellTex, self.x, self.y,
-		self.width, self.height, self.isFacingLeft)
+		self.width, self.height, self.isFacingLeft)		
 end
 
-function Turtle:hurt(type, particleSystem)
+function Turtle:hurt(type, particleSystem, soundContainer)
 	if type == "step_on" then
 		self.coverTimer = TurtleCoverTime
 		
@@ -43,6 +43,8 @@ function Turtle:hurt(type, particleSystem)
 		else
 			self.isMad = not self.isMad
 		end
+		
+		soundContainer:playEffect("turtle_touch")
 		
 		-- Collision handled
 		return
@@ -53,26 +55,33 @@ function Turtle:hurt(type, particleSystem)
 		if type == "touch_left" then
 			self.isMad = true
 			self.isFacingLeft = false
+			soundContainer:playEffect("turtle_touch")
 		elseif type == "touch_right" then
 			self.isMad = true
 			self.isFacingLeft = true
+			soundContainer:playEffect("turtle_touch")
 		end
 		
 		-- Collision handled
 		return
 	end
 	
-	self:instantDeathFallEffect(particleSystem)
+	self:instantDeathFallEffect(particleSystem, soundContainer)
+	self:playStdHurtEffect(type, soundContainer)
 end
 
-function Turtle:handleSpecialHorizontalCollision(unit, particleSystem)
+function Turtle:handleSpecialHorizontalCollision(unit, particleSystem,
+	soundContainer)
+	
 	if self.isMad then
 		unit:hurt(self.isFacingLeft and "touch_left" or "touch_right",
-			particleSystem)
+			particleSystem, soundContainer)
+			
 		return true
 	elseif self.isCovered then
 		self.isFacingLeft = unit.x > self.x
 		self.isMad = true
+		soundContainer:playEffect("turtle_touch")
 		return true
 	end
 end
@@ -99,6 +108,11 @@ function Turtle:update(deltaTime, gravityAcc, particleSystem,
 			self.isCovered = false
 		end
 	else
+		-- Collided with block, make sound effect
+		if self.collidedHorizontally and self.isMad then
+			soundContainer:playEffect("turtle_bump")
+		end
+		
 		self:reverseDirectionAccordingToCollision()
 		self:moveHorizontally(self.isFacingLeft)
 		

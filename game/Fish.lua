@@ -24,7 +24,7 @@ end
 
 function Fish:instantDeath(particleSystem)
 	particleSystem:addUnitSmashEffect(self.activeAnim:getActiveTexture(),
-		self.x, self.y, self.width, self.height, self.isFacingLeft, 180)
+		self.x, self.y, self.width, self.height, self.isFacingLeft, 0, 180)
 		
 	self.dead = true
 end
