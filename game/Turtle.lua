@@ -30,7 +30,7 @@ end
 function Turtle:instantDeath(particleSystem, soundContainer)
 	self.dead = true
 	
-	particleSystem:addUnitSmashEffect(self.shellTex, self.x, self.y,
+	particleSystem:addUnitSmashFallEffect(self.shellTex, self.x, self.y,
 		self.width, self.height, self.isFacingLeft)		
 end
 

@@ -145,7 +145,9 @@ function Player:hurt(type, particleSystem, soundContainer)
 	if self.disappeared == false and self.immuneToDeadlyObjects == false then
 		if self.helmetEnabled then
 			self:dropHelmet(type, particleSystem, soundContainer)
-		else
+		elseif self.dead == false then
+			-- BUG check if the player is not dead already,
+			-- cause if he is, then it could cause unwanted lives reduction
 			self:instantDeath(particleSystem, soundContainer)
 		end
 	end
@@ -240,7 +242,7 @@ function Player:boostPlayer(unit, soundContainer)
 		self:increaseNumCoins()
 		soundContainer:playEffect("coin_pick")
 	elseif unit.name == "rocket" then
-		unit:startRocket()
+		unit:startRocket(soundContainer)
 		self:disappear()
 		return
 	end

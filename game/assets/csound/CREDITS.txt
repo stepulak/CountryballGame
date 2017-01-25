@@ -19,3 +19,5 @@ lifeup.wav: Nathan McCoy (Super Tux)
 turtle_bump.wav: Some_Person (Super Tux)
 block_unable.wav: Yaniel, GPLv2+CC-by-sa (Super Tux)
 turtle_touch.wav: Some_Person (Super Tux)
+trampoline.wav: wansti (Super Tux)
+rocket_engine.mp3: http://soundbible.com/1498-Rocket.html

@@ -78,11 +78,15 @@ end
 
 function Gameplay:update(deltaTime)
 	self:handleKeysStillPressed(deltaTime)
-	self.world:update(deltaTime)
 	
 	-- Is the player dead?
 	if self.world.player ~= nil and self.world.player.dead == true then
 		self:handlePlayersDeath(deltaTime)
+	end
+	
+	-- Do not update the world when it's deathscreen on
+	if self.deathScreen == nil then
+		self.world:update(deltaTime)
 	end
 end
 

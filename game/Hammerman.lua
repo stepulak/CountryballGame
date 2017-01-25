@@ -18,15 +18,16 @@ function Hammerman:init(x, y, tileWidth, tileHeight,
 	self.attackingTimer = 0
 end
 
-function Hammerman:instantDeath(particleSystem)
-	particleSystem:addUnitSmashEffect(self.activeAnim:getActiveTexture(),
+function Hammerman:instantDeath(particleSystem, soundContainer)
+	particleSystem:addUnitSmashFallEffect(self.activeAnim:getActiveTexture(),
 		self.x, self.y, self.width, self.height, self.isFacingLeft, 180)
 		
 	self.dead = true
 end
 
-function Hammerman:hurt(type, particleSystem)
+function Hammerman:hurt(type, particleSystem, soundContainer)
 	self:instantDeath(particleSystem)
+	self:playStdHurtEffect(type, soundContainer)
 end
 
 function Hammerman:getCreatedProjectile()

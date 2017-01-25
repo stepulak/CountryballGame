@@ -278,6 +278,11 @@ function Editor:connectTeleports(words)
 	local t2X = tonumber(words[4])
 	local t2Y = tonumber(words[5])
 	
+	if t1X == nil or t1Y == nil or t2X == nil or t2Y == nil then
+		print("Unvalid teleport coordinates")
+		return
+	end
+	
 	if self.world:connectTeleports(t1X, t1Y, t2X, t2Y) then
 		print("Teleports connected")
 	end

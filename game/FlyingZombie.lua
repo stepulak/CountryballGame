@@ -16,24 +16,25 @@ end
 
 -- When this function is called with no specified height, then
 -- the height is nil by default...
-function FlyingZombie:instantDeath(particleSystem, height)
+function FlyingZombie:instantDeath(particleSystem, soundContainer, height)
 	if height == nil then
 		height = self.height
 	end
 	
-	particleSystem:addUnitSmashEffect(self.activeAnim:getActiveTexture(),
+	particleSystem:addUnitSmashFallEffect(self.activeAnim:getActiveTexture(),
 		self.x, self.y - self.height/2 + height, self.width, height, 
 		self.isFacingLeft)
 	
 	self.dead = true
 end
 
-function FlyingZombie:hurt(type, particleSystem)
+function FlyingZombie:hurt(type, particleSystem, soundContainer)
 	if type == "step_on" then
-		self:instantDeath(particleSystem, self.height/6)
+		self:instantDeath(particleSystem, soundContainer, self.height/6)
 	else
-		self:instantDeath(particleSystem)
+		self:instantDeath(particleSystem, soundContainer)
 	end
+	self:playStdHurtEffect(type, soundContainer)
 end
 
 function FlyingZombie:updateAnimations(deltaTime)

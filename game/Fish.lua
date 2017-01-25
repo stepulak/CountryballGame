@@ -22,15 +22,16 @@ function Fish:init(x, y, tileWidth, tileHeight, movementAnim)
 	self.activeAnim = movementAnim
 end
 
-function Fish:instantDeath(particleSystem)
-	particleSystem:addUnitSmashEffect(self.activeAnim:getActiveTexture(),
-		self.x, self.y, self.width, self.height, self.isFacingLeft, 0, 180)
+function Fish:instantDeath(particleSystem, soundContainer)
+	particleSystem:addUnitSmashFallEffect(self.activeAnim:getActiveTexture(),
+		self.x, self.y, self.width, self.height, self.isFacingLeft, 180)
 		
 	self.dead = true
 end
 
-function Fish:hurt(type, particleSystem)
-	self:instantDeath(particleSystem)
+function Fish:hurt(type, particleSystem, soundContainer)
+	self:instantDeath(particleSystem, soundContainer)
+	self:playStdHurtEffect(type, soundContainer)
 end
 
 -- Fish function only!

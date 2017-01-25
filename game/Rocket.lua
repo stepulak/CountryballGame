@@ -86,8 +86,9 @@ end
 
 -- Rocket function only!
 -- Rocket is in IDLE mode until it's started with this function
-function Rocket:startRocket()
+function Rocket:startRocket(soundContainer)
 	self.started = true
+	soundContainer:playEffect("rocket_engine")
 end
 
 function Rocket:update(deltaTime, gravityAcc, particleSystem,

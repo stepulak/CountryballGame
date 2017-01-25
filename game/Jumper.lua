@@ -16,7 +16,7 @@ function Jumper:instantDeath(particleSystem, height)
 		height = self.height
 	end
 	
-	particleSystem:addUnitSmashEffect(self.activeAnim:getActiveTexture(),
+	particleSystem:addUnitSmashFallEffect(self.activeAnim:getActiveTexture(),
 		self.x, self.y - self.height/2 + height, self.width, height, 
 		self.isFacingLeft)
 	

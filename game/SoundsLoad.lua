@@ -37,6 +37,9 @@ function loadSounds()
 	soundContainer:loadEffect("turtle_touch", "assets/csound/turtle_touch.wav")
 	soundContainer:loadEffect("turtle_bump", "assets/csound/turtle_bump.wav")
 	
+	soundContainer:loadEffect("rocket_engine",
+		"assets/csound/rocket_engine.mp3")
+		
 	soundContainer:loadEffect("canonball_smash", 
 		"assets/csound/canonball_smash.mp3")
 		

@@ -27,7 +27,7 @@ function CanonBall:instantDeath(particleSystem, soundContainer)
 		x = self.x + self.width/2 - width
 	end
 	
-	particleSystem:addUnitSmashEffect(self.movementAnim:firstTexture(),
+	particleSystem:addUnitSmashFallEffect(self.movementAnim:firstTexture(),
 		x + width/2, self.y, width, self.height, self.isFacingLeft)
 	
 	soundContainer:playEffect("canonball_smash")

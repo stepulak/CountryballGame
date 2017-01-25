@@ -187,10 +187,10 @@ function ParticleSystem:addUnitFallRotationEffect(texture, x, y,
 		true, false, 0.5)
 end
 
--- Create an effect that imitates a unit's smash (or crash)
+-- Create an effect that imitates a unit's smash (crash)
 -- (into the wall or smashed by player's step)
 -- @texAngle and @dirAngle can be nil (not set)
-function ParticleSystem:addUnitSmashEffect(texture, x, y,
+function ParticleSystem:addUnitSmashFallEffect(texture, x, y,
 	width, height, texDirLeft, texAngle, dirAngle)
 	
 	self:reserveNewParticle():fill(

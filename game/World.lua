@@ -511,6 +511,12 @@ function World:removeActiveObject(x, y)
 		
 		while it ~= nil do
 			if it.data == obj then
+				-- If it's teleport and also has a twin,
+				-- then remove the reference on it
+				if it.data.name == "teleport" and it.data.twin ~= nil then
+					it.data.twin.twin = nil
+				end
+				
 				self.activeObjects:deleteNode(it)
 				break
 			end

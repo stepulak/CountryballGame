@@ -14,9 +14,10 @@ function BouncingZombie:init(x, y, tileWidth, tileHeight, movementAnim)
 end
 
 function BouncingZombie:instantDeath(particleSystem, soundContainer)
-	particleSystem:addUnitSmashRotationEffect(
-		self.activeAnim:getActiveTexture(), self.x, self.y,
-		self.width, self.height, self:getOverallVelocity(),
+	particleSystem:addUnitFallRotationEffect(
+		self.activeAnim:getActiveTexture(),
+		self.x, self.y, self.width, self.height,
+		self:getOverallVelocity(),
 		self.texAngle, BouncingZombieRotationVel,
 		self.isFacingLeft)
 	
@@ -24,12 +25,14 @@ function BouncingZombie:instantDeath(particleSystem, soundContainer)
 end
 
 -- Bouncing Zombie only!
-function BouncingZombie:smash(particleSystem)
+function BouncingZombie:smash(particleSystem, soundContainer)
 	local height = self.height/5
 	
-	particleSystem:addUnitSmashEffect(self.activeAnim:getActiveTexture(),
+	particleSystem:addUnitSmashFallEffect(self.activeAnim:getActiveTexture(),
 		self.x, self.y - self.height/2 + height, self.width, height,
 		self.isFacingLeft)
+	
+	soundContainer:playEffect("smash")
 	
 	self.dead = true
 end
