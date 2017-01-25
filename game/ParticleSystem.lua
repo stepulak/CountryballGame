@@ -118,7 +118,7 @@ function ParticleSystem:addSmokeParticle(texture, x, y, width, height,
 		true, false, time/5)
 end
 
--- Little star with high velocity moving directly from given position
+-- Star with high velocity moving directly from given position
 function ParticleSystem:addStarParticle(texture, x, y, width, height,
 	dirAngle)
 	
@@ -153,12 +153,22 @@ end
 -- Add an effect representing unit's (death) fall in specific direction
 -- This is called when some unit collides with spikes, lava etc...
 function ParticleSystem:addUnitFallEffect(texture, x, y, 
-	width, height, dirLeft, unitVel)
+	width, height, leftDir, vel)
+	
+	self:addUnitFallRotationEffect(texture, x, y, width, height,
+		vel*1.8, 0, 0, leftDir)
+end
+
+
+-- Smashed unit with rotation in specified direction
+-- Also the texture is rotating with specific speed and direction
+function ParticleSystem:addUnitFallRotationEffect(texture, x, y,
+	width, height, vel, texAngle, texAngleVel, leftDir)
 	
 	local angle, angleVel
 	
-	if dirLeft then
-		angle = 225
+	if leftDir then
+		angle = 235
 		angleVel = 40
 	else
 		angle = 315
@@ -169,11 +179,11 @@ function ParticleSystem:addUnitFallEffect(texture, x, y,
 		texture,
 		x, y,
 		width, height,
-		0, 0, dirLeft,
+		texAngle, texAngleVel, leftDir,
 		0,
 		angle, angleVel,
-		unitVel*1.8, 800,
-		1, 
+		vel, 300,
+		1,
 		true, false, 0.5)
 end
 
@@ -210,32 +220,6 @@ function ParticleSystem:addUnitSmashStaticEffect(texture, x, y,
 		0, 0,
 		time,
 		false, false, 0)
-end
-
--- Smashed unit with rotation in specified direction
-function ParticleSystem:addUnitSmashRotationEffect(texture, x, y,
-	width, height, vel, texAngle, texAngleVel, leftDir)
-	
-	local angle, angleVel
-	
-	if leftDir then
-		angle = 235
-		angleVel = 40
-	else
-		angle = 315
-		angleVel = -40
-	end
-	
-	self:reserveNewParticle():fill(
-		texture,
-		x, y,
-		width, height,
-		texAngle, texAngleVel, leftDir,
-		0,
-		angle, angleVel,
-		vel, 300,
-		1,
-		true, false, 0.5)
 end
 
 -- Add particle representing player's fall (death)
