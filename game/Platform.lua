@@ -3,6 +3,7 @@ require "ActiveObject"
 local PlatformReach = 5 -- In tiles
 local PlatformWidth = 3 -- In tiles
 local PlatformVel = 200
+local PlatformDistError = 1
 
 Platform = ActiveObject:new()
 
@@ -28,15 +29,22 @@ end
 
 function Platform:boundUnit(unit)
 	self.boundedUnits[unit] = unit
+	
+	-- Make sure that the unit is standing right on the platform
+	unit.y = self.realY - self.realHeight/2 - unit.height/2
+	self:stopUnitFalling(unit)
 end
 
 function Platform:isAlreadyBounded(unit)
 	return self.boundedUnits[unit] ~= nil
 end
 
+function Platform:verticalDistUnit(unit)
+	return unit.y + unit.height/2 - (self.realY - self.realHeight/2)
+end
+
 function Platform:canBeBounded(unit, deltaTime)
-	local distAfter = unit.y + unit.height/2 - 
-		(self.realY - self.realHeight/2)
+	local distAfter = self:verticalDistUnit(unit)
 	local distBefore = distAfter - unit.verticalVel * deltaTime
 	
 	-- Is the unit standing right on the platform?
@@ -48,10 +56,30 @@ function Platform:canBeBounded(unit, deltaTime)
 	return false
 end
 
-function Trampoline:handleUnitCollision(unit, deltaTime)
+function Platform:handleUnitCollision(unit, deltaTime)
 	if self:checkUnitCollision(unit) then
 		unit:resolveRectCollision(self.realX, self.realY,
 			self.realWidth, self.realHeight, deltaTime)
+	end
+end
+
+function Platform:stopUnitFalling(unit)
+	unit.isFalling = false
+	unit.verticalVel = 0
+end
+
+function Platform:unboundInactiveUnits()
+	for key, unit in pairs(self.boundedUnits) do
+		if math.abs(self:verticalDistUnit(unit)) > PlatformDistError then
+			self.boundedUnits[key] = nil
+		end
+	end
+end
+
+function Platform:handleAndMoveBoundedUnits(distX, distY)
+	for key, unit in pairs(self.boundedUnits) do
+		unit:moveSpecific(distX, distY)
+		self:stopUnitFalling(unit)
 	end
 end
 
@@ -69,6 +97,8 @@ function Platform:update(camera, particleSystem, deltaTime)
 	else
 		self:updateHorizontalMovement(deltaTime)
 	end
+	
+	self:unboundInactiveUnits()
 end
 
 function Platform:draw(camera, drawFrameCounter)
