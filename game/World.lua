@@ -51,6 +51,8 @@ function World:init(player,
 	-- (Only in campaign)
 	self.shouldEnd = false 
 	
+	self.backgroundMusic = nil
+	
 	self.drawCounter = 0
 	self.saveCounter = 0
 end
@@ -299,6 +301,15 @@ function World:savePlayerFinishLine(file)
 	checkWriteLn(file, "-- Player finish line end\n")
 end
 
+function World:saveBackgroundMusic(file)
+	if self.backgroundMusic ~= nil then
+		checkWriteLn(file, "-- Background music begin")
+		checkWriteLn(file, "world:setBackgroundMusic(\"" .. 
+			self.backgroundMusic .. "\")")
+		checkWriteLn(file, "-- Background music end\n")
+	end
+end
+
 --
 -- SAVE/LOAD SECTION END
 --
@@ -309,6 +320,15 @@ function World:createCamera()
 		self.screen.width, self.screen.height,
 		self.numTilesWidth * self.tileWidth,
 		self.numTilesHeight * self.tileHeight)
+end
+
+function World:setBackgroundMusic(name)
+	self.backgroundMusic = name
+	self.soundContainer:playMusic(name, true)
+	
+	if name == nil then
+		self.soundContainer:stopMusic()
+	end
 end
 
 function World:setPlayerAtSpawnPosition()
@@ -369,6 +389,7 @@ end
 
 function World:createParallaxBackground()
 	self.parallaxBackground = ParallaxBackground:new(
+		self.soundContainer,
 		self.textureContainer:getTexture("cloud"),
 		self.textureContainer:getTexture("snow_flake"),
 		self.textureContainer:getTexture("rain_drop"))

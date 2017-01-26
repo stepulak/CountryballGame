@@ -19,6 +19,7 @@ function loadSounds()
 	soundContainer:loadEffect("lifeup", "assets/csound/lifeup.wav")
 	
 	-- Mist
+	soundContainer:loadEffect("rain", "assets/csound/forest_rain.mp3")
 	soundContainer:loadEffect("splash", "assets/csound/splash.mp3")
 	soundContainer:loadEffect("canon_shot", "assets/csound/canon_shot.ogg")
 	soundContainer:loadEffect("freeze", "assets/csound/freeze.mp3")

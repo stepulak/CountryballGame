@@ -95,8 +95,12 @@ end
 function Player:tryToJump()
 	-- When the player is on trampoline, increase the jumping speed
 	self.jumpingVelQ = self.onTrampoline and PlayerTrampolineVelQ or 1
+	
+	if self.isJumping == false then
+		self.jumpEffectProcessed = false
+	end
+	
 	self:superTryToJump()
-	self.jumpEffectProcessed = false
 end
 
 function Player:instantDeath(particleSystem, soundContainer)

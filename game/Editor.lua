@@ -19,6 +19,10 @@ function Editor:init(world, fonts)
 	self:createGui()
 end
 
+function Editor:resume()
+	self.world.soundContainer:muteAll()
+end
+
 local GridObjW = 75
 local GridObjH = 75
 
@@ -88,14 +92,23 @@ function Editor:createActiveObjectsGrid()
 		local obj = createActiveObjectFromName(objNames[i], 0, 0,
 			self.world.tileWidth, self.world.tileHeight,
 			self.textureContainer, true)
+		
+		-- Fix the minimum size (cannot be smaller than tile)
+		local width = setWithinRange(
+			obj.realWidth, self.world.tileWidth, 999)
 			
+		local height = setWithinRange(
+			obj.realHeight, self.world.tileHeight, 999)
+		
 		local obX, obY = getScaleRealToVirtual(
-			obj.realWidth, GridObjW, obj.realHeight, GridObjH)
+			width, GridObjW, height, GridObjH)
 		
 		local data = {
 			name = obj.name,
-			width = obj.realWidth,
-			height = obj.realHeight,
+			-- obj.realWidth, obj.realHeight can have different 
+			-- overall place proportions, stick with these...
+			width = obj.width * self.world.tileWidth,
+			height = obj.height * self.world.tileHeight,
 		}
 		
 		grid:addElement(
@@ -370,28 +383,35 @@ function Editor:changeBackgroundTexture(words)
 	print("Background texture may have been set")
 end
 
-function Editor:loadWorldFrom(words)
-	if words[2] == nil then
+function Editor:loadWorldFrom(filename)
+	if filename == nil then
 		print("Missing filename")
 		return
 	end
 	
-	if self.world:loadFromSaveDir(words[2]) then
+	if self.world:loadFromSaveDir(filename) then
 		print("World has been loaded")
 	else
 		print("World hasn't been loaded")
 	end
 end
 
-function Editor:saveWorldInto(words)
-	if words[2] == nil then
+function Editor:saveWorldInto(filename)
+	if filename == nil then
 		print("Missing filename")
 		return
 	end
 	
-	self.world:saveInto(words[2])
+	self.world:saveInto(filename)
+	self.lastSavePath = filename
 	
 	print("World may have been saved")
+end
+
+function Editor:setWorldMusic(name)
+	self.world:setBackgroundMusic(name)
+	
+	print("Music may have been set")
 end
 
 function Editor:parseCommandFromConsole(cmd)
@@ -426,10 +446,26 @@ function Editor:parseCommandFromConsole(cmd)
 		-- format: finish_line default|@tileX
 		self:setPlayersFinishLine(words)
 	elseif words[1] == "save" then
-		self:saveWorldInto(words)
+		self:saveWorldInto(words[2])
 	elseif words[1] == "load" then
-		self:loadWorldFrom(words)
+		self:loadWorldFrom(words[2])
+	elseif words[1] == "set_music" then
+		self:setWorldMusic(words[2])
 	end
+end
+
+local EditorDefaultWorldPath = "quicksave.lua"
+
+function Editor:quickSave()
+	self:saveWorldInto(self.lastSavePath and self.lastSavePath or EditorDefaultWorldPath)
+	
+	if self.lastSavePath == nil then
+		self.lastSavePath = EditorDefaultWorldPath
+	end
+end
+
+function Editor:quickLoad()
+	self:loadWorldFrom(self.lastSavePath or EditorDefaultWorldPath)
 end
 
 function Editor:shouldSelectNewPick()
@@ -562,8 +598,13 @@ end
 
 function Editor:handleKeyPress(key)
 	if self.gui:keyPress(key) then
+		-- continue
 	elseif key == "1" then
 		self.gridVisible = not self.gridVisible
+	elseif key == "f5" then
+		self:quickSave()
+	elseif key == "f6" then
+		self:quickLoad()
 	else
 		-- Key wasn't processed
 		return false

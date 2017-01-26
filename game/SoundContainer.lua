@@ -44,7 +44,7 @@ function SoundContainer:loadMusic(name, path)
 	self:newMusic(name, love.audio.newSource(path))
 end
 
-function SoundContainer:playEffect(name)
+function SoundContainer:playEffect(name, loop)
 	if self.effects[name] ~= nil then
 		if self.effects[name]:isPlaying() then
 			self.effects[name]:stop()
@@ -52,6 +52,10 @@ function SoundContainer:playEffect(name)
 		
 		self.effects[name]:play()
 		self.effects[name]:setVolume(self.effectVolume)
+		
+		if loop == true then
+			self.effects[name]:setLooping()
+		end
 	end
 end
 
@@ -64,13 +68,12 @@ function SoundContainer:playMusic(name, loop)
 		
 		self.musicOn = self.music[name]
 		self.musicOn:play()
-		self.musicOn:setLooping(loop)
 		self.musicOn:setVolume(self.musicVolume)
+		
+		if loop == true then
+			self.musicOn:setLooping(loop)
+		end
 	end
-end
-
-function SoundContainer:playMusicLoop(name)
-	self:playMusic(name, true)
 end
 
 function SoundContainer:playMusicOnce(name)
@@ -97,14 +100,14 @@ function SoundContainer:applyActionPlayingEffects(action)
 	end
 end
 
-function SoundContainer:mute()
+function SoundContainer:muteAll()
 	-- Change *master* volume to zero
 	-- The ratio between custom volumes is preserved
 	self.masterVolume = love.audio.getVolume()
 	love.audio.setVolume(0)
 end
 
-function SoundContainer:unmute()
+function SoundContainer:unmuteAll()
 	if self.masterVolume ~= nil then
 		love.audio.setVolume(self.masterVolume)
 		self.masterVolume = nil
@@ -117,6 +120,12 @@ end
 
 function SoundContainer:resumeAll()
 	love.audio.resume()
+end
+
+function SoundContainer:stopEffect(name)
+	if self.effects[name] then
+		self.effects[name]:stop()
+	end
 end
 
 function SoundContainer:stopEffects()

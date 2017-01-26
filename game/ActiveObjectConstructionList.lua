@@ -3,6 +3,7 @@ require "Trampoline"
 require "Canon"
 require "Teleport"
 require "SmokeSource"
+require "Platform"
 require "Utils"
 
 local constructionList = {
@@ -24,6 +25,16 @@ local constructionList = {
 	["smoke_source"] = function(p)
 		return SmokeSource:new(p.x, p.y, p.tileWidth, p.tileHeight,
 			p.tc:getTexture("smoke"))
+	end,
+	
+	["vertical_platform"] = function(p)
+		return Platform:new(p.x, p.y, p.tileWidth, p.tileHeight, true,
+			p.tc:getTexture("floating_platform"))
+	end,
+	
+	["horizontal_platform"] = function(p)
+		return Platform:new(p.x, p.y, p.tileWidth, p.tileHeight, false,
+			p.tc:getTexture("floating_platform"))
 	end,
 }
 

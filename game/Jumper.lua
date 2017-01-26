@@ -11,7 +11,7 @@ function Jumper:init(x, y, tileWidth, tileHeight, idleAnim, jumpingAnim)
 	self.keepIdleAnimTimer = 0
 end
 
-function Jumper:instantDeath(particleSystem, height)
+function Jumper:instantDeath(particleSystem, soundContainer, height)
 	if height == nil then
 		height = self.height
 	end
@@ -23,12 +23,14 @@ function Jumper:instantDeath(particleSystem, height)
 	self.dead = true
 end
 
-function Jumper:hurt(type, particleSystem)
+function Jumper:hurt(type, particleSystem, soundContainer)
 	if type == "step_on" then
 		self:instantDeath(particleSystem, self.height/4)
 	else
 		self:instantDeath(particleSystem)
 	end
+	
+	self:playStdHurtEffect(type, soundContainer)
 end
 
 function Jumper:tryToJumpNoTimer()

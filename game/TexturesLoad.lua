@@ -178,6 +178,9 @@ function loadTextures()
 	textureContainer:newAnimation("teleport", 0.05,
 		"assets/teleport1.png", "assets/teleport2.png")
 	
+	textureContainer:newTexture("floating_platform",
+		"assets/floating_platform.png")
+		
 	-- Canon's animation frame rate is modified for each canon table
 	textureContainer:newAnimation("canon", 999,
 		"assets/canon_idle.png", "assets/canon_shooting1.png",

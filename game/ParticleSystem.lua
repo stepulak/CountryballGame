@@ -152,17 +152,17 @@ end
 
 -- Add an effect representing unit's (death) fall in specific direction
 -- This is called when some unit collides with spikes, lava etc...
-function ParticleSystem:addUnitFallEffect(texture, x, y, 
+function ParticleSystem:addUnitDirectedFallEffect(texture, x, y, 
 	width, height, leftDir, vel)
 	
-	self:addUnitFallRotationEffect(texture, x, y, width, height,
+	self:addUnitRotationFallEffect(texture, x, y, width, height,
 		vel*1.8, 0, 0, leftDir)
 end
 
 
 -- Smashed unit with rotation in specified direction
 -- Also the texture is rotating with specific speed and direction
-function ParticleSystem:addUnitFallRotationEffect(texture, x, y,
+function ParticleSystem:addUnitRotationFallEffect(texture, x, y,
 	width, height, vel, texAngle, texAngleVel, leftDir)
 	
 	local angle, angleVel
@@ -222,7 +222,7 @@ function ParticleSystem:addUnitSmashStaticEffect(texture, x, y,
 		false, false, 0)
 end
 
--- Add particle representing player's fall (death)
+-- Add particle representing player's fall (death) with own @userUpdate
 function ParticleSystem:addPlayersFallEffect(texture, x, y, 
 	width, height, userUpdate)
 
@@ -265,7 +265,7 @@ function ParticleSystem:addFrozenUnitEffect(texture, x, y, width, height,
 		true, true, time/10)
 end
 
--- Create falling and rotation object
+-- Create falling object that can rotate in specific direction
 -- @dir = nil, "left", "right"
 function ParticleSystem:addFallingRotatingObject(texture, x, y, 
 	width, height, dir, time)

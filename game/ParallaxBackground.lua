@@ -1,5 +1,6 @@
 require "ParticleSystem"
 require "Utils"
+require "SoundContainer"
 
 ParallaxBackground = class:new()
 
@@ -66,7 +67,11 @@ local function snowRainParticleUpdate(particle, camera, deltaTime, background)
 	end
 end
 
-function ParallaxBackground:init(cloudTex, snowFlakeTex, rainDropTex)
+function ParallaxBackground:init(soundContainer, 
+	cloudTex, snowFlakeTex, rainDropTex)
+	
+	self.soundContainer = soundContainer
+	
 	self.cloudTex = cloudTex
 	self.snowFlakeTex = snowFlakeTex
 	self.rainDropTex = rainDropTex
@@ -90,7 +95,7 @@ function ParallaxBackground:validBackgroundLvl(lvl)
 end
 
 -- Check, if background has already a created particle system.
--- If doesn't, create one.
+-- If it hasn't, then create one.
 function ParallaxBackground:createParticleSystem(backgroundLvl)
 	if self.backgrounds[backgroundLvl].particleSystem == nil then
 		self.backgrounds[backgroundLvl].particleSystem = ParticleSystem:new()
@@ -174,6 +179,7 @@ function ParallaxBackground:enableRain(backgroundLvl, heavy)
 			heavy and self.heavyRain or self.lightRain
 			
 		self:createParticleSystem(backgroundLvl)
+		self.soundContainer:playEffect("rain", true)
 	end
 end
 
@@ -181,6 +187,16 @@ end
 function ParallaxBackground:disableRain(backgroundLvl)
 	if self:validBackgroundLvl(backgroundLvl) then
 		self.backgrounds[backgroundLvl].rainEnabled = false
+		
+		-- Check whether is another rain enabled
+		-- If not, stop the raining sound effect
+		for i = 1, self.numBackgrounds do
+			if self.backgrounds[i].rainEnabled then
+				return
+			end
+		end
+		
+		self.soundContainer:stopEffect("rain")
 	end
 end
 
@@ -226,11 +242,9 @@ end
 function ParallaxBackground:updateSnow(background, deltaTime, 
 	camera, disableRandom)
 	
-	if disableRandom == false then
-		if math.random() > 0.05 * background.numSnowFlakesMax * deltaTime then
-			-- End
-			return
-		end
+	if disableRandom == false and
+		math.random() > 0.05 * background.numSnowFlakesMax * deltaTime then
+		return
 	end
 	
 	if background.numSnowFlakes < background.numSnowFlakesMax then
@@ -255,8 +269,7 @@ function ParallaxBackground:updateRain(background, deltaTime,
 	camera, disableRandom)
 	
 	if disableRandom == false and
-		math.random() < 0.05 * background.numRainDropsMax * deltaTime then
-		-- End
+		math.random() > 0.07 * background.numRainDropsMax * deltaTime then
 		return
 	end
 	

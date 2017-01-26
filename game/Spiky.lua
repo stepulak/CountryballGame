@@ -13,7 +13,7 @@ function Spiky:init(x, y, tileWidth, tileHeight, movementAnim)
 end
 
 function Spiky:instantDeath(particleSystem, soundContainer)
-	particleSystem:addUnitFallEffect(self.activeAnim:getActiveTexture(),
+	particleSystem:addUnitDirectedFallEffect(self.activeAnim:getActiveTexture(),
 		self.x, self.y, self.width, self.height, self.isFacingLeft, 
 		self.horizontalVel)
 	

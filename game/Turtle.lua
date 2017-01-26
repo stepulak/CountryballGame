@@ -23,7 +23,7 @@ end
 function Turtle:instantDeathDirectedFall(particleSystem, soundContainer)
 	self.dead = true
 	
-	particleSystem:addUnitFallEffect(self.shellTex, self.x, self.y,
+	particleSystem:addUnitDirectedFallEffect(self.shellTex, self.x, self.y,
 		self.width, self.height, self.isFacingLeft, self.horizontalVel)
 end
 
@@ -46,9 +46,7 @@ function Turtle:hurt(type, particleSystem, soundContainer)
 		end
 		
 		soundContainer:playEffect("turtle_touch")
-		
-		-- Collision handled
-		return
+		return -- Collision handled
 	end
 	
 	-- Is covered and not mad? A little push can get you mad...
@@ -63,8 +61,7 @@ function Turtle:hurt(type, particleSystem, soundContainer)
 			soundContainer:playEffect("turtle_touch")
 		end
 		
-		-- Collision handled
-		return
+		return -- Collision handled
 	end
 	
 	self:instantDeathDirectedFall(particleSystem, soundContainer)

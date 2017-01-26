@@ -8,6 +8,7 @@ require "Utils"
 
 ActiveObject = class:new()
 
+-- @width, @height in tiles
 function ActiveObject:init(name, x, y, width, height, tileWidth, tileHeight)
 	if name == nil then
 		return

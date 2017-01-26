@@ -15,7 +15,7 @@ function Zombie:init(x, y, tileWidth, tileHeight, movementAnim)
 end
 
 function Zombie:instantDeath(particleSystem, soundContainer)
-	particleSystem:addUnitFallEffect(self.movementAnim:getActiveTexture(),
+	particleSystem:addUnitDirectedFallEffect(self.movementAnim:getActiveTexture(),
 		self.x, self.y, self.width, self.height, self.isFacingLeft, 
 		self.horizontalVel)
 	

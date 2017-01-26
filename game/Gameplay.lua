@@ -14,6 +14,10 @@ function Gameplay:init(world, fonts)
 	self.deathScreen = nil
 end
 
+function Gameplay:resume()
+	self.world.soundContainer:unmuteAll()
+end
+
 function Gameplay:handleKeyPress(key)
 	if self.world.player ~= nil and self.world.player.isControllable then
 		if key == "space" then
@@ -60,6 +64,7 @@ function Gameplay:handlePlayersDeath(deltaTime)
 		-- (Just to make sure the player's death effect is handled properly)
 		if self.playerDeathWaitTimer >= PlayerDeathWaitTime then
 			self.playerDeathWaitTimer = 0
+			self.world.soundContainer:stopAll()
 			self.deathScreen = DeathScreen:new(self.world.player, self.fonts.big)
 		else
 			return

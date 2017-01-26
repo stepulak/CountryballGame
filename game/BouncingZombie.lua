@@ -14,7 +14,7 @@ function BouncingZombie:init(x, y, tileWidth, tileHeight, movementAnim)
 end
 
 function BouncingZombie:instantDeath(particleSystem, soundContainer)
-	particleSystem:addUnitFallRotationEffect(
+	particleSystem:addUnitRotationFallEffect(
 		self.activeAnim:getActiveTexture(),
 		self.x, self.y, self.width, self.height,
 		self:getOverallVelocity(),

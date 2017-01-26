@@ -28,7 +28,7 @@ function Trampoline:canBeBounded(unit, deltaTime)
 		(self.realY - self.realHeight/2)
 	local distBefore = distAfter - unit.verticalVel * deltaTime
 	
-	return distAfter > 0 and distBefore < 0
+	return distAfter >= 0 and distBefore <= 0
 end
 
 function Trampoline:isAlreadyBounded(unit)
@@ -38,7 +38,7 @@ end
 function Trampoline:handleUnitCollision(unit, deltaTime)
 	if self:checkUnitCollision(unit) then
 		-- They have collided
-		unit:resolveRectCollision(self.realX, self.realY, 
+		unit:resolveRectCollision(self.realX, self.realY,
 			self.realWidth, self.realHeight, deltaTime)
 	end
 end

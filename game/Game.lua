@@ -71,6 +71,8 @@ function Game:handleKeyPress(key)
 		else
 			self.activeMode = self.gameplay
 		end
+		
+		self.activeMode:resume()
 	end
 end
 
