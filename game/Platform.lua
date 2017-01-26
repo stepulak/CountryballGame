@@ -11,10 +11,18 @@ function Platform:init(x, y, tileWidth, tileHeight, isVertical, platformTex)
 	if isVertical then
 		self:super("vertical_platform", x, y, PlatformWidth + PlatformReach,
 			1, tileWidth, tileHeight)
+		
+		self.offsetMax = PlatformReach * tileWidth
 	else
 		self:super("horizontal_platform", x, y, PlatformWidth,
 			1 + PlatformReach, tileWidth, tileHeight)
+			
+		self.offsetMax = PlatformReach * tileHeight
 	end
+	
+	self.horOffset = 0
+	self.verOffset = 0
+	self.dir = 1
 	
 	self.realX = tileWidth * (x + PlatformWidth/2)
 	self.realY = tileHeight * (y + 0.5)
@@ -84,7 +92,15 @@ function Platform:handleAndMoveBoundedUnits(distX, distY)
 end
 
 function Platform:updateVerticalMovement(deltaTime)
-
+	self.verOffset = self.verOffset + PlatformVel * self.dir * deltaTime
+	
+	if self.dir == 1 and self.verOffset >= self.offsetMax then
+		self.dir = -1
+		self.verOffset = self.offsetMax
+	elseif self.dir == -1 and self.verOffset <= 0 then
+		self.dir = 1
+		self.verOffset = 0
+	end
 end
 
 function Platform:updateHorizontalMovement(deltaTime)
@@ -104,7 +120,7 @@ end
 function Platform:draw(camera, drawFrameCounter)
 	self.drawFrameCounter = drawFrameCounter
 	drawTex(self.platformTex,
-		self.realX - self.realWidth/2 - camera.x,
-		self.realY - self.realHeight/2 - camera.y,
+		self.realX - self.realWidth/2 + self.horOffset - camera.x,
+		self.realY - self.realHeight/2 + self.verOffset - camera.y,
 		self.realWidth, self.realHeight)
 end
