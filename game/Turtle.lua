@@ -20,13 +20,14 @@ function Turtle:init(x, y, tileWidth, tileHeight, movementAnim, shellTex)
 end
 
 -- Turtle function only!
-function Turtle:instantDeathFallEffect(particleSystem, soundContainer)
+function Turtle:instantDeathDirectedFall(particleSystem, soundContainer)
 	self.dead = true
 	
 	particleSystem:addUnitFallEffect(self.shellTex, self.x, self.y,
 		self.width, self.height, self.isFacingLeft, self.horizontalVel)
 end
 
+-- Instant death with straight fall down
 function Turtle:instantDeath(particleSystem, soundContainer)
 	self.dead = true
 	
@@ -66,7 +67,7 @@ function Turtle:hurt(type, particleSystem, soundContainer)
 		return
 	end
 	
-	self:instantDeathFallEffect(particleSystem, soundContainer)
+	self:instantDeathDirectedFall(particleSystem, soundContainer)
 	self:playStdHurtEffect(type, soundContainer)
 end
 

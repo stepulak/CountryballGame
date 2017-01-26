@@ -23,7 +23,7 @@ function Bomberman:init(x, y, tileWidth, tileHeight,
 	
 	-- Resolve explosion animation update time - because you 
 	-- don't want to draw the explosion twice or more, just once
-	-- and exactly with the given explosion time
+	-- and exactly within the given explosion time
 	self.deathAnim.updateTime = 1.1 * (BombermanExplosionTime /
 		self.deathAnim:numTextures())
 	
