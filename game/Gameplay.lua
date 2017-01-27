@@ -30,9 +30,11 @@ function Gameplay:handleKeyPress(key)
 			end
 		elseif key == "m" then
 			self.world.player:tryToAttack(self.world.soundContainer)
+			self.world.player:tryToEnableSprint()
+		--[[
 		elseif key == "n" then
 			self.world.player:tryToEnableSprint()
-		else
+		]]else
 			-- Key wasn't processed
 			return false
 		end
