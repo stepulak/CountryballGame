@@ -30,6 +30,11 @@ end
 -- Accessible via inheritance
 ActiveObject.super = ActiveObject.init
 
+-- Additional setup after insert into map
+function ActiveObject:setup()
+	-- VIRTUAL
+end
+
 -- Bound unit to this active object
 function ActiveObject:boundUnit(unit)
 	-- VIRTUAL
@@ -95,4 +100,14 @@ end
 function ActiveObject:draw(camera, drawFrameCounter)
 	-- VIRTUAL
 	self.drawFrameCounter = drawFrameCounter
+end
+
+function ActiveObject:drawRectangleAround(camera, tileWidth, tileHeight)
+	-- Count the real area position again from it's tile coordinates
+	-- Because the real* coordinates and proportion can be different
+	drawRect("line", 
+		self.x * tileWidth - camera.x,
+		self.y * tileHeight - camera.y,
+		self.width * tileWidth, self.height * tileHeight,
+		255, 0, 0, 255)
 end

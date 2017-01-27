@@ -42,3 +42,11 @@ function AnimationObject:draw(camera, newDrawCounter)
 			self.realWidth, self.realHeight, 0, false)
 	end
 end
+
+function AnimationObject:drawRectangleAround(camera, ...)
+	drawRect("line", 
+		self.realX - self.realWidth/2 - camera.x,
+		self.realY - self.realHeight/2 - camera.y,
+		self.realWidth, self.realHeight,
+		0, 0, 255, 255)
+end

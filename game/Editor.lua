@@ -114,6 +114,12 @@ function Editor:createActiveObjectsGrid()
 		grid:addElement(
 			function()
 				love.graphics.push()
+				
+				-- platform *fix*
+				if string.find(objNames[i], "platform") then
+					love.graphics.translate(-self.world.tileWidth/3, 0)
+				end
+				
 				love.graphics.scale(obX, obY)
 				obj:draw(fakeCam, 0)
 				love.graphics.pop()
@@ -535,14 +541,22 @@ function Editor:insertPick()
 			self.world.tileWidth, self.world.tileHeight,
 			self.textureContainer, self.insertDirection == "left")
 		
-		self.world:addActiveObject(obj)
+		if self.world:addActiveObject(obj) then
+			print("Active object has been added")
+		else
+			print("Active object couldn't have been added")
+		end
 	elseif from == "Animation objs" then
 		local obj = createAnimationObjectFromName(
 			data.name, tx, ty,
 			self.world.tileWidth, self.world.tileHeight, 
 			self.textureContainer, self.world.animObjContainer)
 			
-		self.world:addAnimationObject(obj, self.animObjPosition)
+		if self.world:addAnimationObject(obj, self.animObjPosition) then
+			print("Animation object has been added")
+		else
+			print("Animation object couldn't have been added")
+		end
 	end
 end
 
@@ -748,6 +762,8 @@ function Editor:draw()
 	self.world:drawPlayersSpawnPosition()
 	self.world:drawPlayersFinishLine()
 	self.world:drawRectangleAroundUnits()
+	self.world:drawRectangleAroundObjs("animationObj")
+	self.world:drawRectangleAroundObjs("activeObj")
 	
 	if self:isGuiActive() then
 		self:drawGuiMode()

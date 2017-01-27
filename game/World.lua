@@ -486,12 +486,48 @@ end
 
 -- @position = foreground or background
 function World:addAnimationObject(obj, position)
-	self:fillObjectIntoGrid(obj, position .. "Obj")
+	local position = position .. "Obj"
+	
+	if self:isAreaEmpty(position, obj.x, obj.y, obj.width, obj.height) then
+		self:fillObjectIntoGrid(obj, position)
+		return true
+	end
+	
+	return false
 end
 
 function World:addActiveObject(obj)
-	self:fillObjectIntoGrid(obj, "activeObj")
-	self.activeObjects:pushBack(obj)
+	if self:isAreaEmpty("activeObj", obj.x, obj.y, obj.width, obj.height) then
+		self:fillObjectIntoGrid(obj, "activeObj")
+		self.activeObjects:pushBack(obj)
+		obj:setup()
+		return true
+	end
+	
+	return false
+end
+
+-- @x, @y are coordinates in tiles, @width, @height is sized in tiles aswell
+function World:isAreaEmpty(objName, x, y, width, height)
+	width = width-1
+	height = height-1
+	
+	if self:isInsideGrid(x, y) and 
+		self:isInsideGrid(x + width, y + height) then
+		
+		for i = x, x+width do
+			for j = y, y+height do
+				if self.tiles[x][y][objName] ~= nil then
+					return false
+				end
+			end
+		end
+		
+		return true
+	end
+	
+	-- Could not be checked
+	return false
 end
 
 -- @list = either waitingUnits or activeUnits
@@ -600,9 +636,7 @@ function World:fillObjectIntoGrid(obj, objectPropertyName)
 	local height = obj.height - 1
 	
 	if self:isInsideGrid(obj.x, obj.y) and 
-		self:isInsideGrid(obj.x+width, obj.y+height) and
-		self:isInsideGrid(obj.x+width, obj.y) and 
-		self:isInsideGrid(obj.x, obj.y+height) then
+		self:isInsideGrid(obj.x+width, obj.y+height) then
 		
 		-- You can place it right here
 		for x = obj.x, obj.x+width do
@@ -1891,6 +1925,20 @@ function World:drawRectangleAroundUnits()
 	while it ~= nil do
 		it.data:drawRectangleAround(self.camera)
 		it = it.next
+	end
+end
+
+function World:drawRectangleAroundObjs(objName)
+	local startX, startY, endX, endY = self:getDrawingClipCoords()
+	
+	-- A bit inefficient solution
+	for x = startX, endX do
+		for y = startY, endY do
+			if self.tiles[x][y][objName] ~= nil then
+				self.tiles[x][y][objName]:drawRectangleAround(
+					self.camera, self.tileWidth, self.tileHeight)
+			end 
+		end
 	end
 end
 
