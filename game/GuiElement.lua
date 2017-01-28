@@ -47,19 +47,20 @@ end
 -- By default, the touch is represented as a mouse click.
 --
 
-function GuiElement:touchPress(id, x, y)
+-- @id = identifier of the touch (number)
+function GuiElement:touchPress(x, y, id)
 	self:mouseClick(x, y)
 end
 
-function GuiElement:touchRelease(id, x, y)
+function GuiElement:touchRelease(x, y, id)
 	self:mouseRelease(x, y)
 end
 
-function GuiElement:touchReleaseNotInside(id, x, y)
+function GuiElement:touchReleaseNotInside(x, y, id)
 	self:mouseReleaseNotInside(x, y)
 end
 
-function GuiElement:touchMove(id, x, y, distX, distY)
+function GuiElement:touchMove(x, y, distX, distY, id)
 	self:mouseMove(x, y, distX, distY)
 end
 

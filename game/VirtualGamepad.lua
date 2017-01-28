@@ -86,11 +86,9 @@ function VirtualGamepad:mouseInArea(x, y)
 		self:mouseInsideActionButtons(x, y)
 end
 
--- Mouse click = touch down
 function VirtualGamepad:mouseClick(x, y)
 end
 
--- Touch up
 function VirtualGamepad:mouseRelease(x, y)
 end
 
@@ -98,6 +96,21 @@ function VirtualGamepad:mouseReleaseNotInside(x, y)
 end
 
 function VirtualGamepad:mouseMove(x, y, distX, distY)
+end
+
+--
+-- Touch analogue
+--
+function VirtualGamepad:mouseClick(x, y, id)
+end
+
+function VirtualGamepad:mouseRelease(x, y, id)
+end
+
+function VirtualGamepad:mouseReleaseNotInside(x, y, id)
+end
+
+function VirtualGamepad:mouseMove(x, y, distX, distY, id)
 end
 
 function VirtualGamepad:draw()

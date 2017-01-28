@@ -13,13 +13,13 @@ function GuiContainer:addElement(elem)
 end
 
 -- Process key input (key press, textinput)
--- @fnName = "keyPress", "textInput"
-function GuiContainer:processKeyInput(fnName, value)
+-- @action = "keyPress", "textInput"
+function GuiContainer:processKeyInput(action, value)
 	local result = false
 	
 	for i = 1, #self.elems do
 		if self.elems[i]:processKeys() then
-			result = self.elems[i][fnName](self.elems[i], value) or result
+			result = self.elems[i][action](self.elems[i], value) or result
 		end
 	end
 	
@@ -35,26 +35,23 @@ function GuiContainer:textInput(text)
 end
 
 -- @action is either "mouseClick" or "touchPress"
+-- If the @action is "touchPress", then the touch id must be available aswell
 function GuiContainer:applyPress(x, y, action, ...)
 	local handled = false
-	local id = nil
+	local id = ...
 	
-	if action == "touchPress" then
-	
-	end
 	for i = 1, #self.elems do
-		if self.elems[i]:mouseInArea(x, y) then
-			self.elems[i][action](x, y)
-			
-			handled = true
+		local e = self.elems[i]
+		
+		if e:mouseInArea(x, y) then
+			-- Call the action
+			e[action](e, x, y, id)
 			
 			-- push it into the queue
-			self.clickedElems[self.clickedElems.right] = {
-				elem = self.elems[i],
-				id = id
-			}
-			
+			self.clickedElems[self.clickedElems.right] = e
 			self.clickedElems.right = self.clickedElems.right + 1
+			
+			handled = true
 		end
 	end
 	
@@ -62,16 +59,20 @@ function GuiContainer:applyPress(x, y, action, ...)
 end
 
 -- @action is either "mouseRelease" or "touchRelease"
+-- If the @action is "touchRelease", then the touch id must be available aswell
 function GuiContainer:applyRelease(x, y, action, ...)
+	local handled = self.clickedElems.left < self.clickedElems.right
+	local id = ...
+	
 	for i = self.clickedElems.left, self.clickedElems.right - 1 do
-		if self.clickedElems[i]:mouseInArea(x, y) then
-			self.clickedElems[i]:mouseRelease(x, y)
+		local e = self.clickedElems[i]
+		
+		if e:mouseInArea(x, y) then
+			e[action](e, x, y, id)
 		else
-			self.clickedElems[i]:mouseReleaseNotInside(x, y)
+			e[action .. "NotInside"](e, x, y, id)
 		end
 	end
-	local handled = self.clickedElems.left < self.clickedElems.right
-	
 	self.clickedElems.left = self.clickedElems.right
 	
 	return handled
@@ -82,6 +83,7 @@ function GuiContainer:mouseClick(x, y)
 end
 
 function GuiContainer:mouseRelease(x, y)
+	return self:applyRelease(x, y, "mouseRelease")
 end
 
 function GuiContainer:mouseMove(x, y, dx, dy)
