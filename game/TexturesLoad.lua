@@ -234,6 +234,7 @@ function loadTextures()
 	-- Others
 	textureContainer:newTexture("freezed_unit", "assets/freezed_unit.png")
 	textureContainer:newTexture("skull", "assets/skull.png")
+	textureContainer:newTexture("gamepad_button", "assets/gamepad_button.png")
 	
 	return textureContainer
 end

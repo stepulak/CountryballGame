@@ -1,5 +1,6 @@
 require "World"
 require "DeathScreen"
+require "Gui"
 
 local PlayerDeathWaitTime = 3
 
@@ -12,10 +13,47 @@ function Gameplay:init(world, fonts)
 	self.playerDeathWaitTimer = 0
 	self.todo = nil
 	self.deathScreen = nil
+	self.gui = GuiContainer:new()
+	
+	self:createVirtualGamepad()
+end
+
+function Gameplay:createVirtualGamepad()
+	local cam = self.world.camera
+	local font = self.fonts.big
+	
+	self.gui:addElement(VirtualGamepad:new(
+		cam.virtualWidth, cam.virtualHeight,
+		font, font.font:getHeight(), 
+		self.world.textureContainer:getTexture("gamepad_button")))
 end
 
 function Gameplay:resume()
 	self.world.soundContainer:unmuteAll()
+end
+
+function Gameplay:handleMouseClick(x, y)
+	self.gui:mouseClick(x, y)
+end
+
+function Gameplay:handleMouseRelease(x, y)
+	self.gui:mouseRelease(x, y)
+end
+
+function Gameplay:handleMouseMove(x, y, dx, dy)
+	self.gui:mouseMove(x, y, dx, dy)
+end
+
+function Gameplay:handleTouchPress(id, x, y)
+	self.gui:touchPress(id, x, y)
+end
+
+function Gameplay:handleTouchRelease(id, x, y)
+	self.gui:touchRelease(id, x, y)
+end
+
+function Gameplay:handleTouchMove(id, x, y, dx, dy)
+	self.gui:touchMove(id, x, y, dx, dy)
 end
 
 function Gameplay:handleKeyPress(key)
@@ -104,5 +142,6 @@ function Gameplay:draw()
 	else
 		self.world:draw()
 		self.world:drawUI()
+		self.gui:draw(self.world.camera)
 	end
 end
