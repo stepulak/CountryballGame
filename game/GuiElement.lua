@@ -42,6 +42,27 @@ function GuiElement:mouseMove(x, y, distX, distY)
 
 end
 
+--
+-- Touch analogue to Mouse operations
+-- By default, the touch is represented as a mouse click.
+--
+
+function GuiElement:touchPress(id, x, y)
+	self:mouseClick(x, y)
+end
+
+function GuiElement:touchRelease(id, x, y)
+	self:mouseRelease(x, y)
+end
+
+function GuiElement:touchReleaseNotInside(id, x, y)
+	self:mouseReleaseNotInside(x, y)
+end
+
+function GuiElement:touchMove(id, x, y, distX, distY)
+	self:mouseMove(x, y, distX, distY)
+end
+
 -- Tell the gui container that this element wants to get
 -- all the text input, keys etc... possible
 function GuiElement:processKeys()

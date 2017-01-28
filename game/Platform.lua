@@ -96,8 +96,8 @@ end
 
 function Platform:handleUnitCollision(unit, deltaTime)
 	if self:checkUnitCollision(unit) then
-		unit:resolveRectCollision(self.realX, self.realY,
-			self.realWidth, self.realHeight, deltaTime)
+		--unit:resolveRectCollision(self.realX, self.realY,
+			--self.realWidth, self.realHeight, deltaTime)
 	end
 end
 

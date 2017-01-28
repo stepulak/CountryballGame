@@ -106,6 +106,24 @@ function Game:handleMouseMove(x, y, dx, dy)
 	end
 end
 
+function Game:handleTouchPress(id, tx, ty)
+	if self.activeMode.handleTouchPress then
+		self.activeMode:handleTouchPress(id, tx, ty)
+	end
+end
+
+function Game:handleTouchRelease(id, tx, ty)
+	if self.activeMode.handleTouchRelease then
+		self.activeMode:handleTouchPress(id, tx, ty)
+	end
+end
+
+function Game:handleTouchMove(id, tx, ty, tdx, tdy)
+	if self.activeMode.handleTouchMove then
+		self.activeMode:handleTouchMove(id, tx, ty, tdx, tdy)
+	end
+end
+
 function Game:handleTodo()
 	if self.activeMode.todo == "reset_world" then
 		local activeModeName = self.activeMode.name

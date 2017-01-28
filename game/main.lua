@@ -84,20 +84,42 @@ function love.textinput(text)
 end
 
 function love.mousepressed(x, y, button, isTouch)
-	local tx, ty = transformMouseCoordinates(x, y)
-	game:handleMouseClick(tx, ty)
+	if isTouch == false then
+		local tx, ty = transformMouseCoordinates(x, y)
+		game:handleMouseClick(tx, ty)
+	end
 end
 
 function love.mousereleased(x, y, button, isTouch)
-	local tx, ty = transformMouseCoordinates(x, y)
-	game:handleMouseRelease(tx, ty)
+	if isTouch == false then
+		local tx, ty = transformMouseCoordinates(x, y)
+		game:handleMouseRelease(tx, ty)
+	end
 end
 
-function love.mousemoved(x, y, dx, dy, istouch)
+function love.mousemoved(x, y, dx, dy, isTouch)
+	if isTouch == false then
+		local tx, ty = transformMouseCoordinates(x, y)
+		-- distance can be transformed too with the same function
+		local tdx, tdy = transformMouseCoordinates(dx, dy)
+		game:handleMouseMove(tx, ty, tdx, tdy)
+	end
+end
+
+function love.touchpressed(id, x, y, dx, dy, pressure)
 	local tx, ty = transformMouseCoordinates(x, y)
-	-- distance can be transformed too with the same function
+	game:handleTouchPress(id, tx, ty)
+end
+
+function love.touchreleased(id, x, y, dx, dy, pressure)
+	local tx, ty = transformMouseCoordinates(x, y)
+	game:handleTouchRelease(id, tx, ty)
+end
+
+function love.touchmoved(id, x, y, dx, dy, pressure)
+	local tx, ty = transformMouseCoordinates(x, y)
 	local tdx, tdy = transformMouseCoordinates(dx, dy)
-	game:handleMouseMove(tx, ty, tdx, tdy)
+	game:handleTouchMove(id, tx, ty, tdx, tdy)
 end
 
 function love.update(deltaTime)

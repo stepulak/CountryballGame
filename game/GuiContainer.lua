@@ -34,25 +34,35 @@ function GuiContainer:textInput(text)
 	return self:processKeyInput("textInput", text)
 end
 
-function GuiContainer:mouseClick(x, y)
-	local clickHandled = false
+-- @action is either "mouseClick" or "touchPress"
+function GuiContainer:applyPress(x, y, action, ...)
+	local handled = false
+	local id = nil
 	
+	if action == "touchPress" then
+	
+	end
 	for i = 1, #self.elems do
 		if self.elems[i]:mouseInArea(x, y) then
-			self.elems[i]:mouseClick(x, y)
+			self.elems[i][action](x, y)
 			
-			clickHandled = true
+			handled = true
 			
 			-- push it into the queue
-			self.clickedElems[self.clickedElems.right] = self.elems[i]
+			self.clickedElems[self.clickedElems.right] = {
+				elem = self.elems[i],
+				id = id
+			}
+			
 			self.clickedElems.right = self.clickedElems.right + 1
 		end
 	end
 	
-	return clickHandled
+	return handled
 end
 
-function GuiContainer:mouseRelease(x, y)
+-- @action is either "mouseRelease" or "touchRelease"
+function GuiContainer:applyRelease(x, y, action, ...)
 	for i = self.clickedElems.left, self.clickedElems.right - 1 do
 		if self.clickedElems[i]:mouseInArea(x, y) then
 			self.clickedElems[i]:mouseRelease(x, y)
@@ -60,11 +70,18 @@ function GuiContainer:mouseRelease(x, y)
 			self.clickedElems[i]:mouseReleaseNotInside(x, y)
 		end
 	end
-	local releaseHandled = self.clickedElems.left < self.clickedElems.right
+	local handled = self.clickedElems.left < self.clickedElems.right
 	
 	self.clickedElems.left = self.clickedElems.right
 	
-	return releaseHandled
+	return handled
+end
+
+function GuiContainer:mouseClick(x, y)
+	return self:applyPress(x, y, "mouseClick")
+end
+
+function GuiContainer:mouseRelease(x, y)
 end
 
 function GuiContainer:mouseMove(x, y, dx, dy)
@@ -72,6 +89,7 @@ function GuiContainer:mouseMove(x, y, dx, dy)
 		self.elems[i]:mouseMove(x, y, dx, dy)
 	end
 end
+
 
 function GuiContainer:update(deltaTime, mouseX, mouseY)
 	for i = 1, #self.elems do

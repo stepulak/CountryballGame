@@ -11,7 +11,7 @@ local VirtualGamepadButColor = {
 	a = 255,
 }
 
--- Gamepad consist of direction joystick and N buttons (A, B, C, ...)
+-- Gamepad consist of direction joystick and N action buttons (A, B, C, ...)
 -- FYI the mouse keyword here refers to touch keyword, because you can
 -- use this gamepad with both mouse and touch screen...
 VirtualGamepad = GuiElement:new()
@@ -36,14 +36,14 @@ function VirtualGamepad:new(virtScrWidth, virtScrHeight, buttonRad, buttonTex)
 	self.dirBut.smX = self.dirBut.x
 	self.dirBut.smY = self.dirBut.y
 	
-	self.buttons = {}
+	self.acButtons = {}
 end
 
 function VirtualGamepad:getNewHorizontalPosButton()
-	if #self.buttons == 0 then
+	if #self.acButtons == 0 then
 		return self.virtScrWidth - VirtualGamepadOffset
 	else
-		local b = self.buttons[#self.buttons]
+		local b = self.acButtons[#self.acButtons]
 		return b.x - b.radius/2 - VirtualGamepadOffset
 	end
 end
@@ -52,7 +52,7 @@ end
 -- first character is taken anyway)
 -- @actionPressed trigger func when button is pressed
 -- @actionReleased trigger func when button is released
-function VirtualGamepad:addButton(label, actionPressed, actionReleased)
+function VirtualGamepad:addActionButton(label, actionPressed, actionReleased)
 	local but = {}
 	
 	but.label = string.sub(label, 1)
@@ -62,7 +62,7 @@ function VirtualGamepad:addButton(label, actionPressed, actionReleased)
 	but.x = self:getNewHorizontalPosButton() - but.radius/2
 	but.y = self.virtScrHeight - VirtualGamepadOffset
 	
-	self.buttons[#self.buttons + 1] = but
+	self.acButtons[#self.acButtons + 1] = but
 end
 
 function VirtualGamepad:mouseInsideButton(x, y, but)
@@ -71,8 +71,19 @@ function VirtualGamepad:mouseInsideButton(x, y, but)
 	return math.sqrt(dX*dX + dY*dY) < but.radius
 end
 
+function VirtualGamepad:mouseInsideActionButtons(x, y)
+	for i=1, #self.acButtons do
+		if mouseInsideButton(x, y, self.acButtons[i]) then
+			return true
+		end
+	end
+	
+	return false
+end
+
 function VirtualGamepad:mouseInArea(x, y)
-	return self:mouseInsideButton(x, y, self.dirBut)
+	return self:mouseInsideButton(x, y, self.dirBut) or
+		self:mouseInsideActionButtons(x, y)
 end
 
 -- Mouse click = touch down
