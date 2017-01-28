@@ -51,16 +51,30 @@ function VirtualGamepad:init(virtScrWidth, virtScrHeight,
 	
 	-- Direction button
 	self.dirBut = {
-		radius = buttonRad * 2.5
+		radius = buttonRad * 2.5,
+		isPressed = false,
 	}
 	self.dirBut.x = ButtonOffset + self.dirBut.radius
 	self.dirBut.y = virtScrHeight - ButtonOffset - self.dirBut.radius
 	
-	-- direction button of "joystick"
+	-- "joystick"
 	self.dirBut.smX = self.dirBut.x
 	self.dirBut.smY = self.dirBut.y
 	
-	self.dirBut.isPressed = false
+	-- Direction button's triggers
+	self.dirBut.actionPressed = function(b, x, y)
+	end
+	
+	self.dirBut.actionReleased = function(b, x, y)
+	end
+	
+	self.dirBut.actionReleasedNotInside = function(b, x, y)
+	end
+	
+	-- Touch queue
+	self.touches = {}
+	-- Single mouse click
+	self.click = nil
 end
 
 function VirtualGamepad:getNewHorizontalPosButton()
@@ -75,17 +89,22 @@ end
 -- @label should be one-character-long (doesn't matter actually,
 -- first character is taken anyway)
 -- @actionPressed trigger func when button is pressed
--- @actionReleased trigger func when button is released
-function VirtualGamepad:addActionButton(label, actionPressed, actionReleased)
+-- @actionReleased trigger func when button is properly released
+-- @actionReleasedNotInside trigger func when button is released, but
+-- (touch) mouse coordinates are outside it's area
+function VirtualGamepad:addActionButton(label, actionPressed, actionReleased,
+	actionReleasedNotInside)
+	
 	local but = {}
 	
 	but.label = string.sub(label, 1)
-	but.actionPressed = actionPressed
-	but.actionReleased = actionReleased
 	but.radius = self.buttonRad
 	but.x = self:getNewHorizontalPosButton() - but.radius/2
 	but.y = self.virtScrHeight - ButtonOffset
 	but.isPressed = false
+	but.actionPressed = actionPressed
+	but.actionReleased = actionReleased
+	but.actionReleasedNotInside = actionReleasedNotInside
 	
 	self.acButtons[#self.acButtons + 1] = but
 	
@@ -104,28 +123,65 @@ function VirtualGamepad:mouseInsideButton(x, y, but)
 	return math.sqrt(dX*dX + dY*dY) < but.radius
 end
 
-function VirtualGamepad:mouseInsideActionButtons(x, y)
+-- @x, @y are mouse (touch) virtual coordinates
+function VirtualGamepad:getActionButtonUnderTouch(x, y)
 	for i = 1, #self.acButtons do
 		if mouseInsideButton(x, y, self.acButtons[i]) then
-			return true
+			return self.acButtons[i]
 		end
 	end
 	
-	return false
+	return nil
+end
+
+function VirtualGamepad:getButtonUnderTouch(x, y)
+	if self:mouseInsideButton(x, y, self.dirBut) then
+		return self.dirBut
+	else
+		return self:getActionButtonUnderTouch(x, y)
+	end
 end
 
 function VirtualGamepad:mouseInArea(x, y)
-	return self:mouseInsideButton(x, y, self.dirBut) or
-		self:mouseInsideActionButtons(x, y)
+	return self:getButtonUnderTouch(x, y) ~= nil
 end
 
 function VirtualGamepad:mouseClick(x, y)
+	if self.click ~= nil then
+		-- This should not happen, but beware of any anomalies
+		self:mouseReleaseNotInside(-1, -1)
+	end
+	
+	local but = self:getButtonUnderTouch(x, y)
+	
+	if but ~= nil then
+		self.click = but
+		but:actionPressed(x, y)
+		but.isPressed = true
+	end
 end
 
 function VirtualGamepad:mouseRelease(x, y)
+	if self.click ~= nil then
+		-- Check out if the coordinates aren't inside another button
+		-- (which obviously is part of the gamepad)
+		if self:mouseInsideButton(x, y, self.click) then
+			self.click:actionReleased(x, y)
+		else
+			self.click:actionReleasedNotInside(x, y)
+		end
+		-- Processed
+		self.click = nil
+	end
 end
 
 function VirtualGamepad:mouseReleaseNotInside(x, y)
+	if self.click ~= nil then
+		-- Outside the gamepad, then outside of all gamepad's buttons
+		self.click:actionReleasedNotInside(x, y)
+		-- Processed
+		self.click = nil
+	end
 end
 
 function VirtualGamepad:mouseMove(x, y, distX, distY)
@@ -135,7 +191,6 @@ end
 -- Touch analogue
 --
 function VirtualGamepad:touchPress(x, y, id)
-	
 end
 
 function VirtualGamepad:touchRelease(x, y, id)

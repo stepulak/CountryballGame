@@ -22,24 +22,26 @@ function GuiElement:mouseInArea(x, y)
 	return pointInRect(x, y, self.x, self.y, self.width, self.height)
 end
 
+--[[
+function GuiElement:touchInArea(x, y)
+	return self:mouseInArea(x, y)
+end
+]]
+
 -- @x, @y are inside gui element
 function GuiElement:mouseClick(x, y)
-
 end
 
 -- @x, @y are inside gui element
 function GuiElement:mouseRelease(x, y)
-
 end
 
 -- @x, @y are not inside gui element
 function GuiElement:mouseReleaseNotInside(x, y)
-
 end
 
 -- @x, @y may not be inside gui element
 function GuiElement:mouseMove(x, y, distX, distY)
-
 end
 
 --
@@ -82,11 +84,9 @@ end
 -- Don't forget the @return value = true if the key was processed,
 -- otherwise false
 function GuiElement:textInput(text)
-
 end
 
 function GuiElement:update(deltaTime, mouseX, mouseY)
-
 end
 
 -- @camera is mostly unnecessary, but some elements may need it
