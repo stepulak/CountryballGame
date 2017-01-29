@@ -14,6 +14,8 @@ function Gameplay:init(world, fonts)
 	self.todo = nil
 	self.deathScreen = nil
 	self.gui = GuiContainer:new()
+	self.jumpKeyPressed = false
+	self.shootKeyPressed = false
 	
 	self:createVirtualGamepad()
 end
@@ -58,6 +60,10 @@ function Gameplay:handleTouchMove(id, x, y, dx, dy)
 	self.gui:touchMove(id, x, y, dx, dy)
 end
 
+function Gameplay:isPlayerControllable()
+	return self.world.player ~= nil and self.world.player.isControllable
+end
+
 -- @dir can be "up", "down", "left", "right"
 function Gameplay:isDirectionActive(dir)
 	-- When keyboard is not present
@@ -76,49 +82,62 @@ function Gameplay:isDirectionActive(dir)
 	end
 end
 
--- @action can be "jump", "shoot"
-function Gameplay:isActionPressed(ac)
-
-end
-
-function Gameplay:handleKeyPress(key)
-	if self:isPlayerControllable() then
-		if key == "space" then
-			if love.keyboard.isDown("s") then
-				self.world.player:tryToJumpOffPlatform()
-			elseif love.keyboard.isDown("w") then
-				self.world:activateActiveObject(self.world.player)
-			else
-				self.world.player:tryToJump()
-			end
-		elseif key == "m" then
-			self.world.player:tryToAttack(self.world.soundContainer)
-			self.world.player:tryToEnableSprint()
-		else
-			-- Key wasn't processed
-			return false
-		end
+-- @ac can be "jump", "shoot"
+function Gameplay:isActionActive(ac)
+	if ac == "jump" then
+		return self.jumpKeyPressed
+	elseif ac == "shoot" then
+		return self.shootKeyPressed
 	else
 		return false
 	end
+end
+
+function Gameplay:clearPressedKeys()
+	self.jumpKeyPressed = false
+	self.shootKeyPressed = false
+end
+
+function Gameplay:handleKeyPress(key)
+	if key == "space" then
+		self.jumpKeyPressed = true
+	elseif key == "m" then
+		self.shootKeyPressed = true
+	else
+		-- Wasn't processed
+		return false
+	end
 	
-	-- Key was processed
+	-- Was processed
 	return true
 end
 
-function Gameplay:handleKeysStillPressed(deltaTime)
-	if self:isPlayerControllable() then
-		if love.keyboard.isDown("a") then
-			self.world.player:moveHorizontally(true)
-		end
-		if love.keyboard.isDown("d") then
-			self.world.player:moveHorizontally(false)
+function Gameplay:handlePlayerControl(deltaTime)
+	if self:isPlayerControllable() == false then
+		return
+	end
+	
+	if self:isActionActive("jump") then
+		if self:isDirectionActive("down") then
+			self.world.player:tryToJumpOffPlatform()
+		elseif self:isDirectionActive("up") then
+			self.world:activateActiveObject(self.world.player)
+		else
+			-- Regular jump
+			self.world.player:tryToJump()
 		end
 	end
-end
-
-function Gameplay:isPlayerControllable()
-	return self.world.player ~= nil and self.world.player.isControllable
+	
+	if self:isActionActive("shoot") then
+		self.world.player:tryToAttack(self.world.soundContainer)
+		self.world.player:tryToEnableSprint()
+	end
+	
+	if self:isDirectionActive("left") then
+		self.world.player:moveHorizontally(true)
+	elseif self:isDirectionActive("right") then
+		self.world.player:moveHorizontally(false)
+	end
 end
 
 -- Handle it's death procedure and decide what to do next
@@ -148,8 +167,8 @@ function Gameplay:handlePlayersDeath(deltaTime)
 end
 
 function Gameplay:update(deltaTime)
-	self:handleKeysStillPressed(deltaTime)
-	self:handleGamepad(deltaTime)
+	self:handlePlayerControl(deltaTime)
+	self:clearPressedKeys()
 	
 	-- Is the player dead?
 	if self.world.player ~= nil and self.world.player.dead == true then

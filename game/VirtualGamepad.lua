@@ -136,8 +136,8 @@ end
 -- 	1)		x = 0, y = -1, +1
 -- 	2)		x = -1, +1, y = 0
 function VirtualGamepad:getDirection()
-	local dX = self.dirBut.x - self.dirBut.smX
-	local dY = self.dirBut.y - self.dirBut.smY
+	local dX = self.dirBut.smX - self.dirBut.x
+	local dY = self.dirBut.smY - self.dirBut.y
 	
 	if math.abs(dX) < math.abs(dY) then
 		return 0, getUnitValue(dY)
