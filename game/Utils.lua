@@ -111,20 +111,18 @@ function getDistanceRectRect(cx1, cy1, w1, h1, cx2, cy2, w2, h2)
 		math.abs(cy1 - cy2) - h1/2 - h2/2
 end
 
+function getUnitValue(v)
+	if v < 0 then
+		v = -1
+	elseif v > 0 then
+		v = 1
+	end
+	
+	return v
+end
+
 function getUnitVector(vx, vy)
-	if vx < 0 then
-		vx = -1
-	elseif vx > 0 then
-		vx = 1
-	end
-	
-	if vy < 0 then 
-		vy = -1
-	elseif vy > 0 then
-		vy = 1
-	end
-	
-	return vx, vy
+	return getUnitValue(vx), getUnitValue(vy)
 end
 
 function setWithinRange(value, minValue, maxValue)

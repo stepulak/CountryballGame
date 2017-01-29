@@ -31,9 +31,8 @@ local LabelColorPressed = {
 	a = 255,
 }
 
--- Gamepad consist of direction joystick and N action buttons (A, B, C, ...)
--- FYI the mouse keyword here refers to touch keyword, because you can
--- use this gamepad with both mouse and touch screen...
+-- Gamepad consist of direction button (joystick)
+-- and N action buttons with own one-character-length labels
 VirtualGamepad = GuiElement:new()
 
 function VirtualGamepad:init(virtScrWidth, virtScrHeight,
@@ -60,15 +59,36 @@ function VirtualGamepad:init(virtScrWidth, virtScrHeight,
 	-- "joystick"
 	self.dirBut.smX = self.dirBut.x
 	self.dirBut.smY = self.dirBut.y
+	self.dirBut.smRadius = buttonRad
 	
 	-- Direction button's triggers
 	self.dirBut.actionPressed = function(b, x, y)
+		b:actionMove(x, y, 0, 0)
 	end
 	
 	self.dirBut.actionReleased = function(b, x, y)
+		b.smX = b.x
+		b.smY = b.y
 	end
 	
 	self.dirBut.actionReleasedNotInside = function(b, x, y)
+		b:actionReleased(x, y)
+	end
+	
+	-- Only available for direction button!
+	self.dirBut.actionMove = function(b, x, y, dX, dY)
+		local maxRad = b.radius - b.smRadius
+		local dX = b.x - x
+		local dY = b.y - y
+		
+		if math.sqrt(dX*dX + dY*dY) > maxRad then
+			local a = math.atan2(dY, dX) + math.pi
+			b.smX = maxRad * math.cos(a) + b.x
+			b.smY = maxRad * math.sin(a) + b.y
+		else
+			b.smX = x
+			b.smY = y
+		end
 	end
 	
 	-- Touch queue
@@ -112,9 +132,18 @@ function VirtualGamepad:addActionButton(label, actionPressed, actionReleased,
 end
 
 -- Return the current direction of direction button (joystick)
--- possible values: {[x, y] | x <- {-1,0,1}, y <- {-1,0,1}}
+-- Possible values: 
+-- 	1)		x = 0, y = -1, +1
+-- 	2)		x = -1, +1, y = 0
 function VirtualGamepad:getDirection()
-	return 0, 0
+	local dX = self.dirBut.x - self.dirBut.smX
+	local dY = self.dirBut.y - self.dirBut.smY
+	
+	if math.abs(dX) < math.abs(dY) then
+		return 0, getUnitValue(dY)
+	else
+		return getUnitValue(dX), 0
+	end
 end
 
 function VirtualGamepad:mouseInsideButton(x, y, but)
@@ -170,6 +199,7 @@ function VirtualGamepad:mouseRelease(x, y)
 		else
 			self.click:actionReleasedNotInside(x, y)
 		end
+		self.click.isPressed = false
 		-- Processed
 		self.click = nil
 	end
@@ -177,14 +207,18 @@ end
 
 function VirtualGamepad:mouseReleaseNotInside(x, y)
 	if self.click ~= nil then
-		-- Outside the gamepad, then outside of all gamepad's buttons
+		-- Outside the gamepad, then it's outside of all gamepad's buttons
 		self.click:actionReleasedNotInside(x, y)
+		self.click.isPressed = false
 		-- Processed
 		self.click = nil
 	end
 end
 
 function VirtualGamepad:mouseMove(x, y, distX, distY)
+	if self.click == self.dirBut then
+		self.click:actionMove(x, y, distX, distY)
+	end
 end
 
 --
@@ -226,8 +260,8 @@ function VirtualGamepad:drawDirectionButton()
 	love.graphics.setLineWidth(1)
 	
 	-- Small button
-	self:drawButton(self.dirBut.smX, self.dirBut.smY, self.buttonRad, 
-		self.dirBut.pressed)
+	self:drawButton(self.dirBut.smX, self.dirBut.smY, self.dirBut.smRadius, 
+		self.dirBut.isPressed)
 end
 
 function VirtualGamepad:drawActionButtons()

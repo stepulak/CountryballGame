@@ -22,10 +22,12 @@ function Gameplay:createVirtualGamepad()
 	local cam = self.world.camera
 	local font = self.fonts.big
 	
-	self.gui:addElement(VirtualGamepad:new(
+	self.gamepad = VirtualGamepad:new(
 		cam.virtualWidth, cam.virtualHeight,
 		font, font.font:getHeight(), 
-		self.world.textureContainer:getTexture("gamepad_button")))
+		self.world.textureContainer:getTexture("gamepad_button"))
+	
+	self.gui:addElement(self.gamepad)
 end
 
 function Gameplay:resume()
@@ -56,8 +58,31 @@ function Gameplay:handleTouchMove(id, x, y, dx, dy)
 	self.gui:touchMove(id, x, y, dx, dy)
 end
 
+-- @dir can be "up", "down", "left", "right"
+function Gameplay:isDirectionActive(dir)
+	-- When keyboard is not present
+	local x, y = self.gamepad:getDirection()
+	
+	if dir == "up" then
+		return love.keyboard.isDown("w") or y == -1
+	elseif dir == "down" then
+		return love.keyboard.isDown("s") or y == 1
+	elseif dir == "left" then
+		return love.keyboard.isDown("a") or x == -1
+	elseif dir == "right" then
+		return love.keyboard.isDown("d") or x == 1
+	else
+		return false
+	end
+end
+
+-- @action can be "jump", "shoot"
+function Gameplay:isActionPressed(ac)
+
+end
+
 function Gameplay:handleKeyPress(key)
-	if self.world.player ~= nil and self.world.player.isControllable then
+	if self:isPlayerControllable() then
 		if key == "space" then
 			if love.keyboard.isDown("s") then
 				self.world.player:tryToJumpOffPlatform()
@@ -69,10 +94,7 @@ function Gameplay:handleKeyPress(key)
 		elseif key == "m" then
 			self.world.player:tryToAttack(self.world.soundContainer)
 			self.world.player:tryToEnableSprint()
-		--[[
-		elseif key == "n" then
-			self.world.player:tryToEnableSprint()
-		]]else
+		else
 			-- Key wasn't processed
 			return false
 		end
@@ -85,7 +107,7 @@ function Gameplay:handleKeyPress(key)
 end
 
 function Gameplay:handleKeysStillPressed(deltaTime)
-	if self.world.player ~= nil and self.world.player.isControllable then
+	if self:isPlayerControllable() then
 		if love.keyboard.isDown("a") then
 			self.world.player:moveHorizontally(true)
 		end
@@ -93,6 +115,10 @@ function Gameplay:handleKeysStillPressed(deltaTime)
 			self.world.player:moveHorizontally(false)
 		end
 	end
+end
+
+function Gameplay:isPlayerControllable()
+	return self.world.player ~= nil and self.world.player.isControllable
 end
 
 -- Handle it's death procedure and decide what to do next
@@ -123,6 +149,7 @@ end
 
 function Gameplay:update(deltaTime)
 	self:handleKeysStillPressed(deltaTime)
+	self:handleGamepad(deltaTime)
 	
 	-- Is the player dead?
 	if self.world.player ~= nil and self.world.player.dead == true then
