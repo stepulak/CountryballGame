@@ -13,9 +13,13 @@ function Gameplay:init(world, fonts)
 	self.playerDeathWaitTimer = 0
 	self.todo = nil
 	self.deathScreen = nil
+	
 	self.gui = GuiContainer:new()
+	
 	self.jumpKeyPressed = false
 	self.shootKeyPressed = false
+	self.jumpButtonPressed = false
+	self.shootButtonPressed = false
 	
 	self:createVirtualGamepad()
 end
@@ -28,6 +32,22 @@ function Gameplay:createVirtualGamepad()
 		cam.virtualWidth, cam.virtualHeight,
 		font, font.font:getHeight(), 
 		self.world.textureContainer:getTexture("gamepad_button"))
+	
+	local shootRelAc = function() self.shootButtonPressed = false end
+	
+	self.gamepad:addActionButton("Y",
+		function()
+			self.shootButtonPressed = true
+		end,
+		shootRelAc, shootRelAc)
+	
+	local jumpRelAc = function() self.jumpButtonPressed = false end
+	
+	self.gamepad:addActionButton("X",
+		function()
+			self.jumpButtonPressed = true
+		end, 
+		jumpRelAc, jumpRelAc)
 	
 	self.gui:addElement(self.gamepad)
 end
@@ -85,9 +105,9 @@ end
 -- @ac can be "jump", "shoot"
 function Gameplay:isActionActive(ac)
 	if ac == "jump" then
-		return self.jumpKeyPressed
+		return self.jumpKeyPressed or self.jumpButtonPressed
 	elseif ac == "shoot" then
-		return self.shootKeyPressed
+		return self.shootKeyPressed or self.shootButtonPressed
 	else
 		return false
 	end
@@ -96,6 +116,8 @@ end
 function Gameplay:clearPressedKeys()
 	self.jumpKeyPressed = false
 	self.shootKeyPressed = false
+	self.jumpButtonPressed = false
+	self.shootButtonPressed = false
 end
 
 function Gameplay:handleKeyPress(key)

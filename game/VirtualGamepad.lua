@@ -99,7 +99,7 @@ end
 
 function VirtualGamepad:getNewHorizontalPosButton()
 	if #self.acButtons == 0 then
-		return self.virtScrWidth - ButtonOffset
+		return self.virtScrWidth
 	else
 		local b = self.acButtons[#self.acButtons]
 		return b.x - b.radius/2 - ButtonOffset
@@ -119,8 +119,8 @@ function VirtualGamepad:addActionButton(label, actionPressed, actionReleased,
 	
 	but.label = string.sub(label, 1)
 	but.radius = self.buttonRad
-	but.x = self:getNewHorizontalPosButton() - but.radius/2
-	but.y = self.virtScrHeight - ButtonOffset
+	but.x = self:getNewHorizontalPosButton() - ButtonOffset - but.radius
+	but.y = self.virtScrHeight - ButtonOffset - but.radius
 	but.isPressed = false
 	but.actionPressed = actionPressed
 	but.actionReleased = actionReleased
@@ -155,7 +155,7 @@ end
 -- @x, @y are mouse (touch) virtual coordinates
 function VirtualGamepad:getActionButtonUnderTouch(x, y)
 	for i = 1, #self.acButtons do
-		if mouseInsideButton(x, y, self.acButtons[i]) then
+		if self:mouseInsideButton(x, y, self.acButtons[i]) then
 			return self.acButtons[i]
 		end
 	end
@@ -225,15 +225,49 @@ end
 -- Touch analogue
 --
 function VirtualGamepad:touchPress(x, y, id)
+	if self.touches[id] ~= nil then
+		self:touchReleaseNotInside(-1, -1, id)
+	end
+	
+	local but = self:getButtonUnderTouch(x, y)
+	
+	if but ~= nil then
+		self.touches[id] = but
+		but:actionPressed(x, y)
+		but.isPressed = true
+	end
 end
 
 function VirtualGamepad:touchRelease(x, y, id)
+	if self.touches[id] ~= nil then
+		local t = self.touches[id]
+		-- Check out if the coordinates aren't inside another button
+		-- (which obviously is part of the gamepad)
+		if self:mouseInsideButton(x, y, t) then
+			t:actionReleased(x, y)
+		else
+			t:actionReleasedNotInside(x, y)
+		end
+		t.isPressed = false
+		-- Processed
+		self.touches[id] = nil
+	end
 end
 
 function VirtualGamepad:touchReleaseNotInside(x, y, id)
+	if self.touches[id] ~= nil then
+		-- Outside the gamepad, then it's outside of all gamepad's buttons
+		self.touches[id]:actionReleasedNotInside(x, y)
+		self.touches[id].isPressed = false
+		-- Processed
+		self.touches[id] = nil
+	end
 end
 
 function VirtualGamepad:touchMove(x, y, distX, distY, id)
+	if self.touches[id] == self.dirBut then
+		self.touches[id]:actionMove(x, y, distX, distY)
+	end
 end
 
 function VirtualGamepad:drawButton(x, y, rad, isPressed)
@@ -268,6 +302,7 @@ function VirtualGamepad:drawActionButtons()
 	for i = 1, #self.acButtons do
 		local b = self.acButtons[i]
 		self:drawButton(b.x, b.y, b.radius, b.isPressed)
+		self:drawLabel(b.label, b.x, b.y, b.radius, b.isPressed)
 	end
 end
 
