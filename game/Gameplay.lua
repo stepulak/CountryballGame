@@ -25,12 +25,11 @@ function Gameplay:init(world, fonts)
 end
 
 function Gameplay:createVirtualGamepad()
-	local cam = self.world.camera
 	local font = self.fonts.big
 	
 	self.gamepad = VirtualGamepad:new(
-		cam.virtualWidth, cam.virtualHeight,
-		font, font.font:getHeight(), 
+		self.world.camera,
+		font, font.font:getHeight() * 1.5, 
 		self.world.textureContainer:getTexture("gamepad_button"))
 	
 	local shootRelAc = function() self.shootButtonPressed = false end
@@ -188,17 +187,20 @@ function Gameplay:handlePlayersDeath(deltaTime)
 	end
 end
 
-function Gameplay:update(deltaTime)
-	self:handlePlayerControl(deltaTime)
-	self:clearPressedKeys()
-	
+function Gameplay:update(deltaTime)	
 	-- Is the player dead?
 	if self.world.player ~= nil and self.world.player.dead == true then
 		self:handlePlayersDeath(deltaTime)
 	end
 	
-	-- Do not update the world when it's deathscreen on
+	-- Do not update the gameplay when it's deathscreen on
 	if self.deathScreen == nil then
+		local mx, my = getScaledMousePosition(self.world.camera, false)
+		self.gui:update(deltaTime, mx, my)
+	
+		self:handlePlayerControl(deltaTime)
+		self:clearPressedKeys()
+		
 		self.world:update(deltaTime)
 	end
 end

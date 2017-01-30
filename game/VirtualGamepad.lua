@@ -35,13 +35,10 @@ local LabelColorPressed = {
 -- and N action buttons with own one-character-length labels
 VirtualGamepad = GuiElement:new()
 
-function VirtualGamepad:init(virtScrWidth, virtScrHeight,
-	font, buttonRad, buttonTex)
-	
+function VirtualGamepad:init(camera, font, buttonRad, buttonTex)
 	self:super("virtual_gamepad", 0, 0, 0, 0)
 	
-	self.virtScrWidth = virtScrWidth
-	self.virtScrHeight = virtScrHeight
+	self.camera = camera
 	self.font = font
 	self.buttonRad = buttonRad
 	self.buttonTex = buttonTex
@@ -54,7 +51,8 @@ function VirtualGamepad:init(virtScrWidth, virtScrHeight,
 		isPressed = false,
 	}
 	self.dirBut.x = ButtonOffset + self.dirBut.radius
-	self.dirBut.y = virtScrHeight - ButtonOffset - self.dirBut.radius
+	self.dirBut.y = self.camera.virtualHeight 
+		- ButtonOffset - self.dirBut.radius
 	
 	-- "joystick"
 	self.dirBut.smX = self.dirBut.x
@@ -71,12 +69,8 @@ function VirtualGamepad:init(virtScrWidth, virtScrHeight,
 		b.smY = b.y
 	end
 	
-	self.dirBut.actionReleasedNotInside = function(b, x, y)
-		b:actionReleased(x, y)
-	end
-	
 	-- Only available for direction button!
-	self.dirBut.actionMove = function(b, x, y, dX, dY)
+	self.dirBut.actionMove = function(b, x, y)
 		local maxRad = b.radius - b.smRadius
 		local dX = b.x - x
 		local dY = b.y - y
@@ -99,7 +93,7 @@ end
 
 function VirtualGamepad:getNewHorizontalPosButton()
 	if #self.acButtons == 0 then
-		return self.virtScrWidth
+		return self.camera.virtualWidth
 	else
 		local b = self.acButtons[#self.acButtons]
 		return b.x - b.radius/2 - ButtonOffset
@@ -109,22 +103,17 @@ end
 -- @label should be one-character-long (doesn't matter actually,
 -- first character is taken anyway)
 -- @actionPressed trigger func when button is pressed
--- @actionReleased trigger func when button is properly released
--- @actionReleasedNotInside trigger func when button is released, but
--- (touch) mouse coordinates are outside it's area
-function VirtualGamepad:addActionButton(label, actionPressed, actionReleased,
-	actionReleasedNotInside)
-	
+-- @actionReleased trigger func when button is released
+function VirtualGamepad:addActionButton(label, actionPressed, actionReleased)
 	local but = {}
 	
 	but.label = string.sub(label, 1)
 	but.radius = self.buttonRad
 	but.x = self:getNewHorizontalPosButton() - ButtonOffset - but.radius
-	but.y = self.virtScrHeight - ButtonOffset - but.radius
+	but.y = self.camera.virtualHeight - ButtonOffset - but.radius
 	but.isPressed = false
 	but.actionPressed = actionPressed
 	but.actionReleased = actionReleased
-	but.actionReleasedNotInside = actionReleasedNotInside
 	
 	self.acButtons[#self.acButtons + 1] = but
 	
@@ -192,13 +181,7 @@ end
 
 function VirtualGamepad:mouseRelease(x, y)
 	if self.click ~= nil then
-		-- Check out if the coordinates aren't inside another button
-		-- (which obviously is part of the gamepad)
-		if self:mouseInsideButton(x, y, self.click) then
-			self.click:actionReleased(x, y)
-		else
-			self.click:actionReleasedNotInside(x, y)
-		end
+		self.click:actionReleased(x, y)
 		self.click.isPressed = false
 		-- Processed
 		self.click = nil
@@ -206,13 +189,7 @@ function VirtualGamepad:mouseRelease(x, y)
 end
 
 function VirtualGamepad:mouseReleaseNotInside(x, y)
-	if self.click ~= nil then
-		-- Outside the gamepad, then it's outside of all gamepad's buttons
-		self.click:actionReleasedNotInside(x, y)
-		self.click.isPressed = false
-		-- Processed
-		self.click = nil
-	end
+	self:mouseRelease(x, y)
 end
 
 function VirtualGamepad:mouseMove(x, y, distX, distY)
@@ -223,50 +200,77 @@ end
 
 --
 -- Touch analogue
+-- love.touch* is not working properly on my android phone
+-- (except the love.touchpress), so I've decided to do the main
+-- work in the gamepad's update section.
 --
 function VirtualGamepad:touchPress(x, y, id)
 	if self.touches[id] ~= nil then
-		self:touchReleaseNotInside(-1, -1, id)
+		self:myTouchRelease(-1, -1, id)
 	end
 	
 	local but = self:getButtonUnderTouch(x, y)
 	
 	if but ~= nil then
-		self.touches[id] = but
+		self.touches[id] = { 
+			button = but,
+			isActive = false,
+		}
 		but:actionPressed(x, y)
 		but.isPressed = true
 	end
 end
 
 function VirtualGamepad:touchRelease(x, y, id)
-	if self.touches[id] ~= nil then
-		local t = self.touches[id]
-		-- Check out if the coordinates aren't inside another button
-		-- (which obviously is part of the gamepad)
-		if self:mouseInsideButton(x, y, t) then
-			t:actionReleased(x, y)
-		else
-			t:actionReleasedNotInside(x, y)
-		end
-		t.isPressed = false
-		-- Processed
-		self.touches[id] = nil
-	end
+	-- not working properly
 end
 
 function VirtualGamepad:touchReleaseNotInside(x, y, id)
+	-- not working properly
+end
+
+function VirtualGamepad:touchMove(x, y, distX, distY, id)
+	-- not working properly
+end
+
+function VirtualGamepad:myTouchRelease(x, y, id)
 	if self.touches[id] ~= nil then
-		-- Outside the gamepad, then it's outside of all gamepad's buttons
-		self.touches[id]:actionReleasedNotInside(x, y)
-		self.touches[id].isPressed = false
-		-- Processed
+		local t = self.touches[id]
+		t.button:actionReleased(x, y)
 		self.touches[id] = nil
 	end
 end
 
-function VirtualGamepad:touchMove(x, y, distX, distY, id)
-	if self.touches[id] == self.dirBut then
-		self.touches[id]:actionMove(x, y, distX, distY)
+function VirtualGamepad:update(deltaTime, mouseX, mouseY)
+	local sx, sy = getScaleRealToVirtual(
+		self.camera.screenWidth, self.camera.virtualWidth,
+		self.camera.screenHeight, self.camera.virtualHeight)
+		
+	-- Compare the current touches with the old ones and
+	-- check, if they are still active
+	local touches = love.touch.getTouches()
+	
+	for k, id in pairs(touches) do
+		if self.touches[id] ~= nil then
+			self.touches[id].isActive = true
+			
+			-- Direction button (joystick) only!
+			if self.touches[id].button == self.dirBut then
+				-- Update joystick position
+				local x, y = love.touch.getPosition(id)
+				x = x * sx
+				y = y * sy
+				self.dirBut:actionMove(x, y)
+			end
+		end
+	end
+	
+	-- Remove the inactive touches
+	for id, touch in pairs(self.touches) do
+		if touch.isActive == false then
+			self:myTouchRelease(-1, -1, id)
+			self.touches[id] = nil
+		end
 	end
 end
 
@@ -309,11 +313,4 @@ end
 function VirtualGamepad:draw(camera)
 	self:drawDirectionButton()
 	self:drawActionButtons()
-	-- debug
-	self.font:drawLine("Touch IDs:", 100, 130, 0.5)
-	local i = 150
-	for id, touch in pairs(self.touches) do
-		self.font:drawLine(tostring(touch), 100, i, 0.5)
-		i = i + 20
-	end
 end
