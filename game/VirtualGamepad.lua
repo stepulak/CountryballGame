@@ -313,7 +313,7 @@ function VirtualGamepad:draw(camera)
 	self.font:drawLine("Touch IDs:", 100, 130, 0.5)
 	local i = 150
 	for id, touch in pairs(self.touches) do
-		self.font:drawLine(tonumber(id), 100, i, 0.5)
+		self.font:drawLine(tostring(touch), 100, i, 0.5)
 		i = i + 20
 	end
 end

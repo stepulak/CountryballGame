@@ -11,11 +11,14 @@ end
 -- Draw line, [x, y] is top-left corner
 function Font:drawLine(str, x, y, scale)
 	if scale then
+		love.graphics.push()
 		love.graphics.scale(scale, scale)
 	end
 	love.graphics.setFont(self.font)
 	love.graphics.print(str, x, y)
-	love.graphics.scale(1, 1)
+	if scale then
+		love.graphics.pop()
+	end
 end
 
 -- Draw line with center of [x, y]
