@@ -1,12 +1,17 @@
-require "class"
+require "Runnable"
 
-Credits = class:new()
+local ScrollVelocity = 50
+
+Credits = Runnable:new()
 
 function Credits:init(scrVirtWidth, scrVirtHeight, fonts, gameLogoTex)
 	self.scrVirtWidth = scrVirtWidth
 	self.scrVirtHeight = scrVirtHeight
 	self.fonts = fonts
 	self.gameLogoTex = gameLogoTex
+	
+	self.offset = 0
+	self.overallHeight = 0
 	
 	self.content = {}
 end
@@ -24,6 +29,7 @@ function Credits:addLineSpec(text, font)
 		text = text,
 		font = font
 	}
+	self.overallHeight = self.overallHeight + font:getHeight()
 end
 
 function Credits:addImg(tex, width, height)
@@ -32,18 +38,34 @@ function Credits:addImg(tex, width, height)
 		width = width,
 		height = height,
 	}
+	self.overallHeight = self.overallHeight + height
 end
 
-function Credits:addVerticalSpace()
+function Credits:addVerticalSpaceS()
+	self:addVerticalSpaceSpec(10)
+end
 
+function Credits:addVerticalSpaceM()
+	self:addVerticalSpaceSpec(30)
+end
+
+function Credits:addVerticalSpaceSpec(prop)
+	self.content[#self.content + 1] = {
+		space = prop,
+	}
+	self.overallHeight = self.overallHeight + prop
+end
+
+function Credits:shouldQuit()
+	return self.offset >= self.overallHeight
 end
 
 function Credits:update(deltaTime)
-	-- TODO
+	self.offset = self.offset + ScrollVelocity * deltaTime
 end
 
 function Credits:draw()
-	-- TODO
+
 end
 
 -- Fill this credits with actual data related to this game
@@ -54,7 +76,7 @@ function Credits:fill()
 	
 	self:addLineM("Stepan Trcka")
 	self:addLineS("Programming, game design, level design, graphics")
-	self:addVerticalSpace()
+	self:addVerticalSpaceM()
 	
 	--
 	-- SOUNDS
@@ -79,4 +101,6 @@ function Credits:fill()
 	self:addLineS("Source: https://www.youtube.com/watch?v=B-uIfFgMPyw")
 	
 	self:addVerticalSpace()
+	
+	return self
 end

@@ -102,8 +102,11 @@ function MainMenu:insertQuitMenuButton(menuTree)
 end
 
 function MainMenu:getCredits()
-	return Credits:init(self.screen.virtualWidth,
-		self.screen.virtualHeight, self.fonts):fill()
+	return Credits:init(
+		self.screen.virtualWidth,
+		self.screen.virtualHeight, 
+		self.fonts, 
+		self.textureContainer:getTexture("game_logo")):fill()
 end
 
 function MainMenu:handleKeyPress(key)
