@@ -122,6 +122,7 @@ function VirtualGamepad:addActionButton(label, actionPressed, actionReleased,
 	but.x = self:getNewHorizontalPosButton() - ButtonOffset - but.radius
 	but.y = self.virtScrHeight - ButtonOffset - but.radius
 	but.isPressed = false
+	but.viaTouch = false -- debug option
 	but.actionPressed = actionPressed
 	but.actionReleased = actionReleased
 	but.actionReleasedNotInside = actionReleasedNotInside
@@ -235,6 +236,7 @@ function VirtualGamepad:touchPress(x, y, id)
 		self.touches[id] = but
 		but:actionPressed(x, y)
 		but.isPressed = true
+		but.viaTouch = true
 	end
 end
 
@@ -302,6 +304,9 @@ function VirtualGamepad:drawActionButtons()
 	for i = 1, #self.acButtons do
 		local b = self.acButtons[i]
 		self:drawButton(b.x, b.y, b.radius, b.isPressed)
+		if b.viaTouch then
+			self:drawButton(b.x, b.y, b.radius * 2, b.isPressed)
+		end
 		self:drawLabel(b.label, b.x, b.y, b.radius, b.isPressed)
 	end
 end

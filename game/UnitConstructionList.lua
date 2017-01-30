@@ -1,7 +1,7 @@
 require "Unit"
 require "Player"
 require "Zombie"
-require "Canonball"
+require "CanonBall"
 require "Turtle"
 require "Mushroom"
 require "Flower"
