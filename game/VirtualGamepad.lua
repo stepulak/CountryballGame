@@ -237,6 +237,7 @@ function VirtualGamepad:myTouchRelease(x, y, id)
 	if self.touches[id] ~= nil then
 		local t = self.touches[id]
 		t.button:actionReleased(x, y)
+		t.button.isPressed = false
 		self.touches[id] = nil
 	end
 end
@@ -270,6 +271,8 @@ function VirtualGamepad:update(deltaTime, mouseX, mouseY)
 		if touch.isActive == false then
 			self:myTouchRelease(-1, -1, id)
 			self.touches[id] = nil
+		else
+			self.touches[id].isActive = false
 		end
 	end
 end
