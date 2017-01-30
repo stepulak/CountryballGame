@@ -1,10 +1,11 @@
 require "World"
 require "DeathScreen"
 require "Gui"
+require "Runnable"
 
 local PlayerDeathWaitTime = 3
 
-Gameplay = class:new()
+Gameplay = Runnable:new()
 
 function Gameplay:init(world, fonts)
 	self.name = "gameplay"
@@ -24,7 +25,7 @@ function Gameplay:init(world, fonts)
 	self:createVirtualGamepad()
 end
 
-function Gameplay:createVirtualGamepad()
+function Gameplay:createVirtualGamepad()	
 	local font = self.fonts.big
 	
 	self.gamepad = VirtualGamepad:new(
@@ -56,27 +57,39 @@ function Gameplay:resume()
 end
 
 function Gameplay:handleMouseClick(x, y)
-	self.gui:mouseClick(x, y)
+	if MOBILE_VERSION then
+		self.gui:mouseClick(x, y)
+	end
 end
 
 function Gameplay:handleMouseRelease(x, y)
-	self.gui:mouseRelease(x, y)
+	if MOBILE_VERSION then
+		self.gui:mouseRelease(x, y)
+	end
 end
 
 function Gameplay:handleMouseMove(x, y, dx, dy)
-	self.gui:mouseMove(x, y, dx, dy)
+	if MOBILE_VERSION then
+		self.gui:mouseMove(x, y, dx, dy)
+	end
 end
 
 function Gameplay:handleTouchPress(id, x, y)
-	self.gui:touchPress(id, x, y)
+	if MOBILE_VERSION then
+		self.gui:touchPress(id, x, y)
+	end
 end
 
 function Gameplay:handleTouchRelease(id, x, y)
-	self.gui:touchRelease(id, x, y)
+	if MOBILE_VERSION then
+		self.gui:touchRelease(id, x, y)
+	end
 end
 
 function Gameplay:handleTouchMove(id, x, y, dx, dy)
-	self.gui:touchMove(id, x, y, dx, dy)
+	if MOBILE_VERSION then
+		self.gui:touchMove(id, x, y, dx, dy)
+	end
 end
 
 function Gameplay:isPlayerControllable()
@@ -195,9 +208,11 @@ function Gameplay:update(deltaTime)
 	
 	-- Do not update the gameplay when it's deathscreen on
 	if self.deathScreen == nil then
-		local mx, my = getScaledMousePosition(self.world.camera, false)
-		self.gui:update(deltaTime, mx, my)
-	
+		if MOBILE_VERSION then
+			local mx, my = getScaledMousePosition(self.world.camera, false)
+			self.gui:update(deltaTime, mx, my)
+		end
+		
 		self:handlePlayerControl(deltaTime)
 		self:clearPressedKeys()
 		
@@ -212,6 +227,9 @@ function Gameplay:draw()
 	else
 		self.world:draw()
 		self.world:drawUI()
-		self.gui:draw(self.world.camera)
+		
+		if MOBILE_VERSION then
+			self.gui:draw(self.world.camera)
+		end
 	end
 end

@@ -1,13 +1,14 @@
 require "Editor"
 require "Gameplay"
 require "Release"
+require "Runnable"
 
 -- Constants
 
 local tileWidth = 60
 local tileHeight = 60
 
-Game = class:new()
+Game = Runnable:new()
 
 function Game:init(screen, textureContainer, soundContainer,
 	headerContainer, sinCosTable, fonts)
@@ -61,10 +62,7 @@ function Game:resetEditor()
 end
 
 function Game:handleKeyPress(key)
-	if self.activeMode.handleKeyPress and 
-		self.activeMode:handleKeyPress(key) then
-		-- continue
-	elseif key == "`" and IS_OFFICIAL_RELEASE == false then
+	if key == "`" and IS_OFFICIAL_RELEASE == false then
 		-- "tilde" key
 		if self.activeMode == self.gameplay then
 			self.activeMode = self.editor
@@ -73,55 +71,41 @@ function Game:handleKeyPress(key)
 		end
 		
 		self.activeMode:resume()
+	else
+		self.activeMode:handleKeyPress(key)
 	end
 end
 
 function Game:handleKeyRelease(key)
-	if self.activeMode.handleKeyRelease then
-		self.activeMode:handleKeyRelease(key)
-	end
+	self.activeMode:handleKeyRelease(key)
 end
 
 function Game:handleTextInput(text)
-	if self.activeMode.handleTextInput then
-		self.activeMode:handleTextInput(text)
-	end
+	self.activeMode:handleTextInput(text)
 end
 
 function Game:handleMouseClick(x, y)
-	if self.activeMode.handleMouseClick then
-		self.activeMode:handleMouseClick(x, y)
-	end
+	self.activeMode:handleMouseClick(x, y)
 end
 
 function Game:handleMouseRelease(x, y)
-	if self.activeMode.handleMouseRelease then
-		self.activeMode:handleMouseRelease(x, y)
-	end
+	self.activeMode:handleMouseRelease(x, y)
 end
 
 function Game:handleMouseMove(x, y, dx, dy)
-	if self.activeMode.handleMouseMove then
-		self.activeMode:handleMouseMove(x, y, dx, dy)
-	end
+	self.activeMode:handleMouseMove(x, y, dx, dy)
 end
 
 function Game:handleTouchPress(id, tx, ty)
-	if self.activeMode.handleTouchPress then
-		self.activeMode:handleTouchPress(id, tx, ty)
-	end
+	self.activeMode:handleTouchPress(id, tx, ty)
 end
 
 function Game:handleTouchRelease(id, tx, ty)
-	if self.activeMode.handleTouchRelease then
-		self.activeMode:handleTouchPress(id, tx, ty)
-	end
+	self.activeMode:handleTouchPress(id, tx, ty)
 end
 
 function Game:handleTouchMove(id, tx, ty, tdx, tdy)
-	if self.activeMode.handleTouchMove then
-		self.activeMode:handleTouchMove(id, tx, ty, tdx, tdy)
-	end
+	self.activeMode:handleTouchMove(id, tx, ty, tdx, tdy)
 end
 
 function Game:handleTodo()

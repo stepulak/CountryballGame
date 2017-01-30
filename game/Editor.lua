@@ -2,8 +2,9 @@ require "World"
 require "Gui"
 require "UnitConstructionList"
 require "ActiveObjectConstructionList"
+require "Runnable"
 
-Editor = class:new()
+Editor = Runnable:new()
 
 function Editor:init(world, fonts)
 	self.name = "editor"

@@ -1,4 +1,4 @@
-require "Game"
+require "MainMenu"
 require "TileHeader"
 require "Font"
 require "TexturesLoad"
@@ -12,7 +12,7 @@ local screen = {
 	height,
 }
 
-local game
+local mainMenu
 local sinCosTable
 local textureContainer
 local soundContainer
@@ -55,7 +55,7 @@ function love.load()
 	loadTileHeaders()
 	loadFonts()
 	
-	game = Game:new(screen, textureContainer, soundContainer,
+	mainMenu = MainMenu:new(screen, textureContainer, soundContainer,
 		headerContainer, sinCosTable, fonts)
 end
 
@@ -67,7 +67,7 @@ function transformMouseCoordinates(x, y)
 end
 
 function love.keypressed(key, scancode, isRepeated)
-	game:handleKeyPress(key)
+	mainMenu:handleKeyPress(key)
 	
 	-- Unusual but escape is used for another purposes
 	if key == "f1" then
@@ -76,24 +76,24 @@ function love.keypressed(key, scancode, isRepeated)
 end
 
 function love.keyreleased(key, scancode, isRepeated)
-	game:handleKeyRelease(key)
+	mainMenu:handleKeyRelease(key)
 end
 
 function love.textinput(text)
-	game:handleTextInput(text)
+	mainMenu:handleTextInput(text)
 end
 
 function love.mousepressed(x, y, button, isTouch)
 	if isTouch == false then
 		local tx, ty = transformMouseCoordinates(x, y)
-		game:handleMouseClick(tx, ty)
+		mainMenu:handleMouseClick(tx, ty)
 	end
 end
 
 function love.mousereleased(x, y, button, isTouch)
 	if isTouch == false then
 		local tx, ty = transformMouseCoordinates(x, y)
-		game:handleMouseRelease(tx, ty)
+		mainMenu:handleMouseRelease(tx, ty)
 	end
 end
 
@@ -102,28 +102,28 @@ function love.mousemoved(x, y, dx, dy, isTouch)
 		local tx, ty = transformMouseCoordinates(x, y)
 		-- distance can be transformed too with the same function
 		local tdx, tdy = transformMouseCoordinates(dx, dy)
-		game:handleMouseMove(tx, ty, tdx, tdy)
+		mainMenu:handleMouseMove(tx, ty, tdx, tdy)
 	end
 end
 
 function love.touchpressed(id, x, y, dx, dy, pressure)
 	local tx, ty = transformMouseCoordinates(x, y)
-	game:handleTouchPress(id, tx, ty)
+	mainMenu:handleTouchPress(id, tx, ty)
 end
 
 function love.touchreleased(id, x, y, dx, dy, pressure)
 	local tx, ty = transformMouseCoordinates(x, y)
-	game:handleTouchRelease(id, tx, ty)
+	mainMenu:handleTouchRelease(id, tx, ty)
 end
 
 function love.touchmoved(id, x, y, dx, dy, pressure)
 	local tx, ty = transformMouseCoordinates(x, y)
 	local tdx, tdy = transformMouseCoordinates(dx, dy)
-	game:handleTouchMove(id, tx, ty, tdx, tdy)
+	mainMenu:handleTouchMove(id, tx, ty, tdx, tdy)
 end
 
 function love.update(deltaTime)
-	game:update(deltaTime)
+	mainMenu:update(deltaTime)
 end
 
 function love.draw()
@@ -131,6 +131,6 @@ function love.draw()
 		screen.height, screen.virtualHeight)
 		
 	love.graphics.scale(sx, sy)
-	game:draw()
+	mainMenu:draw()
 	love.graphics.scale(1, 1)
 end
