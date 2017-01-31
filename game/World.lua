@@ -111,6 +111,9 @@ function World:loadFromSaveDir(filename)
 		self:preRunWeather()
 	end
 	
+	self.playerFinished = false
+	self:setupPlayer()
+	
 	return true
 end
 

@@ -181,7 +181,7 @@ function Player:tryToAttack(soundContainer)
 	if self.helmetEnabled and self.flowerType ~= nil then
 		self.projectileFired = true
 		self.attackingTimer = PlayerAttackingTime
-		soundContainer:playEffect("player_shoot")
+		soundContainer:playEffect("player_shooting")
 	end
 end
 

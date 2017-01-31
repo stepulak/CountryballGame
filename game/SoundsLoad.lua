@@ -6,7 +6,8 @@ function loadSounds()
 	
 	-- Player
 	soundContainer:loadEffect("player_jump", "assets/csound/fart.mp3")
-	soundContainer:loadEffect("player_shoot", "assets/csound/player_shoot.wav")
+	soundContainer:loadEffect("player_shooting", 
+		"assets/csound/player_shooting.wav")
 	
 	soundContainer:loadEffect("player_drop_helmet", 
 		"assets/csound/player_death.wav")
@@ -43,6 +44,9 @@ function loadSounds()
 		
 	soundContainer:loadEffect("canonball_smash", 
 		"assets/csound/canonball_smash.mp3")
-		
+	
+	-- Music
+	soundContainer:loadMusic("game_menu", "assets/cmusic/Game-Menu.mp3")
+	
 	return soundContainer
 end

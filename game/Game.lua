@@ -11,7 +11,7 @@ local tileHeight = 60
 Game = Runnable:new()
 
 function Game:init(screen, textureContainer, soundContainer,
-	headerContainer, sinCosTable, fonts)
+	headerContainer, sinCosTable, fonts, editorInitMode)
 	
 	self.screen = screen
 	self.textureContainer = textureContainer
@@ -24,12 +24,15 @@ function Game:init(screen, textureContainer, soundContainer,
 	self:newWorld()
 	
 	self:resetGameplay()
+	self.activeMode = self.gameplay
 	
 	if IS_OFFICIAL_RELEASE == false then
 		self:resetEditor()
+		
+		if editorInitMode then
+			self.activeMode = self.editor
+		end
 	end
-	
-	self.activeMode = self.gameplay
 end
 
 function Game:resetWorld()

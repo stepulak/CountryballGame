@@ -7,7 +7,7 @@ require "Utils"
 
 local screen = {
 	virtualWidth = 1200,
-	virtualHeight = 900,
+	virtualHeight = 675,
 	width,
 	height,
 }

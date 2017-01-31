@@ -421,6 +421,17 @@ function Editor:setWorldMusic(name)
 	print("Music may have been set")
 end
 
+function Editor:newWorld(words)
+	if words[2] == nil or words[3] == nil then
+		print("Missing proportions")
+		return
+	end
+	
+	self.world:createEmptyWorld(tonumber(words[2]), tonumber(words[3]))
+	
+	print("New world created")
+end
+
 function Editor:parseCommandFromConsole(cmd)
 	local words = splitStringBySpace(cmd)
 	
@@ -458,6 +469,8 @@ function Editor:parseCommandFromConsole(cmd)
 		self:loadWorldFrom(words[2])
 	elseif words[1] == "set_music" then
 		self:setWorldMusic(words[2])
+	elseif words[1] == "new_world" then
+		self:newWorld(words)
 	end
 end
 
@@ -620,6 +633,9 @@ function Editor:handleKeyPress(key)
 		self:quickSave()
 	elseif key == "f6" then
 		self:quickLoad()
+	elseif key == "f7" then
+		-- TODO
+		self:quickReset()
 	else
 		-- Key wasn't processed
 		return false

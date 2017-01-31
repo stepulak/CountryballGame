@@ -1,5 +1,7 @@
+SEE IN-GAME CREDITS FOR MORE INFO!
+
 fart.mp3: https://www.youtube.com/watch?v=B-uIfFgMPyw
-player_shoot.wav: Nathan McCoy (Super Tux)
+player_shooting.wav: Nathan McCoy (Super Tux)
 player_death.wav: MatzeB (Super Tux)
 splash.mp3: http://opengameart.org/content/water-splashes
 smash.mp3: http://opengameart.org/content/8-wet-squish-slurp-impacts
@@ -19,5 +21,4 @@ lifeup.wav: Nathan McCoy (Super Tux)
 turtle_bump.wav: Some_Person (Super Tux)
 block_unable.wav: Yaniel, GPLv2+CC-by-sa (Super Tux)
 turtle_touch.wav: Some_Person (Super Tux)
-trampoline.wav: wansti (Super Tux)
 rocket_engine.mp3: http://soundbible.com/1498-Rocket.html

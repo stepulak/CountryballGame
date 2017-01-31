@@ -212,7 +212,7 @@ function ImageGrid:draw(camera)
 		camera.screenWidth, camera.virtualWidth,
 		camera.screenHeight, camera.virtualHeight)
 	
-	love.graphics.setScissor(self.x * sx, self.y * sx - 10, 
+	love.graphics.setScissor(self.x * sx, self.y * sy, 
 		self.width * sx, self.height * sy - 10)
 	
 	local offsetY = self:getScrollOffset()

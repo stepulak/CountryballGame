@@ -2,9 +2,10 @@ require "Menu"
 require "Game"
 require "Credits"
 require "Release"
+--require "assets/maps/MainMenuMap.lua"
 
 local ButtonWidth = 300
-local ButtonHeight = 100
+local ButtonHeight = 70
 local ButtonOffset = 50
 
 MainMenu = Runnable:new()
@@ -19,16 +20,32 @@ function MainMenu:init(screen, textureContainer, soundContainer,
 	self.sinCosTable = sinCosTable
 	self.fonts = fonts
 	
-	self.credits = nil
-	self.run = nil
+	self.gameLogoTex = textureContainer:getTexture("game_logo")
+	self.gameLogoAngle = 0
+	self.gameLogoDir = 1
 	
+	self.credits = nil
+	self.run = nil -- runnable
 	self.quit = false
+	
 	self.gui = GuiContainer:new()
 	
-	self:setup()
+	self:createBackgroundWorld()
+	self:setupMenu()
 end
 
-function MainMenu:setup()
+function MainMenu:createBackgroundWorld()
+	local tilesize = 60
+	
+	self.world = World:new(nil, 60, 60, self.screen,
+		self.textureContainer, self.soundContainer,
+		self.headerContainer, self.sinCosTable, self.fonts)
+	
+	self.world:createEmptyWorld(20, 20)
+	--_MainMenuWorldLoad(self.world)
+end
+
+function MainMenu:setupMenu()
 	local menuTree = {}
 	
 	self:insertGameContinueMenuButton(menuTree)
@@ -52,7 +69,8 @@ function MainMenu:newGame(editorInitMode)
 		self.soundContainer,
 		self.headerContainer, 
 		self.sinCosTable, 
-		self.fonts)
+		self.fonts,
+		editorInitMode)
 end
 
 function MainMenu:insertGameContinueMenuButton(menuTree)
@@ -93,6 +111,7 @@ function MainMenu:insertCreditsMenuButton(menuTree)
 				self.credits = self:getCredits()
 			end
 			self.run = self.credits
+			self.run:start()
 		end,
 	}
 end
@@ -102,11 +121,11 @@ function MainMenu:insertQuitMenuButton(menuTree)
 end
 
 function MainMenu:getCredits()
-	return Credits:init(
+	return Credits:new(
 		self.screen.virtualWidth,
 		self.screen.virtualHeight, 
 		self.fonts, 
-		self.textureContainer:getTexture("game_logo")):fill()
+		self.gameLogoTex):fill()
 end
 
 function MainMenu:handleKeyPress(key)
@@ -121,7 +140,7 @@ function MainMenu:handleKeyRelease(key)
 	if self.run ~= nil then
 		self.run:handleKeyRelease(key)
 	else
-		self.gui:keyRelease(key)
+		--self.gui:keyRelease(key)
 	end
 end
 
@@ -185,18 +204,51 @@ function MainMenu:shouldQuit()
 	return self.quit
 end
 
+local GameLogoRotVel = 0.1
+local GameLogoAngleMax = math.pi/20
+
+function MainMenu:updateGameLogoRotation(deltaTime)
+	self.gameLogoAngle = self.gameLogoAngle +
+		self.gameLogoDir * deltaTime * GameLogoRotVel
+	
+	if math.abs(self.gameLogoAngle) >= GameLogoAngleMax then
+		self.gameLogoAngle = GameLogoAngleMax * self.gameLogoDir
+		self.gameLogoDir = -self.gameLogoDir
+	end
+end
+
 function MainMenu:update(deltaTime)
 	if self.run ~= nil then
 		self.run:update(deltaTime)
+		
+		if self.run:shouldQuit() then
+			self.run = nil
+		end
 	else
+		self.world:update(deltaTime)
 		self.gui:update(deltaTime)
+		self:updateGameLogoRotation(deltaTime)
 	end
+end
+
+function MainMenu:drawGameLogo()
+	local w, h = self.gameLogoTex:getDimensions()
+	
+	love.graphics.push()
+	love.graphics.translate(self.screen.virtualWidth/2, 50 + h/2)
+	love.graphics.rotate(self.gameLogoAngle)
+	
+	drawTex(self.gameLogoTex, -w/2, -h/2, w, h)
+	
+	love.graphics.pop()
 end
 
 function MainMenu:draw()
 	if self.run ~= nil then
 		self.run:draw()
 	else
-		self.gui:draw(self.screen)
+		self.world:draw()
+		self.gui:draw(self.world.camera)
+		self:drawGameLogo()
 	end
 end
