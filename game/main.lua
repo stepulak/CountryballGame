@@ -135,6 +135,10 @@ end
 function love.update(deltaTime)
 	if paused == false then
 		mainMenu:update(deltaTime)
+		
+		if mainMenu:shouldQuit() then
+			love.event.push("quit")
+		end
 	end
 end
 

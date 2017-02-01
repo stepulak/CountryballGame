@@ -103,8 +103,6 @@ function MainMenu:insertCreatedLevelsMenuButton(menuTree)
 end
 
 function MainMenu:insertCreditsMenuButton(menuTree)
-	local index = #menuTree + 1
-	
 	menuTree[#menuTree + 1] = {
 		label = "Credits",
 		
@@ -119,7 +117,13 @@ function MainMenu:insertCreditsMenuButton(menuTree)
 end
 
 function MainMenu:insertQuitMenuButton(menuTree)
-
+	menuTree[#menuTree + 1] = {
+		label = "Quit",
+		
+		action = function()
+			self.quit = true
+		end,
+	}
 end
 
 function MainMenu:getCredits()
@@ -127,7 +131,7 @@ function MainMenu:getCredits()
 		self.screen.virtualWidth,
 		self.screen.virtualHeight, 
 		self.fonts, 
-		self.gameLogoTex):fill()
+		self.textureContainer):fill()
 end
 
 function MainMenu:handleKeyPress(key)

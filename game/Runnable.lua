@@ -9,10 +9,10 @@ Runnable = class:new()
 function Runnable:init()
 end
 
-function Runnable:insertQuitButton(gui, font, virtScrWidth,
+function Runnable:insertQuitButton(gui, font, centerX,
 	textureContainer, action)
 	
-	gui:addElement(QuitButton:new(font, virtScrWidth, 150, 75,
+	gui:addElement(QuitButton:new(font, centerX, 150, 75,
 		textureContainer:getTexture("button_idle"),
 		textureContainer:getTexture("button_click"),
 		action))

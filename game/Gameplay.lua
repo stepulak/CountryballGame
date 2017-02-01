@@ -26,7 +26,7 @@ function Gameplay:init(world, fonts)
 		self:createVirtualGamepad()
 	end
 	self:insertQuitButton(self.gui, self.fonts.medium, 
-		self.world.camera.virtualWidth,
+		self.world.camera.virtualWidth/2,
 		self.world.textureContainer,
 			function()
 				self.todo = "main_menu_quit"

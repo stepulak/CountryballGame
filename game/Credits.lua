@@ -1,17 +1,16 @@
 require "Runnable"
+require "Release"
 
 local ScrollVelocity = 100
 
 Credits = Runnable:new()
 
-function Credits:init(scrVirtWidth, scrVirtHeight, fonts, 
-	gameLogoTex, backgroundTex)
-	
+function Credits:init(scrVirtWidth, scrVirtHeight, fonts, textureContainer)
 	self.scrVirtWidth = scrVirtWidth
 	self.scrVirtHeight = scrVirtHeight
 	self.fonts = fonts
-	self.gameLogoTex = gameLogoTex
-	self.backgroundTex = backgroundTex
+	self.gameLogoTex = textureContainer:getTexture("game_logo")
+	self.backgroundTex = textureContainer:getTexture("credits_background")
 	
 	self.offset = 0
 	self.overallHeight = 0
@@ -20,6 +19,15 @@ function Credits:init(scrVirtWidth, scrVirtHeight, fonts,
 	
 	self.content = {}
 	self.contentIndex = 1
+	
+	self.gui = GuiContainer:new()
+	
+	--if MOBILE_RELEASE then
+		self:insertQuitButton(self.gui, fonts.medium, 100, textureContainer,
+			function()
+				self.quit = true
+			end)
+	--end
 end
 
 function Credits:addLineM(text)
@@ -85,6 +93,10 @@ function Credits:start()
 	self.contentIndex = 1
 end
 
+function Credits:handleMouseClick(x, y)
+	self.gui:mouseClick(x, y)
+end
+
 function Credits:handleKeyPress(key)
 	if key == "escape" then
 		self.quit = true
@@ -104,6 +116,8 @@ function Credits:update(deltaTime)
 			end
 		end
 	end
+	
+	self.gui:update(deltaTime)
 end
 
 function Credits:draw()
@@ -137,6 +151,8 @@ function Credits:draw()
 	end
 	
 	love.graphics.translate(0, -transY)
+	
+	self.gui:draw()
 end
 
 -- Fill this credits with actual data related to this game

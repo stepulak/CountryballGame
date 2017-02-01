@@ -2,16 +2,16 @@ require "TexturedButton"
 
 local AskTimeCountdown = 3
 local Label = "QUIT"
-local LabelAsk = "u sure?"
+local LabelAsk = "U SURE?"
 
 -- Quit button which is placed in the top-middle position
 -- Possible usage: only on mobile phones with no "escape" button
 QuitButton = TexturedButton:new()
 
-function QuitButton:init(font, virtScrWidth, width, height,
+function QuitButton:init(font, centerX, width, height,
 	texIdle, texClick, action)
 	
-	self:texturedButtonSuper(Label, font, virtScrWidth/2 - width/2, 0,
+	self:texturedButtonSuper(Label, font, centerX - width/2, 0,
 		width, height, texIdle, texClick, action)
 		
 	self.timer = 0
@@ -25,6 +25,8 @@ function QuitButton:mouseClick(x, y)
 		self.clicked = true
 		self.timer = AskTimeCountdown
 	else
+		self.clicked = false
+		self.label = Label
 		self.action()
 	end
 end
