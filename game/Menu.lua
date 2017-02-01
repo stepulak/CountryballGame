@@ -1,4 +1,4 @@
-require "Button"
+require "TexturedButton"
 
 Menu = GuiElement:new()
 
@@ -10,13 +10,16 @@ Menu = GuiElement:new()
 -- if @tree.label is equal to "~back", it will be considered as "back" button,
 -- to switch to the previous node
 function Menu:init(scrVirtWidth, scrVirtHeight,
-	buttonWidth, buttonHeight, buttonOffset, font, tree)
+	buttonWidth, buttonHeight, buttonOffset,
+	buttonTexIdle, buttonTexClick, font, tree)
 	
 	self:super("menu", scrVirtWidth/2 - buttonWidth/2, 0, buttonWidth, 0)
 	
 	self.scrVirtWidth = scrVirtWidth
 	self.scrVirtHeight = scrVirtHeight
 	
+	self.buttonTexIdle = buttonTexIdle
+	self.buttonTexClick = buttonTexClick
 	self.buttonWidth = buttonWidth
 	self.buttonHeight = buttonHeight
 	self.buttonOffset = buttonOffset
@@ -49,8 +52,9 @@ function Menu:createButton(node, parentNode)
 		
 		local action = node[i].action ~= nil and node[i].action or function() end
 		
-		node[i].button = Button:new(label, self.font, self.x, y,
-			self.buttonWidth, self.buttonHeight - 2, action)
+		node[i].button = TexturedButton:new(label, self.font, self.x, y,
+			self.buttonWidth, self.buttonHeight - 2,
+			self.buttonTexIdle, self.buttonTexClick, action)
 		
 		y = y + self.buttonHeight + self.buttonOffset
 		
@@ -150,7 +154,7 @@ end
 
 function Menu:mouseReleaseNotInside(x, y)
 	if self.clickedButton ~= nil then
-		self.clickedButton:mouseReleaseNotInside(x, y)
+		self.clickedButton.button:mouseReleaseNotInside(x, y)
 	end
 	
 	self.clickedButton = nil

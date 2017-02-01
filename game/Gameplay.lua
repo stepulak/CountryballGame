@@ -22,7 +22,15 @@ function Gameplay:init(world, fonts)
 	self.jumpButtonPressed = false
 	self.shootButtonPressed = false
 	
-	self:createVirtualGamepad()
+	if MOBILE_VERSION then
+		self:createVirtualGamepad()
+	end
+	self:insertQuitButton(self.gui, self.fonts.medium, 
+		self.world.camera.virtualWidth,
+		self.world.textureContainer,
+			function()
+				self.todo = "main_menu_quit"
+			end)
 end
 
 function Gameplay:createVirtualGamepad()	
@@ -57,39 +65,27 @@ function Gameplay:resume()
 end
 
 function Gameplay:handleMouseClick(x, y)
-	if MOBILE_VERSION then
-		self.gui:mouseClick(x, y)
-	end
+	self.gui:mouseClick(x, y)
 end
 
 function Gameplay:handleMouseRelease(x, y)
-	if MOBILE_VERSION then
-		self.gui:mouseRelease(x, y)
-	end
+	self.gui:mouseRelease(x, y)
 end
 
 function Gameplay:handleMouseMove(x, y, dx, dy)
-	if MOBILE_VERSION then
-		self.gui:mouseMove(x, y, dx, dy)
-	end
+	self.gui:mouseMove(x, y, dx, dy)
 end
 
 function Gameplay:handleTouchPress(id, x, y)
-	if MOBILE_VERSION then
-		self.gui:touchPress(id, x, y)
-	end
+	self.gui:touchPress(id, x, y)
 end
 
 function Gameplay:handleTouchRelease(id, x, y)
-	if MOBILE_VERSION then
-		self.gui:touchRelease(id, x, y)
-	end
+	self.gui:touchRelease(id, x, y)
 end
 
 function Gameplay:handleTouchMove(id, x, y, dx, dy)
-	if MOBILE_VERSION then
-		self.gui:touchMove(id, x, y, dx, dy)
-	end
+	self.gui:touchMove(id, x, y, dx, dy)
 end
 
 function Gameplay:isPlayerControllable()
@@ -99,7 +95,13 @@ end
 -- @dir can be "up", "down", "left", "right"
 function Gameplay:isDirectionActive(dir)
 	-- When keyboard is not present
-	local x, y = self.gamepad:getDirection()
+	local x, y
+	
+	if self.gamepad then
+		x, y = self.gamepad:getDirection()
+	else
+		x, y = 0, 0
+	end
 	
 	if dir == "up" then
 		return love.keyboard.isDown("w") or y == -1
@@ -208,10 +210,8 @@ function Gameplay:update(deltaTime)
 	
 	-- Do not update the gameplay when it's deathscreen on
 	if self.deathScreen == nil then
-		if MOBILE_VERSION then
-			local mx, my = getScaledMousePosition(self.world.camera, false)
-			self.gui:update(deltaTime, mx, my)
-		end
+		local mx, my = getScaledMousePosition(self.world.camera, false)
+		self.gui:update(deltaTime, mx, my)
 		
 		self:handlePlayerControl(deltaTime)
 		self:clearPressedKeys()
@@ -227,9 +227,6 @@ function Gameplay:draw()
 	else
 		self.world:draw()
 		self.world:drawUI()
-		
-		if MOBILE_VERSION then
-			self.gui:draw(self.world.camera)
-		end
+		self.gui:draw(self.world.camera)
 	end
 end

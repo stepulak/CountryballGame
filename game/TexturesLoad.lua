@@ -236,6 +236,8 @@ function loadTextures()
 	textureContainer:newTexture("skull", "assets/skull.png")
 	textureContainer:newTexture("gamepad_button", "assets/gamepad_button.png")
 	textureContainer:newTexture("game_logo", "assets/game_logo.png")
+	textureContainer:newTexture("button_idle", "assets/button_idle.png")
+	textureContainer:newTexture("button_click", "assets/button_click.png")
 	
 	return textureContainer
 end

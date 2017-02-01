@@ -20,6 +20,8 @@ function Game:init(screen, textureContainer, soundContainer,
 	self.sinCosTable = sinCosTable
 	self.fonts = fonts
 	
+	self.editorInitMode = editorInitMode
+	
 	self:newPlayer()
 	self:newWorld()
 	
@@ -111,24 +113,34 @@ function Game:handleTouchMove(id, tx, ty, tdx, tdy)
 	self.activeMode:handleTouchMove(id, tx, ty, tdx, tdy)
 end
 
+function Game:totalReset()
+	local activeModeName = self.activeMode.name
+		
+	if IS_OFFICIAL_RELEASE then
+		self:newWorld()
+	else
+		self:resetWorld()
+		self:resetEditor()
+	end
+	
+	self:resetGameplay()
+	self.player:hardReset()
+	
+	self.activeMode = activeModeName == "gameplay" 
+		and self.gameplay or self.editor
+end
+
 function Game:handleTodo()
 	if self.activeMode.todo == "reset_world" then
-		local activeModeName = self.activeMode.name
-		
-		if IS_OFFICIAL_RELEASE then
-			self:newWorld()
-		else
-			self:resetWorld()
-			self:resetEditor()
-		end
-		
-		self:resetGameplay()
-		self.player:resetStats()
-		
-		self.activeMode = activeModeName == "gameplay" 
-			and self.gameplay or self.editor
+		self:totalReset()
 	elseif self.activeMode.todo == "main_menu" then
-		-- TODO
+		if self.editorInitMode then
+			-- In editor mode, you cannot die entirely
+			self:totalReset()
+			self.player.numLives = 3
+		else
+			-- TODO
+		end
 	end
 end
 

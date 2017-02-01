@@ -19,6 +19,8 @@ local soundContainer
 local headerContainer
 local fonts
 
+local paused = false
+
 -- Load all tile headers based on their properties in TileHeadersProperties
 function loadTileHeaders()
 	headerContainer = TileHeaderContainer:new()
@@ -122,8 +124,18 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
 	mainMenu:handleTouchMove(id, tx, ty, tdx, tdy)
 end
 
+function love.focus(foc)
+	paused = not foc
+end
+
+function love.visible(vis)
+	paused = not vis
+end
+
 function love.update(deltaTime)
-	mainMenu:update(deltaTime)
+	if paused == false then
+		mainMenu:update(deltaTime)
+	end
 end
 
 function love.draw()

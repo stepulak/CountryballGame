@@ -91,6 +91,16 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 	self:setupPlayer()
 end
 
+function World:postLoadHandle()
+	for i = 1, WorldLoadWeatherPreruns do
+		self:preRunWeather()
+	end
+	
+	self.player:softReset()
+	self.playerFinished = false
+	self:setPlayerAtSpawnPosition()
+end
+
 --
 -- SAVE/LOAD SECTION BEGIN
 --
@@ -106,13 +116,7 @@ function World:loadFromSaveDir(filename)
 	end
 	
 	love.filesystem.load(filename)(self)
-	
-	for i = 1, WorldLoadWeatherPreruns do
-		self:preRunWeather()
-	end
-	
-	self.playerFinished = false
-	self:setupPlayer()
+	self:postLoadHandle()
 	
 	return true
 end
@@ -1689,14 +1693,18 @@ function World:updateFinish(deltaTime)
 	end
 end
 
+function World:setPlayerFinished()
+	self.playerFinished = true
+	self.finishCountdownTimer = 3	
+end
+
 function World:checkPlayerFinishLine()
 	if self.player.x >= self.playerFinishLine 
 		and self.playerFinished == false then
 		-- You've passed!
-		self.playerFinished = true
-		self.finishCountdownTimer = 3
+		self:setPlayerFinished()
 		
-		-- Make sure nobody kills him. Even the lava!
+		-- Make sure nobody and nothing kills him. Even the lava!
 		self.player:setTotallyInvulnerable(100)
 		self.player.isControllable = false
 	end

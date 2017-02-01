@@ -634,8 +634,8 @@ function Editor:handleKeyPress(key)
 	elseif key == "f6" then
 		self:quickLoad()
 	elseif key == "f7" then
-		-- TODO
-		self:quickReset()
+		-- RESERVED FOR POSSIBLE QUICKRESET
+		-- self:quickReset()
 	else
 		-- Key wasn't processed
 		return false
@@ -739,20 +739,28 @@ function Editor:drawSkullOnMousePosition()
 	love.graphics.translate(-mx, -my)
 end
 
+local StatsX = 10
+local StatsY = 50
+
 function Editor:drawStats()
 	local mx, my = getScaledMousePosition(self.world.camera, true)
 	local tx, ty = self:tileCoords(mx, my)
 	local font = self.fonts.medium
 	
-	love.graphics.setColor(255, 50, 50)
+	love.graphics.translate(StatsX, StatsY)
 	
-	font:drawLine("Tile position: " .. tx .. ", " .. ty, 10, 10)
-	font:drawLine("ActionMode: " .. self.actionMode, 10, 30)
-	font:drawLine("Insert dir: " .. self.insertDirection, 10, 50)
-	font:drawLine("Tile type: " .. self.tileType, 10, 70)
-	font:drawLine("AnimObj pos: " .. self.animObjPosition, 10, 90)
+	drawRect("fill", 0, 0, 320, 120, 0, 0, 0, 200)
+	
+	love.graphics.setColor(255, 50, 50)
+	font:drawLine("Tile position: " .. tx .. ", " .. ty, 0, 0)
+	font:drawLine("ActionMode: " .. self.actionMode, 0, 20)
+	font:drawLine("Insert dir: " .. self.insertDirection, 0, 40)
+	font:drawLine("Tile type: " .. self.tileType, 0, 60)
+	font:drawLine("AnimObj pos: " .. self.animObjPosition, 0, 80)
 	
 	love.graphics.setColor(255, 255, 255)
+	
+	love.graphics.translate(-StatsX, -StatsY)
 end
 
 function Editor:drawGuiMode()

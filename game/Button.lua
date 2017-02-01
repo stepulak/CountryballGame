@@ -17,6 +17,11 @@ local ButtonClickedColor = {
 Button = GuiElement:new()
 
 function Button:init(label, font, x, y, width, height, action)
+	-- inheritance
+	if label == nil then
+		return
+	end
+	
 	self:super("button", x, y, width, height)
 	
 	self.label = label
@@ -24,6 +29,9 @@ function Button:init(label, font, x, y, width, height, action)
 	self.action = action
 	self.clicked = false
 end
+
+-- double inheritance
+Button.buttonSuper = Button.init
 
 function Button:mouseClick(x, y)
 	self.clicked = true

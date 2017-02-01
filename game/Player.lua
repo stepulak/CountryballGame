@@ -46,13 +46,20 @@ function Player:init(x, y,
 	self.numLives = numLives
 	self.coins = coins
 	
-	self:resetStats()
+	self:hardReset()
 end
 
 -- Player function only!
 -- Reset player's specified attributes, timers etc...
--- Coin and lives are preserved
-function Player:resetStats()
+-- Only coins and lives are preserved
+function Player:hardReset()
+	self.helmetEnabled = false
+	self.flowerType = nil
+	self:softReset()
+end
+
+-- Reset only succ-after-level stats
+function Player:softReset()
 	self.dead = false
 	self.disappeared = false
 	self.isFacingLeft = false
@@ -60,11 +67,9 @@ function Player:resetStats()
 	self.sprintEnabled = false
 	self.starConsumed = false
 	
-	self.attackingTimer = 0
-	self.invulnerableTimer = 0
-	-- Invulnerable only against rotating ghosts!
-	self.invulnerableRGTimer = 0
-	self.immuneToDeadlyObjects = false
+	self.isControllable = true
+	self.helmetBlinkTimer = 0
+	self.jumpEffectProcessed = true
 	
 	self.color = { 
 		r = 255,
@@ -73,14 +78,13 @@ function Player:resetStats()
 	}
 	self.alpha = 255
 	
-	self.helmetEnabled = false
-	self.helmetBlinkTimer = 0
-	self.flowerType = nil
-	
-	self.jumpEffectProcessed = true
-	
-	self.isControllable = true
-end
+	self.immuneToDeadlyObjects = false
+	-- Invulnerable only against rotating ghosts!
+	self.invulnerableRGTimer = 0
+	self.immuneToDeadlyObjects = false
+	self.invulnerableTimer = 0
+	self.attackingTimer = 0
+end 
 
 function Player:setTotallyInvulnerable(time)
 	self.invulnerableTimer = time

@@ -57,7 +57,9 @@ function MainMenu:setupMenu()
 	
 	local menu = Menu:new(
 		self.screen.virtualWidth, self.screen.virtualHeight,
-		ButtonWidth, ButtonHeight, ButtonOffset, 
+		ButtonWidth, ButtonHeight, ButtonOffset,
+		self.textureContainer:getTexture("button_idle"),
+		self.textureContainer:getTexture("button_click"),
 		self.fonts.big, menuTree)
 	
 	self.gui:addElement(menu)
