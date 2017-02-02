@@ -1,8 +1,8 @@
 require "ImageGrid"
 require "Button"
 
-local MultiImageGridButtonHeightQ = 1.5
-local MultiImageGridButtonWidthQ = 1.2
+local ButtonHeightQ = 1.5
+local ButtonWidthQ = 1.2
 
 MultiImageGrid = GuiElement:new()
 
@@ -13,7 +13,7 @@ function MultiImageGrid:init(x, y, width, height, font)
 	self.activeGridName = nil
 	self.font = font
 	self.buttonHeight = self.font.font:getHeight() * 
-		MultiImageGridButtonHeightQ
+		ButtonHeightQ
 end
 
 -- Return horizontal position of a next button for new image grid
@@ -32,7 +32,7 @@ function MultiImageGrid:newImageGrid(gridName, imageWidth, imageHeight)
 	
 		-- Select button
 		button = Button:new(gridName, self.font, x, self.y,  
-			self.font.font:getWidth(gridName) * MultiImageGridButtonWidthQ,
+			self.font.font:getWidth(gridName) * ButtonWidthQ,
 			self.buttonHeight,
 			-- Action function
 			function()

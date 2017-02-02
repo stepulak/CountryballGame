@@ -1,7 +1,7 @@
 require "Unit"
 
-local CanonBallSizeQ = 0.8
-local CanonBallSmashWidthQ = 0.4
+local BallSizeQ = 0.8
+local SmashWidthQ = 0.4
 
 CanonBall = Unit:new()
 
@@ -9,8 +9,8 @@ function CanonBall:init(x, y, tileWidth, tileHeight,
 	isFacingLeft, movementAnim)
 	
 	self:super("canonball", x, y, 
-		tileWidth * CanonBallSizeQ,
-		tileHeight * CanonBallSizeQ,
+		tileWidth * BallSizeQ,
+		tileHeight * BallSizeQ,
 		0, 500, nil, movementAnim)
 	
 	self.activeAnim = self.movementAnim
@@ -18,7 +18,7 @@ function CanonBall:init(x, y, tileWidth, tileHeight,
 end
 
 function CanonBall:instantDeath(particleSystem, soundContainer)
-	local width = self.width * CanonBallSmashWidthQ
+	local width = self.width * SmashWidthQ
 	local x
 	
 	if self.isFacingLeft then

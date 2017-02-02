@@ -1,24 +1,24 @@
 require "Button"
 require "Utils"
 
-local ImageGridScrollBarWidth = 30
-local ImageGridIdleTime = 0.5
+local ScrollBarWidth = 30
+local IdleTime = 0.5
 
-local ImageGridBackgroundColor = {
+local BackgroundColor = {
 	r = 140,
 	g = 145,
 	b = 171,
 	a = 150
 }
 
-local ImageGridActiveElementColor = {
+local ActiveElementColor = {
 	r = 160,
 	g = 10,
 	b = 10,
 	a = 180,
 }
 
-local ImageGridScrollBarColor = {
+local ScrollBarColor = {
 	r = 50,
 	g = 50,
 	b = 50,
@@ -35,7 +35,7 @@ function ImageGrid:init(x, y, width, height, imageWidth, imageHeight, font)
 	self.font = font
 	
 	-- The image grid is scrollable only up/down!
-	local realWidth = width - ImageGridScrollBarWidth
+	local realWidth = width - ScrollBarWidth
 	
 	self.numElemsX = math.floor(realWidth/imageWidth)
 	self.offsetX = math.fmod(realWidth, imageWidth) / 2
@@ -102,8 +102,8 @@ end
 
 -- @x, @y = global coordinates
 function ImageGrid:mouseInsideScrollBar(x, y)
-	return pointInRect(x, y, self.x + self.width - ImageGridScrollBarWidth,
-		self.y, ImageGridScrollBarWidth, self.height)
+	return pointInRect(x, y, self.x + self.width - ScrollBarWidth,
+		self.y, ScrollBarWidth, self.height)
 end
 
 -- @y = inner y coordinate
@@ -188,7 +188,7 @@ end
 function ImageGrid:update(deltaTime, mouseX, mouseY)
 	self.idleTimer = self.idleTimer + deltaTime
 	
-	if self.idleTimer >= ImageGridIdleTime and
+	if self.idleTimer >= IdleTime and
 		self:mouseInsideScrollBar(mouseX, mouseY) == false then
 		self:pickInfoElement(mouseX, mouseY)
 	end
@@ -197,14 +197,14 @@ end
 function ImageGrid:draw(camera)
 	-- Background
 	drawRectC("fill", self.x, self.y, self.width, self.height,
-		ImageGridBackgroundColor)
+		BackgroundColor)
 	
 	-- Scrollbar
 	drawRectC("fill", 
-		self.x + self.width - ImageGridScrollBarWidth, 
+		self.x + self.width - ScrollBarWidth, 
 		self.y + self.scrollBarPos, 
-		ImageGridScrollBarWidth, self.scrollBarHeight, 
-		ImageGridScrollBarColor)
+		ScrollBarWidth, self.scrollBarHeight, 
+		ScrollBarColor)
 	
 	-- Set scissor
 	-- Coordinates for scissor must be set in real screen coordinates!
@@ -227,7 +227,7 @@ function ImageGrid:draw(camera)
 			self.x + self.activeX * self.imageWidth + self.offsetX + imgOffsetW,
 			self.y + (self.activeY-1) * self.imageHeight - offsetY + imgOffsetH,
 			self.imageWidth, self.imageHeight,
-			ImageGridActiveElementColor)
+			ActiveElementColor)
 	end
 	
 	-- Elements

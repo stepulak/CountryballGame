@@ -1,18 +1,18 @@
 require "class"
 
-local GeneratorCountdownTime = 1
-local GeneratorCoinsMin = 7
-local GeneratorCoinsMax = 14
+local CountdownTime = 1
+local CoinsMin = 7
+local CoinsMax = 14
 
 CoinGenerator = class:new()
 
 function CoinGenerator:init()
-	self.coins = math.random(GeneratorCoinsMin, GeneratorCoinsMax)
+	self.coins = math.random(CoinsMin, CoinsMax)
 	self.initCoins = self.coins
 	
 	-- more coins, faster coin reduction
 	self.countdownTime = 
-		GeneratorCountdownTime * (GeneratorCoinsMin / self.coins)
+		CountdownTime * (CoinsMin / self.coins)
 	
 	self.timer = self.countdownTime
 end

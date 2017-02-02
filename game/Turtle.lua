@@ -1,6 +1,6 @@
 require "Unit"
 
-local TurtleCoverTime = 3
+local CoverTime = 3
 
 Turtle = Unit:new()
 
@@ -37,7 +37,7 @@ end
 
 function Turtle:hurt(type, particleSystem, soundContainer)
 	if type == "step_on" then
-		self.coverTimer = TurtleCoverTime
+		self.coverTimer = CoverTime
 		
 		if self.isCovered == false then
 			self.isCovered = true

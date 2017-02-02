@@ -1,9 +1,6 @@
 require "class"
 require "Utils"
 
-local SoundContainerEffectVolume = 0.5
-local SoundContainerMusicVolume = 0.7
-
 SoundContainer = class:new()
 
 function SoundContainer:init()
@@ -13,8 +10,8 @@ function SoundContainer:init()
 	
 	self.muted = false
 	
-	self.effectVolume = SoundContainerEffectVolume
-	self.musicVolume = SoundContainerMusicVolume
+	self.effectVolume = 0.5
+	self.musicVolume = 0.7
 	self.masterVolume = nil
 end
 

@@ -174,7 +174,6 @@ function Credits:fill()
 	--
 	-- MUSIC
 	--
-	
 	self:addLineB("Music")
 	self:addVerticalSpaceM()
 	

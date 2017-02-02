@@ -1,8 +1,8 @@
 require "Unit"
 require "Utils"
 
-local ZombieSmashTime = 2
-local ZombieSmashHeightQ = 0.2
+local SmashTime = 2
+local SmashHeightQ = 0.2
 
 Zombie = Unit:new()
 
@@ -24,12 +24,12 @@ end
 
 -- Zombie function only!
 function Zombie:smash(particleSystem, soundContainer)
-	local height = self.height * ZombieSmashHeightQ
+	local height = self.height * SmashHeightQ
 	
 	particleSystem:addUnitSmashStaticEffect(
 		self.movementAnim:getActiveTexture(), self.x, 
 		self.y + self.height/2 - height/2, self.width, height,
-		self.isFacingLeft, ZombieSmashTime)
+		self.isFacingLeft, SmashTime)
 	
 	-- Smash effect (smash2 is a joke)
 	if math.random() < 0.7 then

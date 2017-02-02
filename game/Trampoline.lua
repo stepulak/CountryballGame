@@ -1,6 +1,6 @@
 require "ActiveObject"
 
-local TrampolinePlatformMaxQ = 0.8
+local PlatformMaxQ = 0.8
 
 Trampoline = ActiveObject:new()
 
@@ -58,8 +58,8 @@ function Trampoline:update(camera, particleSystem, deltaTime)
 			self.boundedUnit.verticalVel = self.boundedUnit.verticalVel * 43 * deltaTime
 		end
 		
-		if self.platformOffset >= self.realHeight * TrampolinePlatformMaxQ then
-			self.platformOffset = self.realHeight * TrampolinePlatformMaxQ
+		if self.platformOffset >= self.realHeight * PlatformMaxQ then
+			self.platformOffset = self.realHeight * PlatformMaxQ
 			-- Push the unit into the air
 			self.boundedUnit:stopFalling()
 			self.boundedUnit:tryToJumpNoTimer()

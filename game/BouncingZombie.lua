@@ -1,6 +1,6 @@
 require "Unit"
 
-local BouncingZombieRotationVel = 225
+local ZombieRotationVel = 225
 
 BouncingZombie = Unit:new()
 
@@ -18,7 +18,7 @@ function BouncingZombie:instantDeath(particleSystem, soundContainer)
 		self.activeAnim:getActiveTexture(),
 		self.x, self.y, self.width, self.height,
 		self:getOverallVelocity(),
-		self.texAngle, BouncingZombieRotationVel,
+		self.texAngle, ZombieRotationVel,
 		self.isFacingLeft)
 	
 	self.dead = true
@@ -73,7 +73,7 @@ function BouncingZombie:update(deltaTime, gravityAcc, particleSystem,
 	self:superUpdate(deltaTime, gravityAcc, particleSystem, 
 		camera, soundContainer)
 	
-	local a = BouncingZombieRotationVel * deltaTime
+	local a = ZombieRotationVel * deltaTime
 	
 	if self.isFacingLeft then
 		self.texAngle = self.texAngle - a

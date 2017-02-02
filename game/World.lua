@@ -19,9 +19,9 @@ require "UnitConstructionList"
 require "ActiveObjectConstructionList"
 require "AnimationObjectsProperties"
 
-local WorldBouncingTileHeightQ = 2/3
-local WorldGravity = 2000
-local WorldLoadWeatherPreruns = 10
+local BouncingTileHeightQ = 2/3
+local Gravity = 2000
+local NumLoadWeatherPreruns = 10
 
 World = class:new()
 
@@ -64,7 +64,7 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 	self:createCamera()
 	
 	self.bouncingTilesContainer = 
-		BouncingTilesContainer:new(self.tileHeight * WorldBouncingTileHeightQ)
+		BouncingTilesContainer:new(self.tileHeight * BouncingTileHeightQ)
 	
 	-- Generators
 	self.coinGenerators = {}
@@ -92,7 +92,7 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 end
 
 function World:postLoadHandle()
-	for i = 1, WorldLoadWeatherPreruns do
+	for i = 1, NumLoadWeatherPreruns do
 		self:preRunWeather()
 	end
 	
@@ -1429,7 +1429,7 @@ function World:updateActiveUnit(unit, deltaTime)
 	if unit:isFreezed() == false then
 		unit:updateAnimations(deltaTime)
 		
-		unit:update(deltaTime, WorldGravity, 
+		unit:update(deltaTime, Gravity, 
 			self.fParticleSystem, self.camera, self.soundContainer)
 		
 		if unit.dead == false then		
@@ -1610,7 +1610,7 @@ function World:updateProjectiles(deltaTime)
 			end
 		end
 		
-		data:update(deltaTime, WorldGravity)
+		data:update(deltaTime, Gravity)
 		
 		itTmp = it.next
 		if data:canBeRemoved() then

@@ -1,6 +1,6 @@
 require "ActiveObject"
 
-local SmokeSourceNewParticleTime = 0.5
+local NewParticleTime = 0.5
 
 SmokeSource = ActiveObject:new()
 
@@ -14,8 +14,8 @@ end
 function SmokeSource:update(camera, particleSystem, deltaTime)
 	self.timer = self.timer + deltaTime
 	
-	if self.timer >= SmokeSourceNewParticleTime then
-		self.timer = self.timer - SmokeSourceNewParticleTime
+	if self.timer >= NewParticleTime then
+		self.timer = self.timer - NewParticleTime
 		
 		-- Create new smoke particle
 		local size = math.random(10, 30)

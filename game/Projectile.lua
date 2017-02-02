@@ -1,9 +1,9 @@
 require "class"
 
-local ProjectileVerticalVelMax = 600
-local ProjectileHorizontalVelMax = 500
-local ProjectileFadeTime = 0.25
-local ProjectileLifeTime = 3
+local VerticalVelMax = 600
+local HorizontalVelMax = 500
+local FadeTime = 0.25
+local LifeTime = 3
 
 -- Projectile = small and fast entity
 -- which kills units and may bounce etc...
@@ -22,7 +22,7 @@ function Projectile:init(type, x, y, size, dirLeft, isGood, anim)
 	self.isGood = isGood
 	
 	self.verticalVel = 0
-	self.horizontalVel = ProjectileHorizontalVelMax
+	self.horizontalVel = HorizontalVelMax
 	self.velocityReduction = 1
 	
 	if type == "hammer" then
@@ -32,10 +32,10 @@ function Projectile:init(type, x, y, size, dirLeft, isGood, anim)
 	self.isMovingLeft = dirLeft
 	self.isFalling = true -- otherwise it's false for "rising"
 	
-	self.timer = ProjectileLifeTime
+	self.timer = LifeTime
 	
 	self.fading = false
-	self.fadeTimer = ProjectileFadeTime
+	self.fadeTimer = FadeTime
 end
 
 function Projectile:tileCollisionEnabled()
@@ -94,8 +94,8 @@ function Projectile:updateVerticalVel(deltaTime, gravityAcc)
 	if self.isFalling then
 		self.verticalVel = self.verticalVel + gravityAcc * deltaTime
 		
-		if self.verticalVel > ProjectileVerticalVelMax then
-			self.verticalVel = ProjectileVerticalVelMax
+		if self.verticalVel > VerticalVelMax then
+			self.verticalVel = VerticalVelMax
 		end
 	else
 		-- "rising"
@@ -150,7 +150,7 @@ end
 
 function Projectile:draw(camera)
 	love.graphics.setColor(255, 255, 255, 
-		255 * (self.fadeTimer / ProjectileFadeTime))
+		255 * (self.fadeTimer / FadeTime))
 	
 	self.anim:draw(camera, self.x - self.size/2, self.y - self.size/2,
 		self.size, self.size, self.texAngle, false)

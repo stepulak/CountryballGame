@@ -2,7 +2,7 @@ require "ActiveObject"
 
 Teleport = ActiveObject:new()
 
-local colors = {
+local Colors = {
 	[1] = { r = 255, g = 50, b = 50 },
 	[2] = { r = 50, g = 255, b = 50 },
 	[3] = { r = 50, g = 50, b = 255 },
@@ -16,7 +16,7 @@ local UnitProcessingTime = 0.25-- 250ms
 function Teleport:init(x, y, tileWidth, tileHeight, teleportAnim)
 	self:super("teleport", x, y, 1, 1, tileWidth, tileHeight)
 	
-	self.color = colors[math.random(1, #colors)]
+	self.color = Colors[math.random(1, #Colors)]
 	self.anim = teleportAnim:getCopy()
 	self.boundedUnits = {}
 	self.processedUnits = nil

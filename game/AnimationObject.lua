@@ -7,7 +7,7 @@ AnimationObject = class:new()
 function AnimationObject:init(name, x, y, width, height,
 	tileWidth, tileHeight, anim)
 	
-	-- Proportions could be stored somewhere in object header, but
+	-- Proportions could have been stored somewhere in object header, but
 	-- I've decided to store it separately in each object, so that
 	-- it will be easier to draw both animation and active objects...
 	
@@ -37,7 +37,8 @@ function AnimationObject:draw(camera, newDrawCounter)
 	self.drawCounter = newDrawCounter
 	
 	if self.anim then
-		self.anim:draw(camera, self.realX - self.realWidth/2, 
+		self.anim:draw(camera, 
+			self.realX - self.realWidth/2, 
 			self.realY - self.realHeight/2, 
 			self.realWidth, self.realHeight, 0, false)
 	end

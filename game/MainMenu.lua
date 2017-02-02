@@ -69,14 +69,14 @@ function MainMenu:setupMenu()
 	self.gui:addElement(menu)
 end
 
-function MainMenu:newGame(editorInitMode)
+function MainMenu:newGame(editorInitMode, args)
 	return Game:new(self.screen, 
 		self.textureContainer, 
 		self.soundContainer,
 		self.headerContainer, 
 		self.sinCosTable, 
 		self.fonts,
-		editorInitMode)
+		editorInitMode, args)
 end
 
 function MainMenu:insertCampaignMenuButton(menuTree)
@@ -93,7 +93,7 @@ function MainMenu:insertEditorMenuButton(menuTree)
 		label = "Editor",
 		
 		action = function()
-			self.run = self:newGame(true)
+			self.run = self:newGame(true, nil)
 		end,
 	}
 end
@@ -110,7 +110,7 @@ function MainMenu:insertCreatedLevelsMenuButton(menuTree)
 			label = string.sub(items[i], 1, string.len(items[i]) - 4),
 			
 			action = function()
-				-- TODO
+				self.run = self:newGame(false, { worldFilename = items[i] })
 			end
 		}
 		

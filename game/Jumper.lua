@@ -1,6 +1,6 @@
 require "Unit"
 
-local JumperKeepIdleAnimTime = 0.4
+local KeepIdleAnimTime = 0.4
 
 Jumper = Unit:new()
 
@@ -35,7 +35,7 @@ end
 
 function Jumper:tryToJumpNoTimer()
 	if self.isFalling == false and self.isJumping == false then
-		self.keepIdleAnimTimer = JumperKeepIdleAnimTime
+		self.keepIdleAnimTimer = KeepIdleAnimTime
 	end
 	self:superTryToJumpNoTimer()
 end

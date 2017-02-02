@@ -5,14 +5,14 @@ require "Runnable"
 
 -- Constants
 
-local tileWidth = 60
-local tileHeight = 60
+local TileWidth = 60
+local TileHeight = 60
 
 Game = Runnable:new()
 
 -- @args is optional, it may consist of:
 -- Player:	@args.player: use this player instead of creating new one
--- World:	@args.worldFilename: load this world
+-- World:	@args.worldFilename: load world from given filename
 -- or  		@args.worldLoadFunc: use this load function
 --
 -- If both worldFilename and worldLoadFunc are nil, then a new empty world
@@ -35,6 +35,17 @@ function Game:init(screen, textureContainer, soundContainer,
 		self.player = args.player
 	end
 	
+	-- Find out how will you load the world table
+	if args ~= nil and args.worldFilename ~= nil then
+		self.worldFilename = args.worldFilename
+		self:loadWorldFilename()
+	elseif args ~= nil and args.worldLoadFunc ~= nil then
+		self.worldLoadFunc = args.worldLoadFunc
+		self:loadWorldFunc()
+	else
+		self:newEmptyWorld()
+	end
+	
 	self:resetGameplay()
 	self.activeMode = self.gameplay
 	
@@ -47,24 +58,21 @@ function Game:init(screen, textureContainer, soundContainer,
 	end
 end
 
-function Game:resetWorld()
-	-- You want to preserve the world in it's current state
-	-- Just you need to reset the player
-	self.world:setupPlayer()
-end
-
-function Game:newWorld()
+function Game:createWorld()
 	self.world = World:new(self.player, 
-		tileWidth, tileHeight, self.screen,
+		TileWidth, TileHeight, self.screen,
 		self.textureContainer, self.soundContainer,
 		self.headerContainer, self.sinCosTable, self.fonts)
-	
+end
+
+function Game:newEmptyWorld()
+	self:createWorld()
 	self.world:createSampleWorld()
 end
 
 function Game:newPlayer()
 	self.player = createUnitFromName("player", 
-		-1, -1, tileWidth, tileHeight,
+		-1, -1, TileWidth, TileHeight,
 		self.textureContainer)
 end
 
@@ -74,6 +82,29 @@ end
 
 function Game:resetEditor()
 	self.editor = Editor:new(self.world, self.fonts)
+end
+
+function Game:loadWorld()
+	if self.worldFilename ~= nil then
+		self:loadWorldFilename()
+	elseif self.worldLoadFunc ~= nil then
+		self:loadWorldFunc()
+	else
+		self:newEmptyWorld()
+	end
+end
+
+-- load new world from self.worldFilename path
+function Game:loadWorldFilename()
+	self:createWorld()
+	self.world:loadFromSaveDir(self.worldFilename)
+end
+
+function Game:loadWorldFunc()
+	self:createWorld()
+	self.loadWorldFunc(self.world)
+	-- Do not forget to call post load handle!
+	self.world:postLoadHandle()
 end
 
 function Game:handleKeyPress(key)
@@ -129,14 +160,16 @@ function Game:totalReset()
 	local activeModeName = self.activeMode.name
 		
 	if IS_OFFICIAL_RELEASE then
-		self:newWorld()
+		self:loadWorld()
 	else
-		self:resetWorld()
 		self:resetEditor()
 	end
 	
 	self:resetGameplay()
+	-- only lives and coins are preserved
 	self.player:hardReset()
+	-- respawn player
+	self.world:setupPlayer()
 	
 	self.activeMode = activeModeName == "gameplay" 
 		and self.gameplay or self.editor

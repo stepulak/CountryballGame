@@ -1,8 +1,8 @@
 require "Unit"
 require "Utils"
 
-local StarColorMin = 100
-local StarColorMax = 255
+local ColorMin = 100
+local ColorMax = 255
 
 Star = Unit:new()
 
@@ -14,9 +14,9 @@ function Star:init(x, y, tileWidth, tileHeight, dirLeft, texture)
 	self.isFacingLeft = dirLeft
 	self.friendlyToPlayer = true
 	self.color = { 
-		r = math.random(StarColorMin, StarColorMax), 
-		g = math.random(StarColorMin, StarColorMax), 
-		b = math.random(StarColorMin, StarColorMax)
+		r = math.random(ColorMin, ColorMax), 
+		g = math.random(ColorMin, ColorMax), 
+		b = math.random(ColorMin, ColorMax)
 	}
 end
 

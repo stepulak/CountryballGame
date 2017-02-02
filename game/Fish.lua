@@ -1,7 +1,7 @@
 require "Unit"
 
-local FishPushHorTimeMax = 3
-local FishPushVerTimeMax = 0.2
+local PushHorTimeMax = 3
+local PushVerTimeMax = 0.2
 
 Fish = Unit:new()
 
@@ -37,14 +37,14 @@ end
 -- Fish function only!
 -- Swim a little bit in horizontal direction
 function Fish:pushHorizontal()
-	self.pushHorTimer = math.random(0, FishPushHorTimeMax)
+	self.pushHorTimer = math.random(0, PushHorTimeMax)
 	self.isFacingLeft = math.random(0, 1) == 1
 end
 
 -- Fish function only!
 -- Swim a little bit in vertical direction
 function Fish:pushVertical()
-	self.pushVerTimer = math.random(0, FishPushVerTimeMax)
+	self.pushVerTimer = math.random(0, PushVerTimeMax)
 	
 	if math.random(0, 1) == 1 then
 		-- Jump

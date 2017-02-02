@@ -1,7 +1,7 @@
 require "Unit"
 
-local RotatingGhostRotatingVel = 90
-local RotatingGhostTexRotatingVel = 90
+local RotatingVel = 90
+local TexRotatingVel = 90
 
 RotatingGhost = Unit:new()
 
@@ -33,10 +33,10 @@ function RotatingGhost:updateRotatingMovement(deltaTime, sinCosTable)
 	self.y = self.hardY - sinCosTable:sin(self.angle) * self.radius
 	
 	self.angle = math.fmod(self.angle +
-		RotatingGhostRotatingVel * deltaTime, 360)
+		RotatingVel * deltaTime, 360)
 		
 	self.texAngle = math.fmod(self.texAngle + 
-		RotatingGhostTexRotatingVel * deltaTime, 360)
+		TexRotatingVel * deltaTime, 360)
 end
 
 function RotatingGhost:update(deltaTime, gravityAcc, particleSystem,

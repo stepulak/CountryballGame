@@ -1,8 +1,8 @@
 require "Unit"
 
-local FlyingZombieStayTimeMax = 5
-local FlyingZombieVelBase = 300
-local FlyingZombieDecc = 150
+local StayTimeMax = 5
+local VelocityBase = 300
+local VelocityDecc = 150
 
 FlyingZombie = Unit:new()
 
@@ -11,7 +11,7 @@ function FlyingZombie:init(x, y, tileWidth, tileHeight, idleAnim)
 	
 	self.directionUp = true
 	self.stayTimer = 0
-	self.verticalVel = FlyingZombieVelBase
+	self.verticalVel = VelocityBase
 end
 
 -- When this function is called with no specified height, then
@@ -44,12 +44,12 @@ end
 
 function FlyingZombie:updateVerticalMovement(deltaTime)
 	if self.verticalVel > 0 then
-		self.verticalVel = self.verticalVel - FlyingZombieDecc * deltaTime
+		self.verticalVel = self.verticalVel - VelocityDecc * deltaTime
 	end
 	
 	if self.verticalVel <= 0 and self.stayTimer <= 0 then
 		self.verticalVel = 0
-		self.stayTimer = math.random(1, FlyingZombieStayTimeMax)
+		self.stayTimer = math.random(1, StayTimeMax)
 	end
 end
 
@@ -59,7 +59,7 @@ function FlyingZombie:updateMovement(deltaTime)
 		
 		if self.stayTimer <= 0 then
 			-- Reset vertical velocity
-			self.verticalVel = FlyingZombieVelBase
+			self.verticalVel = VelocityBase
 			-- Change direction for future movement
 			self.directionUp = not self.directionUp
 		end

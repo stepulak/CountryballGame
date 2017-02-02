@@ -1,4 +1,5 @@
 require "class"
+require "Utils"
 
 Camera = class:new()
 
@@ -21,7 +22,7 @@ function Camera:init(x, y, virtualWidth, virtualHeight, screenWidth,
 end
 
 -- Save x, y, virtualWidth, virtualHeight
--- Can be called many times
+-- Can be called as many times as wanted
 function Camera:push()
 	self.stackIndex = self.stackIndex + 1
 	
@@ -63,21 +64,10 @@ function Camera:scaleVirtualProp(sx, sy)
 	self.virtualHeight = self.virtualHeight * sy
 end
 
--- Calibrate the camera into the map, if somewhere overflows
+-- Calibrate the camera into the map
 function Camera:boundToMap()
-	-- X axis
-	if self.x < 0 then
-		self.x = 0
-	elseif self.x > self.mapWidth-self.virtualWidth then
-		self.x = self.mapWidth-self.virtualWidth
-	end
-	
-	-- Y axis
-	if self.y < 0 then
-		self.y = 0
-	elseif self.y > self.mapHeight-self.virtualHeight then
-		self.y = self.mapHeight-self.virtualHeight
-	end
+	self.x = setWithinRange(self.x, 0, self.mapWidth-self.virtualWidth)
+	self.y = setWithinRange(self.y, 0, self.mapHeight-self.virtualHeight)
 end
 
 function Camera:centerAt(x, y)

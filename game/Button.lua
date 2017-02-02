@@ -1,13 +1,13 @@
 require "GuiElement"
 
-local ButtonIdleColor = {
+local IdleColor = {
 	r = 140,
 	g = 145,
 	b = 171,
 	a = 150
 }
 
-local ButtonClickedColor = {
+local ClickedColor = {
 	r = 160,
 	g = 165,
 	b = 191,
@@ -48,7 +48,7 @@ function Button:mouseReleaseNotInside(x, y)
 end
 
 function Button:draw()
-	local col = self.clicked and ButtonClickedColor or ButtonIdleColor
+	local col = self.clicked and ClickedColor or IdleColor
 	
 	-- Background
 	drawRectC("fill", self.x, self.y, self.width, self.height, col)

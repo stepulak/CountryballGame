@@ -1,20 +1,20 @@
 require "GuiElement"
 
-local CheckButtonBackgroundColor = {
+local BackgroundColor = {
 	r = 100,
 	g = 105,
 	b = 100,
 	a = 150
 }
 
-local CheckButtonCircleClickColor = {
+local CircleClickColor = {
 	r = 70,
 	g = 70,
 	b = 70,
 	a = 255,
 }
 
-local CheckButtonCircleIdleColor = {
+local CircleIdleColor = {
 	r = 10,
 	g = 10,
 	b = 10,
@@ -51,10 +51,10 @@ end
 function CheckButton:draw()
 	-- Background
 	drawRectC("fill", self.x, self.y, self.width, self.height,
-		CheckButtonBackgroundColor)
+		BackgroundColor)
 	
-	local c = self.clicked and CheckButtonCircleClickColor 
-		or CheckButtonCircleIdleColor
+	local c = self.clicked and CircleClickColor 
+		or CircleIdleColor
 	
 	love.graphics.push()
 	love.graphics.translate(self.x + self.circleRad + 2, 

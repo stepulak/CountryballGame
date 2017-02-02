@@ -1,8 +1,8 @@
 require "Unit"
 
-local HammermanTryJumpTimeMax = 5
-local HammermanTryJumpTimeMin = 2
-local HammermanAttackProbabilityQ = 1
+local TryJumpTimeMax = 5
+local TryJumpTimeMin = 2
+local AttackProbabilityQ = 1
 
 Hammerman = Unit:new()
 
@@ -47,8 +47,8 @@ function Hammerman:updateJumping(deltaTime, player)
 	self.jumpingTimer = self.jumpingTimer - deltaTime
 	
 	if self.jumpingTimer <= 0 then
-		self.jumpingTimer = math.random(HammermanTryJumpTimeMin,
-			HammermanTryJumpTimeMax)
+		self.jumpingTimer = math.random(TryJumpTimeMin,
+			TryJumpTimeMax)
 		
 		if player.y < self.y or math.random() <= 0.5 then
 			self:tryToJumpNoTimer()
@@ -71,7 +71,7 @@ function Hammerman:updateAccordingToPlayer(deltaTime, player, camera)
 		self.isFalling == false then
 		
 		-- You can try to shoot now
-		if math.random() < deltaTime * HammermanAttackProbabilityQ then
+		if math.random() < deltaTime * AttackProbabilityQ then
 			self.projectileFired = true
 			self.attackingTimer = 0.2
 		end

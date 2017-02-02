@@ -1,6 +1,6 @@
 require "CheckButton"
 
-local CheckBoxLabelBackgroundColor = {
+local LabelBackgroundColor = {
 	r = 50,
 	g = 50,
 	b = 50,
@@ -81,7 +81,7 @@ function CheckBox:draw()
 	-- Label background
 	drawRectC("fill", self.x, self.y, 
 		self.font.font:getWidth(self.label), self.font.font:getHeight(),
-		CheckBoxLabelBackgroundColor)
+		LabelBackgroundColor)
 	
 	-- Label
 	self.font:drawLine(self.label, self.x, self.y)

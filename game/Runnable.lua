@@ -1,7 +1,7 @@
 require "QuitButton"
 
 --
--- Runnable interface
+-- Runnable "interface"
 --
 
 Runnable = class:new()

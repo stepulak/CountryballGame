@@ -1,7 +1,7 @@
 require "ActiveObject"
 require "CanonBall"
 
-local CanonAboutToShootQuotient = 0.2
+local AboutToShootQuotient = 0.2
 
 Canon = ActiveObject:new()
 
@@ -18,7 +18,7 @@ function Canon:init(x, y, tileWidth, tileHeight, leftDir,
 	
 	self.canonAnim = canonAnim:getCopy()
 	self.canonAnim.updateTime = shootingCountdown * 
-		CanonAboutToShootQuotient / canonAnim:numTextures()
+		AboutToShootQuotient / canonAnim:numTextures()
 	
 	self.shootingCountdown = shootingCountdown
 	self.countdown = shootingCountdown
@@ -73,7 +73,7 @@ end
 function Canon:update(camera, particleSystem, deltaTime)
 	self.countdown = self.countdown - deltaTime
 	
-	if self.countdown < self.shootingCountdown * CanonAboutToShootQuotient then
+	if self.countdown < self.shootingCountdown * AboutToShootQuotient then
 		self.canonAnim:update(deltaTime)
 		
 		if self.countdown < 0 then

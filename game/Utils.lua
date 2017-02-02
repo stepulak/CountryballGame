@@ -25,30 +25,6 @@ function drawRectC(mode, x, y, w, h, col)
 	drawRect(mode, x, y, w, h, col.r, col.g, col.b, col.a)
 end
 
--- Based on https://gist.github.com/MihailJP/3931841
--- Clone the table, it's also possible to clone the table's elements
--- via recursion if deepClone is enabled.
-function clone(t, deepClone)
-    if type(t) ~= "table" then 
-		return t
-	end
-	
-    local meta = getmetatable(t)
-    local target = {}
-	
-    for k, v in pairs(t) do
-        if type(v) == "table" and deepClone then
-            target[k] = clone(v, true)
-        else
-            target[k] = v
-        end
-    end
-	
-    setmetatable(target, meta)
-    
-    return target
-end
-
 function lineIntersect(p1, len1, p2, len2)
 	return (p1 >= p2 and p1 <= p2 + len2) or (p2 >= p1 and p2 <= p1 + len1)
 end
@@ -225,4 +201,28 @@ function checkWriteLn(file, str)
 			" into file: " .. file:getFilename() ..
 			" error: " .. err)
 	end
+end
+
+-- Based on https://gist.github.com/MihailJP/3931841
+-- Clone the table, it's also possible to clone the table's elements
+-- via recursion if deepClone is enabled.
+function clone(t, deepClone)
+    if type(t) ~= "table" then 
+		return t
+	end
+	
+    local meta = getmetatable(t)
+    local target = {}
+	
+    for k, v in pairs(t) do
+        if type(v) == "table" and deepClone then
+            target[k] = clone(v, true)
+        else
+            target[k] = v
+        end
+    end
+	
+    setmetatable(target, meta)
+    
+    return target
 end

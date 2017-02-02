@@ -1,16 +1,16 @@
 require "Unit"
 require "Projectile"
 
-local PlayerAttackingTime = 0.2
-local PlayerTrampolineVelQ = 1.5
+local AttackTime = 0.2
+local TrampolineVelQ = 1.5
 -- Invulnerability against rotating ghosts
-local PlayerInvulnerabilityRGTime = 1
-local PlayerHatBasicColor = 180
-local PlayerJumpingVel = 1000
-local PlayerHorizontaVel = 200
-local PlayerStarParticleSize = 20
-local PlayerStarParticleSpawnProbabilityQ = 20
-local PlayerFartSize = 20
+local InvulnerabilityRGTime = 1
+local HatBasicColor = 180
+local JumpingVel = 1000
+local HorizontaVel = 200
+local StarParticleSize = 20
+local StarParticleSpawnProbabilityQ = 20
+local FartSize = 20 -- :-)
 
 Player = Unit:new()
 
@@ -22,7 +22,7 @@ function Player:init(x, y,
 	deathTex, helmetTex, starTex, bubbleTex, smokeTex)
 	
 	self:super("player", x, y, tileWidth, tileHeight, 
-		PlayerJumpingVel, PlayerHorizontaVel, 
+		JumpingVel, HorizontaVel, 
 		idleAnim, walkingAnim, jumpingAnim,
 		swimmingAnim, attackingAnim, nil)
 	
@@ -39,8 +39,8 @@ function Player:init(x, y,
 	self.bubbleTex = bubbleTex
 	self.smokeTex = smokeTex
 	
-	-- This animation must take exactly PlayerAttackingTime seconds.
-	self.attackingAnim.updateTime = PlayerAttackingTime 
+	-- This animation must take exactly AttackTime seconds.
+	self.attackingAnim.updateTime = AttackTime 
 		/ self.attackingAnim:numTextures()
 	
 	self.numLives = numLives
@@ -98,7 +98,7 @@ end
 
 function Player:tryToJump()
 	-- When the player is on trampoline, increase the jumping speed
-	self.jumpingVelQ = self.onTrampoline and PlayerTrampolineVelQ or 1
+	self.jumpingVelQ = self.onTrampoline and TrampolineVelQ or 1
 	
 	if self.isJumping == false then
 		self.jumpEffectProcessed = false
@@ -184,7 +184,7 @@ end
 function Player:tryToAttack(soundContainer)
 	if self.helmetEnabled and self.flowerType ~= nil then
 		self.projectileFired = true
-		self.attackingTimer = PlayerAttackingTime
+		self.attackingTimer = AttackTime
 		soundContainer:playEffect("player_shooting")
 	end
 end
@@ -276,7 +276,7 @@ function Player:resolveUnitCollision(unit, particleSystem, deltaTime,
 		-- HINT: remove if player has not circular shape!
 		if pointInCircle(unit.x, unit.y, self.x, self.y, self.width/2) then
 			self:hurt("projectile_bottom", particleSystem, soundContainer)
-			self.invulnerableRGTimer = PlayerInvulnerabilityRGTime
+			self.invulnerableRGTimer = InvulnerabilityRGTime
 		end
 	else
 		self:superResolveUnitCollision(unit, particleSystem,
@@ -322,13 +322,13 @@ end
 -- Create fading stars around player if it's moving and also star is consumed
 function Player:spawnStars(deltaTime, particleSystem)
 	if self:isIdle() == false and 
-		math.random() < deltaTime * PlayerStarParticleSpawnProbabilityQ then
+		math.random() < deltaTime * StarParticleSpawnProbabilityQ then
 		
 		local vx, vy = self:getDirectionVector()
 		local angle = vx < 0 and 0 or 180
 		
 		particleSystem:addStarParticle(self.starTex, self.x, self.y,
-			PlayerStarParticleSize, PlayerStarParticleSize,
+			StarParticleSize, StarParticleSize,
 			angle + math.random(-45, 45))
 	end
 end
@@ -345,7 +345,7 @@ function Player:addFartTexEffect(particleSystem, fartTex)
 	end
 	
 	particleSystem:addSmokeParticle(fartTex, x, self.y + self.height/4,
-		PlayerFartSize, PlayerFartSize, angle, 0.5)
+		FartSize, FartSize, angle, 0.5)
 end
 
 function Player:updatePlayer(deltaTime, particleSystem, soundContainer)
@@ -431,11 +431,11 @@ function Player:drawHelmet(camera)
 	local alpha = self.alpha * 1.5
 	
 	if self.flowerType == "fireflower" then
-		love.graphics.setColor(PlayerHatBasicColor * r/255, 0, 0, alpha)
+		love.graphics.setColor(HatBasicColor * r/255, 0, 0, alpha)
 	elseif self.flowerType == "iceflower" then
-		love.graphics.setColor(0, 0, PlayerHatBasicColor * b/255, alpha)
+		love.graphics.setColor(0, 0, HatBasicColor * b/255, alpha)
 	else
-		love.graphics.setColor(0, PlayerHatBasicColor * g/255, 0, alpha)
+		love.graphics.setColor(0, HatBasicColor * g/255, 0, alpha)
 	end
 
 	local draw = not self.isFacingLeft and drawTex or drawTexFlipped

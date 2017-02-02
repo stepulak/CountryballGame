@@ -1,6 +1,6 @@
 require "class"
 
-local BouncingTileVel = 500
+local BouncingVel = 500
 
 BouncingTile = class:new()
 
@@ -16,7 +16,7 @@ end
 function BouncingTile:update(deltaTime)
 	if self.timerToStart <= 0 then
 		local dirVertical = self.isFalling and -1 or 1
-		local dist = BouncingTileVel * deltaTime * dirVertical
+		local dist = BouncingVel * deltaTime * dirVertical
 		
 		-- Update it's position
 		self.tileRef.verticalOffset = self.tileRef.verticalOffset - dist

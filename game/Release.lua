@@ -1,4 +1,4 @@
--- Release constants
+-- Important constants for current release
 TITLE = love.window.getTitle()
 GAME_VERSION = "0.1dev"
 IS_OFFICIAL_RELEASE = false

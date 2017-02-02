@@ -1,8 +1,8 @@
 require "Unit"
 
-local BombermanCountdownTime = 3
-local BombermanExplosionTime = 0.3
-local BombermanProportionsInc = 3
+local CountdownTime = 3
+local ExplosionTime = 0.3
+local ProportionsInc = 3
 
 Bomberman = Unit:new()
 
@@ -24,7 +24,7 @@ function Bomberman:init(x, y, tileWidth, tileHeight,
 	-- Resolve explosion animation update time - because you 
 	-- don't want to draw the explosion twice or more, just once
 	-- and exactly within the given explosion time
-	self.deathAnim.updateTime = 1.1 * (BombermanExplosionTime /
+	self.deathAnim.updateTime = 1.1 * (ExplosionTime /
 		self.deathAnim:numTextures())
 	
 	self.activeAnim = self.movementAnim
@@ -39,14 +39,14 @@ function Bomberman:instantDeath(particleSystem, soundContainer)
 	end
 	
 	self.state = "exploding"
-	self.timer = BombermanExplosionTime
+	self.timer = ExplosionTime
 	self.isSteppable = false
 	self.notFreezable = true
 	
 	-- The world won't bully because the tile collision
 	-- will be skipped from now
-	self.width = self.width * BombermanProportionsInc
-	self.height = self.height * BombermanProportionsInc
+	self.width = self.width * ProportionsInc
+	self.height = self.height * ProportionsInc
 	
 	-- Make sound effect
 	soundContainer:playEffect("explosion")
@@ -69,7 +69,7 @@ end
 -- Bomberman function only!
 function Bomberman:initCountdown()
 	self.state = "countdown"
-	self.timer = BombermanCountdownTime
+	self.timer = CountdownTime
 end
 
 function Bomberman:hurt(type, particleSystem, soundContainer)

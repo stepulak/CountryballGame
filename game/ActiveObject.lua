@@ -8,7 +8,7 @@ require "Utils"
 
 ActiveObject = class:new()
 
--- @width, @height in tiles
+-- @x, @y, @width, @height in tiles!
 function ActiveObject:init(name, x, y, width, height, tileWidth, tileHeight)
 	if name == nil then
 		return
@@ -30,7 +30,7 @@ end
 -- Accessible via inheritance
 ActiveObject.super = ActiveObject.init
 
--- Additional setup after insert into map
+-- Additional setup after insert into a map
 function ActiveObject:setup()
 	-- VIRTUAL
 end
@@ -45,15 +45,13 @@ function ActiveObject:isAlreadyBounded(unit)
 	return false
 end
 
--- Check, if this unit can be bounded to this
--- active object
+-- Check, if this unit can be bounded to this active object
 function ActiveObject:canBeBounded(unit, deltaTime)
 	return false
 end
 
 -- Handle unit-active object collision
--- Call this function after you find out that
--- this unit cannot be bounded.
+-- Call this function after you find out that this unit cannot be bounded.
 function ActiveObject:handleUnitCollision(unit, deltaTime)
 	-- VIRTUAL
 end
@@ -73,16 +71,22 @@ end
 -- Check unit - active object collision.
 -- Return true if these two objects has collided, otherwise return false
 function ActiveObject:checkUnitCollision(unit)
-	return rectRectCollision(unit.x - unit.width/2, unit.y - unit.height/2,
-		unit.width, unit.height, self.realX - self.realWidth/2,
-		self.realY - self.realHeight/2, self.realWidth, self.realHeight)
+	return rectRectCollision(
+		unit.x - unit.width/2,
+		unit.y - unit.height/2,
+		unit.width, unit.height, 
+		self.realX - self.realWidth/2,
+		self.realY - self.realHeight/2, 
+		self.realWidth, self.realHeight)
 end
 
 -- Check if the point collided with this active object
 -- Return true if they have collided, otherwise false
 function ActiveObject:checkPointCollision(x, y)
-	return pointInRect(x, y, self.realX - self.realWidth/2, 
-		self.realY - self.realHeight/2, self.realWidth, self.realHeight)
+	return pointInRect(x, y, 
+		self.realX - self.realWidth/2, 
+		self.realY - self.realHeight/2, 
+		self.realWidth, self.realHeight)
 end
 
 function ActiveObject:getDir()

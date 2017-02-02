@@ -1,10 +1,10 @@
 require "Unit"
 
-local RocketSmokeParticleSize = 20
-local RocketParticleCreationTime = 0.05
-local RocketVerticalAcc = 100
-local RocketShakingVel = 100
-local RocketShakingMaxDec = -2
+local SmokeParticleSize = 20
+local ParticleCreationTime = 0.05
+local VerticalAcc = 100
+local ShakingVel = 100
+local ShakingMaxDec = -2
 
 Rocket = Unit:new()
 
@@ -35,7 +35,7 @@ end
 function Rocket:updateVerticalMovement(deltaTime, gravityAcc)
 	if self.started then
 		-- Increase vertical velocity continously
-		self.verticalVel = self.verticalVel + RocketVerticalAcc * deltaTime
+		self.verticalVel = self.verticalVel + VerticalAcc * deltaTime
 		
 		-- Sounds funny but only with this indicator 
 		-- world can process movement upwards
@@ -49,13 +49,13 @@ function Rocket:updateSmoke(deltaTime, particleSystem)
 	self.timer = self.timer + deltaTime
 	
 	-- Create smoke from engines
-	if self.timer >= RocketParticleCreationTime then
-		local numParticles = self.timer / RocketParticleCreationTime
+	if self.timer >= ParticleCreationTime then
+		local numParticles = self.timer / ParticleCreationTime
 		
 		for i = 1, numParticles do
 			particleSystem:addSmokeParticle(self.smokeTex, 
 				self.x, self.y + self.height/2, 
-				RocketSmokeParticleSize, RocketSmokeParticleSize,
+				SmokeParticleSize, SmokeParticleSize,
 				270 + math.random(-25, 25), 4)
 		end
 		
@@ -66,12 +66,12 @@ end
 -- Rocket function only!
 function Rocket:updateShaking(deltaTime)
 	self.shakingAngleMax = self.shakingAngleMax +
-		RocketShakingMaxDec * deltaTime
+		ShakingMaxDec * deltaTime
 	
 	-- Shaking effect
 	if math.floor(self.shakingAngleMax) > 0 then
 		self.shakingAngle = self.shakingAngle + 
-			RocketShakingVel * self.shakingDir * deltaTime
+			ShakingVel * self.shakingDir * deltaTime
 		
 		if math.abs(self.shakingAngle) >= self.shakingAngleMax then
 			-- Do not overflow from the limit
