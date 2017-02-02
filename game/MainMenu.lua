@@ -2,11 +2,12 @@ require "Menu"
 require "Game"
 require "Credits"
 require "Release"
---require "assets/maps/MainMenuMap.lua"
+require "assets/maps/_MainMenuMap"
 
-local ButtonWidth = 300
+local ButtonWidth = 400
 local ButtonHeight = 70
-local ButtonOffset = 50
+local ButtonOffset = 10
+local MaxButtonsPerScreen = 5
 
 MainMenu = Runnable:new()
 
@@ -37,19 +38,22 @@ end
 function MainMenu:createBackgroundWorld()
 	local tilesize = 60
 	
-	self.world = World:new(nil, 60, 60, self.screen,
+	local player = createUnitFromName("player", 
+		0, 0, tilesize, tilesize,
+		self.textureContainer, false)
+		
+	self.world = World:new(player, 60, 60, self.screen,
 		self.textureContainer, self.soundContainer,
 		self.headerContainer, self.sinCosTable, self.fonts)
 	
-	self.world:createEmptyWorld(20, 20)
-	--_MainMenuWorldLoad(self.world)
+	_MainMenuWorldLoad(self.world)
+	self.world:postLoadHandle()
 end
 
 function MainMenu:setupMenu()
 	local menuTree = {}
 	
-	self:insertGameContinueMenuButton(menuTree)
-	self:insertNewGameMenuButton(menuTree)
+	self:insertCampaignMenuButton(menuTree)
 	self:insertEditorMenuButton(menuTree)
 	self:insertCreatedLevelsMenuButton(menuTree)
 	self:insertCreditsMenuButton(menuTree)
@@ -75,11 +79,7 @@ function MainMenu:newGame(editorInitMode)
 		editorInitMode)
 end
 
-function MainMenu:insertGameContinueMenuButton(menuTree)
-	-- TODO
-end
-
-function MainMenu:insertNewGameMenuButton(menuTree)
+function MainMenu:insertCampaignMenuButton(menuTree)
 	-- TODO
 end
 
@@ -99,7 +99,43 @@ function MainMenu:insertEditorMenuButton(menuTree)
 end
 
 function MainMenu:insertCreatedLevelsMenuButton(menuTree)
-	-- TODO
+	local items = love.filesystem.getDirectoryItems(SAVE_DIR)
+	local maxButs = MaxButtonsPerScreen - 2
+	local firstLayer = {}
+	local currLayer = firstLayer
+	
+	for i=1, #items do
+		currLayer[#currLayer + 1] = {
+			-- Label is the filename without the .lua extension
+			label = string.sub(items[i], 1, string.len(items[i]) - 4),
+			
+			action = function()
+				-- TODO
+			end
+		}
+		
+		-- Reached maximum number of buttons per screen and
+		-- some items still need to be listed? 
+		-- Create new node (layer) of buttons.
+		if math.fmod(i, maxButs) == 0 and i < #items then
+			local next = {}
+			currLayer[#currLayer + 1] = {
+				label = "Next",
+				nextNode = next
+			}
+			-- Do not forget the "back" button
+			currLayer[#currLayer + 1] = { label = "~back" }
+			currLayer = next
+		end
+	end
+	
+	-- "back" button of the last layer
+	currLayer[#currLayer + 1] = { label = "~back" }
+	
+	menuTree[#menuTree + 1] = {
+		label = "Custom levels",
+		nextNode = firstLayer,
+	}
 end
 
 function MainMenu:insertCreditsMenuButton(menuTree)

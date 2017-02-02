@@ -42,6 +42,9 @@ function loadFonts()
 end
 
 function love.load()
+	-- Create save directory if it doesn't exist yet
+	love.filesystem.createDirectory(SAVE_DIR)
+	
 	-- Set new randomseed
 	math.randomseed(os.time())
 	

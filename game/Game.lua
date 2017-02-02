@@ -10,8 +10,15 @@ local tileHeight = 60
 
 Game = Runnable:new()
 
+-- @args is optional, it may consist of:
+-- Player:	@args.player: use this player instead of creating new one
+-- World:	@args.worldFilename: load this world
+-- or  		@args.worldLoadFunc: use this load function
+--
+-- If both worldFilename and worldLoadFunc are nil, then a new empty world
+-- will be created. Same rules apply for @args.player...
 function Game:init(screen, textureContainer, soundContainer,
-	headerContainer, sinCosTable, fonts, editorInitMode)
+	headerContainer, sinCosTable, fonts, editorInitMode, args)
 	
 	self.screen = screen
 	self.textureContainer = textureContainer
@@ -22,8 +29,11 @@ function Game:init(screen, textureContainer, soundContainer,
 	
 	self.editorInitMode = editorInitMode
 	
-	self:newPlayer()
-	self:newWorld()
+	if args == nil or args.player == nil then
+		self:newPlayer()
+	else
+		self.player = args.player
+	end
 	
 	self:resetGameplay()
 	self.activeMode = self.gameplay
@@ -77,6 +87,8 @@ function Game:handleKeyPress(key)
 		
 		self.activeMode:resume()
 	elseif key == "escape" then
+		-- TODO
+	else
 		self.activeMode:handleKeyPress(key)
 	end
 end

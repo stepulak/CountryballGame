@@ -110,6 +110,8 @@ end
 -- The file is proper lua source code, contains the world content
 -- and can be run dynamically.
 function World:loadFromSaveDir(filename)
+	filename = SAVE_DIR .. filename
+	
 	if love.filesystem.exists(filename) == false then
 		print("World:loadFrom() given file does not exist: " .. filename)
 		return false
@@ -125,6 +127,8 @@ end
 -- so that when you can import the file back and load the world content.
 -- The file will be saved somewhere in love.filesystem.getSaveDirectory().
 function World:saveInto(filename)
+	filename = SAVE_DIR .. filename
+	
 	local f = love.filesystem.newFile(filename)
 	
 	if f:open("w") == false then
