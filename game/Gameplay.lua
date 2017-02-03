@@ -22,12 +22,22 @@ function Gameplay:init(world, fonts)
 	self.jumpButtonPressed = false
 	self.shootButtonPressed = false
 	
+	self.paused = false
+	
 	if MOBILE_VERSION then
 		self:createVirtualGamepad()
 	end
 	
-	self:insertQuitElement(self.gui, self.fonts.medium,
-		)
+	local virtW = self.world.camera.virtualWidth
+	local virtH = self.world.camera.virtualHeight
+	
+	local _, dialog = self:insertQuitElement(self.gui, self.fonts.medium,
+		virtW/2, virtW, virtH, self.world.textureContainer,
+		function() self.paused = true end, -- @invokeAction
+		function() self.todo = "main_menu_hard" end, -- @quitAction
+		function() self.paused = false end) -- @continueAction
+	
+	self.quitDialog = dialog
 end
 
 function Gameplay:createVirtualGamepad()	
@@ -136,6 +146,14 @@ function Gameplay:handleKeyPress(key)
 		self.jumpKeyPressed = true
 	elseif key == "m" then
 		self.shootKeyPressed = true
+	elseif key == "escape" then
+		if self.quitDialog.invoked then
+			self.quitDialog:close()
+			self.paused = false
+		else
+			self.quitDialog:invoke()
+			self.paused = true
+		end
 	else
 		-- Wasn't processed
 		return false
@@ -199,7 +217,11 @@ function Gameplay:handlePlayersDeath(deltaTime)
 	end
 end
 
-function Gameplay:update(deltaTime)	
+function Gameplay:update(deltaTime)
+	if self.paused and self.deathScreen == nil then
+		return
+	end
+	
 	-- Is the player dead?
 	if self.world.player ~= nil and self.world.player.dead == true then
 		self:handlePlayersDeath(deltaTime)

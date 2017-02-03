@@ -71,6 +71,10 @@ function YesNoDialog:mouseInArea(x, y)
 	return self.invoked and self:mouseInAreaSuper(x, y)
 end
 
+function YesNoDialog:close()
+	self.invoked = false
+end
+
 function YesNoDialog:invoke()
 	self.invoked = true
 end
@@ -91,7 +95,7 @@ function YesNoDialog:mouseRelease(x, y)
 		if self.clickedButton:mouseInArea(x, y) then
 			self.clickedButton:mouseRelease(x, y)
 			-- You can close this dialog
-			self.invoked = false
+			self:close()
 		else
 			self.clickedButton:mouseReleaseNotInside(x, y)
 		end

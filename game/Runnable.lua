@@ -20,6 +20,8 @@ end
 -- When "Yes" is pressed on quit dialog (user want to close this runnable int.)
 -- @continueAction:
 -- When "No" is pressed on quit dialog (user want to continue)
+--
+-- Function returns the quit button and the dialog
 function Runnable:insertQuitElement(gui, font, quitButtonCenterX,
 	virtScrWidth, virtScrHeight, textureContainer, 
 	invokeAction, quitAction, continueAction)
@@ -39,9 +41,17 @@ function Runnable:insertQuitElement(gui, font, quitButtonCenterX,
 			dialog:invoke()
 		end
 	
-	gui:addElement(TexturedButton:new("Quit", font,
-		quitButtonCenterX, 50, 150, 75,
-		butIdleTex, butClickedTex, quitButtonAc))
+	local quitButW = 150
+	
+	local quitBut = TexturedButton:new("Quit", font,
+		quitButtonCenterX - quitButW/2, 50,
+		quitButW, 75,
+		butIdleTex, butClickedTex,
+		quitButtonAc)
+		
+	gui:addElement(quitBut)
+	
+	return quitBut, dialog 
 end
 
 function Runnable:handleKeyPress(key)

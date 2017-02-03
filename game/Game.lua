@@ -126,10 +126,8 @@ function Game:handleKeyPress(key)
 		end
 		
 		self.activeMode:resume()
-	elseif self.activeMode:handleKeyPress(key) then
-		-- continue
-	elseif key == "escape" then
-		
+	else
+		self.activeMode:handleKeyPress(key)
 	end
 end
 
