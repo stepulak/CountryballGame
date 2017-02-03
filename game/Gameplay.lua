@@ -24,14 +24,10 @@ function Gameplay:init(world, fonts)
 	
 	if MOBILE_VERSION then
 		self:createVirtualGamepad()
-	
-		self:insertQuitButton(self.gui, self.fonts.medium, 
-			self.world.camera.virtualWidth/2,
-			self.world.textureContainer,
-			function()
-				self.todo = "main_menu_hard"
-			end)
 	end
+	
+	self:insertQuitElement(self.gui, self.fonts.medium,
+		)
 end
 
 function Gameplay:createVirtualGamepad()	

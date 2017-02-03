@@ -5,9 +5,9 @@ local ScrollVelocity = 100
 
 Credits = Runnable:new()
 
-function Credits:init(scrVirtWidth, scrVirtHeight, fonts, textureContainer)
-	self.scrVirtWidth = scrVirtWidth
-	self.scrVirtHeight = scrVirtHeight
+function Credits:init(virtScrWidth, virtScrHeight, fonts, textureContainer)
+	self.virtScrWidth = virtScrWidth
+	self.virtScrHeight = virtScrHeight
 	self.fonts = fonts
 	self.gameLogoTex = textureContainer:getTexture("game_logo")
 	self.backgroundTex = textureContainer:getTexture("credits_background")
@@ -22,12 +22,13 @@ function Credits:init(scrVirtWidth, scrVirtHeight, fonts, textureContainer)
 	
 	self.gui = GuiContainer:new()
 	
-	--if MOBILE_RELEASE then
-		self:insertQuitButton(self.gui, fonts.medium, 100, textureContainer,
-			function()
-				self.quit = true
-			end)
-	--end
+	if MOBILE_RELEASE then
+		self:insertQuitElement(self.gui, self.fonts.medium, 
+			150, self.virtScrWidth, self.virtScrHeight, textureContainer,
+			function() self.started = false end, -- @invokeAction
+			function() self.quit = true end, -- @quitAction
+			function() self.started = true end) -- @continueAction
+	end
 end
 
 function Credits:addLineM(text)
@@ -82,7 +83,7 @@ function Credits:addContent(content, height)
 end
 
 function Credits:shouldQuit()
-	return self.offset >= self.overallHeight + self.scrVirtHeight 
+	return self.offset >= self.overallHeight + self.virtScrHeight 
 		or self.quit
 end
 
@@ -97,6 +98,10 @@ function Credits:handleMouseClick(x, y)
 	self.gui:mouseClick(x, y)
 end
 
+function Credits:handleMouseRelease(x, y)
+	self.gui:mouseRelease(x, y)
+end
+
 function Credits:handleKeyPress(key)
 	if key == "escape" then
 		self.quit = true
@@ -109,7 +114,7 @@ function Credits:update(deltaTime)
 		
 		local firstContent = self.content[self.contentIndex]
 		if firstContent.currHeight + firstContent.height 
-			<= self.offset - self.scrVirtHeight then
+			<= self.offset - self.virtScrHeight then
 			
 			if self.content[self.contentIndex + 1] ~= nil then
 				self.contentIndex = self.contentIndex + 1
@@ -123,11 +128,11 @@ end
 function Credits:draw()
 	if self.backgroundTex ~= nil then
 		drawTex(self.backgroundTex, 0, 0,
-			self.scrVirtWidth, self.scrVirtHeight)
+			self.virtScrWidth, self.virtScrHeight)
 	end
 	
 	local firstContent = self.content[self.contentIndex]
-	local transY = self.scrVirtHeight + firstContent.currHeight - self.offset
+	local transY = self.virtScrHeight + firstContent.currHeight - self.offset
 	local y = 0
 	
 	love.graphics.translate(0, transY)
@@ -136,15 +141,15 @@ function Credits:draw()
 		local c = self.content[i]
 		
 		if c.text ~= nil then
-			c.font:drawLineCentered(c.text, self.scrVirtWidth/2, y)
+			c.font:drawLineCentered(c.text, self.virtScrWidth/2, y)
 		elseif c.tex ~= nil then
-			drawTex(c.tex, self.scrVirtWidth/2 - c.width/2, y,
+			drawTex(c.tex, self.virtScrWidth/2 - c.width/2, y,
 				c.width, c.height)
 		end
 		
 		y = y + c.height
 		
-		if y >= self.scrVirtHeight + math.abs(transY)*2 then
+		if y >= self.virtScrHeight + math.abs(transY)*2 then
 			-- You do not need to draw anymore, it's outside of the screen
 			break
 		end

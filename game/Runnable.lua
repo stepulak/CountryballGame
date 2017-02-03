@@ -1,4 +1,7 @@
-require "QuitButton"
+require "YesNoDialog"
+
+local QuitElementWidth = 400
+local QuitElementHeight = 100
 
 --
 -- Runnable "interface"
@@ -9,13 +12,36 @@ Runnable = class:new()
 function Runnable:init()
 end
 
-function Runnable:insertQuitButton(gui, font, centerX,
-	textureContainer, action)
+-- Insert a quit button, which if is pressed, a quit dialog is invoked
+-- and user can end this "runnable session".
+-- @invokeAction:
+-- Is triggered when quit button is pressed (and quit dialog is shown)
+-- @quitAction:
+-- When "Yes" is pressed on quit dialog (user want to close this runnable int.)
+-- @continueAction:
+-- When "No" is pressed on quit dialog (user want to continue)
+function Runnable:insertQuitElement(gui, font, quitButtonCenterX,
+	virtScrWidth, virtScrHeight, textureContainer, 
+	invokeAction, quitAction, continueAction)
 	
-	gui:addElement(QuitButton:new(font, centerX, 150, 75,
-		textureContainer:getTexture("button_idle"),
-		textureContainer:getTexture("button_click"),
-		action))
+	local butIdleTex = textureContainer:getTexture("button_idle")
+	local butClickedTex = textureContainer:getTexture("button_click")
+	
+	local dialog = YesNoDialog:new("Do you really want to quit?", font,
+		virtScrWidth, virtScrHeight,
+		butIdleTex, butClickedTex,
+		quitAction, continueAction)
+	
+	gui:addElement(dialog)
+	
+	local quitButtonAc = function()
+			invokeAction()
+			dialog:invoke()
+		end
+	
+	gui:addElement(TexturedButton:new("Quit", font,
+		quitButtonCenterX, 50, 150, 75,
+		butIdleTex, butClickedTex, quitButtonAc))
 end
 
 function Runnable:handleKeyPress(key)

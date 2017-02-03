@@ -22,6 +22,9 @@ function GuiElement:mouseInArea(x, y)
 	return pointInRect(x, y, self.x, self.y, self.width, self.height)
 end
 
+-- Inheritance
+GuiElement.mouseInAreaSuper = GuiElement.mouseInArea
+
 --[[
 function GuiElement:touchInArea(x, y)
 	return self:mouseInArea(x, y)
@@ -75,7 +78,7 @@ end
 
 -- Non-textinput content
 -- Don't forget the @return value = true if the key was processed,
--- otherwise false
+-- otherwise it's false
 function GuiElement:keyPress(key)
 	return false
 end
@@ -90,7 +93,7 @@ function GuiElement:update(deltaTime, mouseX, mouseY)
 end
 
 -- @camera is mostly unnecessary, but some elements may need it
--- mostly because of the screen / virtual proportions
+-- mostly because of the screen / virtual screen proportions
 function GuiElement:draw(camera)
 
 end
