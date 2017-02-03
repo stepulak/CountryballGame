@@ -17,8 +17,14 @@ Game = Runnable:new()
 --
 -- If both worldFilename and worldLoadFunc are nil, then a new empty world
 -- will be created. Same rules apply for @args.player...
-function Game:init(screen, textureContainer, soundContainer,
-	headerContainer, sinCosTable, fonts, editorInitMode, args)
+function Game:init(screen,
+	textureContainer,
+	soundContainer,
+	headerContainer,
+	sinCosTable,
+	fonts,
+	editorInitMode,
+	args)
 	
 	self.screen = screen
 	self.textureContainer = textureContainer
@@ -27,15 +33,17 @@ function Game:init(screen, textureContainer, soundContainer,
 	self.sinCosTable = sinCosTable
 	self.fonts = fonts
 	
+	self.quit = false 
 	self.editorInitMode = editorInitMode
 	
+	-- Create new player or use given one (@args.player)
 	if args == nil or args.player == nil then
 		self:newPlayer()
 	else
 		self.player = args.player
 	end
 	
-	-- Find out how will you load the world table
+	-- Find out how will you load the world
 	if args ~= nil and args.worldFilename ~= nil then
 		self.worldFilename = args.worldFilename
 		self:loadWorldFilename()
@@ -43,14 +51,15 @@ function Game:init(screen, textureContainer, soundContainer,
 		self.worldLoadFunc = args.worldLoadFunc
 		self:loadWorldFunc()
 	else
+		-- Or use empty one?
 		self:newEmptyWorld()
 	end
 	
-	self:resetGameplay()
+	self:newGameplay()
 	self.activeMode = self.gameplay
 	
 	if IS_OFFICIAL_RELEASE == false then
-		self:resetEditor()
+		self:newEditor()
 		
 		if editorInitMode then
 			self.activeMode = self.editor
@@ -67,7 +76,7 @@ end
 
 function Game:newEmptyWorld()
 	self:createWorld()
-	self.world:createSampleWorld()
+	self.world:createEmptyWorld(40, 40)
 end
 
 function Game:newPlayer()
@@ -76,11 +85,11 @@ function Game:newPlayer()
 		self.textureContainer)
 end
 
-function Game:resetGameplay()
+function Game:newGameplay()
 	self.gameplay = Gameplay:new(self.world, self.fonts)
 end
 
-function Game:resetEditor()
+function Game:newEditor()
 	self.editor = Editor:new(self.world, self.fonts)
 end
 
@@ -117,10 +126,10 @@ function Game:handleKeyPress(key)
 		end
 		
 		self.activeMode:resume()
+	elseif self.activeMode:handleKeyPress(key) then
+		-- continue
 	elseif key == "escape" then
-		-- TODO
-	else
-		self.activeMode:handleKeyPress(key)
+		
 	end
 end
 
@@ -156,37 +165,56 @@ function Game:handleTouchMove(id, tx, ty, tdx, tdy)
 	self.activeMode:handleTouchMove(id, tx, ty, tdx, tdy)
 end
 
+-- Total reset of the active game
+-- According to settings reset the world (load it again) and
+-- respawn the player aswell
 function Game:totalReset()
 	local activeModeName = self.activeMode.name
-		
-	if IS_OFFICIAL_RELEASE then
+	
+	if self.editorInitMode == false then
+		self.soundContainer:stopAll()
 		self:loadWorld()
 	else
-		self:resetEditor()
+		self:newEditor()
+		-- respawn player
+		self.world:setupPlayer()
 	end
 	
-	self:resetGameplay()
+	self:newGameplay()
 	-- only lives and coins are preserved
 	self.player:hardReset()
-	-- respawn player
-	self.world:setupPlayer()
 	
+	-- Run the last active mode
 	self.activeMode = activeModeName == "gameplay" 
 		and self.gameplay or self.editor
 end
 
+-- Stop all in-game sounds and be ready to quit
+function Game:prepareToQuit()
+	self.soundContainer:stopAll()
+	self.quit = true
+end
+
+-- Handle todos from active mode (gameplay)
 function Game:handleTodo()
 	if self.activeMode.todo == "reset_world" then
 		self:totalReset()
-	elseif self.activeMode.todo == "main_menu" then
+	elseif self.activeMode.todo == "main_menu_soft" then
 		if self.editorInitMode then
-			-- In editor mode, you cannot die entirely
+			-- In editor mode, you cannot die entirely - reset player's lives
 			self:totalReset()
 			self.player.numLives = 3
 		else
-			-- TODO
+			self:prepareToQuit()
 		end
+	elseif self.activeMode.todo == "main_menu_hard" then
+		-- Do not hasitate with quitting, do it now
+		self:prepareToQuit()
 	end
+end
+
+function Game:shouldQuit()
+	return self.quit
 end
 
 function Game:update(deltaTime)
@@ -198,7 +226,5 @@ function Game:update(deltaTime)
 end
 
 function Game:draw()
-	if self.activeMode.draw then
-		self.activeMode:draw()
-	end
+	self.activeMode:draw()
 end

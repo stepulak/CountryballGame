@@ -12,14 +12,14 @@ function DeathScreen:init(player, font)
 	self.timer = DeathScreenTime
 end
 
--- @return "false", "gameover", "reset_world"
+-- @return "nothing", "gameover", "continue" according to player's lives
 function DeathScreen:endStatus()
 	if self.timer > 0 then
-		return "false"
+		return "nothing"
 	elseif self.player.numLives <= 0 then
 		return "gameover"
 	else
-		return "reset_world"
+		return "continue"
 	end
 end
 

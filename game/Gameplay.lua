@@ -24,13 +24,14 @@ function Gameplay:init(world, fonts)
 	
 	if MOBILE_VERSION then
 		self:createVirtualGamepad()
-	end
-	self:insertQuitButton(self.gui, self.fonts.medium, 
-		self.world.camera.virtualWidth/2,
-		self.world.textureContainer,
+	
+		self:insertQuitButton(self.gui, self.fonts.medium, 
+			self.world.camera.virtualWidth/2,
+			self.world.textureContainer,
 			function()
-				self.todo = "main_menu_quit"
+				self.todo = "main_menu_hard"
 			end)
+	end
 end
 
 function Gameplay:createVirtualGamepad()	
@@ -195,10 +196,10 @@ function Gameplay:handlePlayersDeath(deltaTime)
 	
 	local status = self.deathScreen:endStatus()
 	
-	if status == "reset_world" then
+	if status == "continue" then
 		self.todo = "reset_world"
 	elseif status == "gameover" then
-		self.todo = "main_menu"
+		self.todo = "main_menu_soft"
 	end
 end
 

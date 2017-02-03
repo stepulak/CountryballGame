@@ -136,6 +136,10 @@ function love.visible(vis)
 end
 
 function love.update(deltaTime)
+	if deltaTime > MIN_FPS then
+		deltaTime = MIN_FPS
+	end
+	
 	if paused == false then
 		mainMenu:update(deltaTime)
 		
