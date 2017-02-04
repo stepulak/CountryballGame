@@ -84,7 +84,7 @@ function MainMenu:insertCampaignMenuButton(menuTree)
 end
 
 function MainMenu:insertEditorMenuButton(menuTree)
-	if IS_OFFICIAL_RELEASE then
+	if IS_OFFICIAL_RELEASE or MOBILE_VERSION then
 		-- Editor is not part of the official release
 		return
 	end
@@ -222,7 +222,7 @@ function MainMenu:handleTouchPress(id, tx, ty)
 	if self.run ~= nil then
 		self.run:handleTouchPress(id, tx, ty)
 	else
-		self.gui:touchPress(tx, ty)
+		self.gui:touchPress(id, tx, ty)
 	end
 end
 
@@ -230,7 +230,7 @@ function MainMenu:handleTouchRelease(id, tx, ty)
 	if self.run ~= nil then
 		self.run:handleTouchRelease(id, tx, ty)
 	else
-		self.gui:touchRelease(tx, ty)
+		self.gui:touchRelease(id, tx, ty)
 	end
 end
 
@@ -238,7 +238,7 @@ function MainMenu:handleTouchMove(id, tx, ty, tdx, tdy)
 	if self.run ~= nil then
 		self.run:handleTouchMove(id, tx, ty, tdx, tdy)
 	else
-		self.gui:touchMove(tx, ty, tdx, tdy)
+		self.gui:touchMove(id, tx, ty, tdx, tdy)
 	end
 end
 
@@ -267,8 +267,8 @@ function MainMenu:update(deltaTime)
 			self.run = nil
 		end
 	else
-		self.world:update(deltaTime)
 		self.gui:update(deltaTime)
+		self.world:update(deltaTime)
 		self:updateGameLogoRotation(deltaTime)
 	end
 end

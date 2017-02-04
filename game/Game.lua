@@ -46,10 +46,10 @@ function Game:init(screen,
 	-- Find out how will you load the world
 	if args ~= nil and args.worldFilename ~= nil then
 		self.worldFilename = args.worldFilename
-		self:loadWorldFilename()
+		self:loadWorldFromFilename()
 	elseif args ~= nil and args.worldLoadFunc ~= nil then
 		self.worldLoadFunc = args.worldLoadFunc
-		self:loadWorldFunc()
+		self:loadWorldWithFunc()
 	else
 		-- Or use empty one?
 		self:newEmptyWorld()
@@ -58,7 +58,7 @@ function Game:init(screen,
 	self:newGameplay()
 	self.activeMode = self.gameplay
 	
-	if IS_OFFICIAL_RELEASE == false then
+	if IS_OFFICIAL_RELEASE == false and MOBILE_VERSION == false then
 		self:newEditor()
 		
 		if editorInitMode then
@@ -95,23 +95,23 @@ end
 
 function Game:loadWorld()
 	if self.worldFilename ~= nil then
-		self:loadWorldFilename()
+		self:loadWorldFromFilename()
 	elseif self.worldLoadFunc ~= nil then
-		self:loadWorldFunc()
+		self:loadWorldWithFunc()
 	else
 		self:newEmptyWorld()
 	end
 end
 
 -- load new world from self.worldFilename path
-function Game:loadWorldFilename()
+function Game:loadWorldFromFilename()
 	self:createWorld()
 	self.world:loadFromSaveDir(self.worldFilename)
 end
 
-function Game:loadWorldFunc()
+function Game:loadWorldWithFunc()
 	self:createWorld()
-	self.loadWorldFunc(self.world)
+	self.worldLoadFunc(self.world)
 	-- Do not forget to call post load handle!
 	self.world:postLoadHandle()
 end
