@@ -106,7 +106,7 @@ function Credits:handleTouchPress(id, x, y)
 	self.gui:touchPress(id, x, y)
 end
 
-function Credits:handleTouchRelease(id, tx, ty)
+function Credits:handleTouchRelease(id, x, y)
 	self.gui:touchRelease(id, x, y)
 end
 
