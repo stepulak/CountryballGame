@@ -111,20 +111,72 @@ function love.mousemoved(x, y, dx, dy, isTouch)
 	end
 end
 
+--
+-- Since the love.touchreleased and the love.touchmoved are not working at all
+-- (atleast on my mobile phone) we have to create our own mechanism 
+-- with love.touch.getTouches() and love.touch.getPosition() 
+-- to "simulate" release and movement.
+
+local touches = {}
+
+function addTouch(id, tx, ty)
+	touches[id] = { 
+		x = tx,
+		y = ty,
+		active = false,
+	}
+end
+
+function updateTouches()
+	local currTouches = love.touch.getTouches()
+	
+	for _, id in pairs(currTouches) do
+		if touches[id] ~= nil then
+			-- Touch is still active (pressure on the screen)
+			touches[id].active = true
+		end
+	end
+	
+	local sx, sy = getScaleRealToVirtual(
+		screen.width, screen.virtualWidth,
+		screen.height, screen.virtualHeight)
+	
+	-- Update active/inactive touches
+	for id, touch in pairs(touches) do
+		if touch.active then
+			-- They are active, process the touchmove
+			-- Get current position
+			local x, y = love.touch.getPosition(id)
+			x = x * sx
+			y = y * sy
+			
+			if x ~= touch.x or y ~= touch.y then
+				mainMenu:handleTouchMove(id, x - touch.x, y - touch.y)
+				touch.x = x
+				touch.y = y
+			end
+			
+			touch.active = false
+		else
+			-- Inactive, process the touchrelease
+			mainMenu:handleTouchRelease(id, touch.x, touch.y)
+			touches[id] = nil
+		end
+	end
+end
+
 function love.touchpressed(id, x, y, dx, dy, pressure)
 	local tx, ty = transformMouseCoordinates(x, y)
 	mainMenu:handleTouchPress(id, tx, ty)
+	addTouch(id, tx, ty)
 end
 
 function love.touchreleased(id, x, y, dx, dy, pressure)
-	local tx, ty = transformMouseCoordinates(x, y)
-	mainMenu:handleTouchRelease(id, tx, ty)
+	-- Not working
 end
 
 function love.touchmoved(id, x, y, dx, dy, pressure)
-	local tx, ty = transformMouseCoordinates(x, y)
-	local tdx, tdy = transformMouseCoordinates(dx, dy)
-	mainMenu:handleTouchMove(id, tx, ty, tdx, tdy)
+	-- Not working
 end
 
 function love.focus(foc)
@@ -141,6 +193,7 @@ function love.update(deltaTime)
 	end
 	
 	if paused == false then
+		updateTouches()
 		mainMenu:update(deltaTime)
 		
 		if mainMenu:shouldQuit() then

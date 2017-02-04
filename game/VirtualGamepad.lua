@@ -251,7 +251,7 @@ function VirtualGamepad:update(deltaTime, mouseX, mouseY)
 	-- check, if they are still active
 	local touches = love.touch.getTouches()
 	
-	for k, id in pairs(touches) do
+	for _, id in pairs(touches) do
 		if self.touches[id] ~= nil then
 			self.touches[id].isActive = true
 			
