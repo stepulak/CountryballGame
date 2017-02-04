@@ -189,7 +189,7 @@ end
 
 function VirtualGamepad:mouseMove(x, y, distX, distY)
 	if self.click == self.dirBut then
-		self.click:actionMove(x, y, distX, distY)
+		self.click:actionMove(x, y)
 	end
 end
 
@@ -225,7 +225,7 @@ end
 function VirtualGamepad:touchMove(x, y, distX, distY, id)
 	-- You can use this only on joystick (direction button)
 	if self.touches[id] == self.dirBut then
-		self.dirBut:actionMove(distX, distY)
+		self.dirBut:actionMove(x, y)
 	end
 end
 
