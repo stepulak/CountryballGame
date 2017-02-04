@@ -88,7 +88,7 @@ end
 
 function GuiContainer:mouseMove(x, y, dx, dy)
 	for i = 1, #self.elems do
-		self.elems[i]:mouseMove(x, y, dx, dy, id)
+		self.elems[i]:mouseMove(x, y, dx, dy)
 	end
 end
 
@@ -103,7 +103,7 @@ end
 
 function GuiContainer:touchMove(id, x, y, dx, dy)
 	for i = 1, #self.elems do
-		self.elems[i]:touchMove(x, y, dx, dy)
+		self.elems[i]:touchMove(x, y, dx, dy, id)
 	end
 end
 

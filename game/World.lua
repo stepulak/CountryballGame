@@ -1689,7 +1689,7 @@ function World:tryToEnd()
 end
 
 function World:updateFinish(deltaTime)
-	self.player:moveHorizontally(false)
+	self.player:moveHorizontally(false, 1)
 	self.finishCountdownTimer = self.finishCountdownTimer - deltaTime
 
 	if self.finishCountdownTimer <= 0 then
