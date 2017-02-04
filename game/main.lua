@@ -66,7 +66,8 @@ end
 
 -- Transform mouse coordinates from real coordinates to virtual coordinates
 function transformMouseCoordinates(x, y)
-	local sx, sy = getScaleRealToVirtual(screen.width, screen.virtualWidth,
+	local sx, sy = getScaleRealToVirtual(
+		screen.width, screen.virtualWidth,
 		screen.height, screen.virtualHeight)
 	return x * sx, y * sy
 end
@@ -113,8 +114,8 @@ end
 
 --
 -- Since the love.touchreleased and the love.touchmoved are not working at all
--- (atleast on my mobile phone) we have to create our own mechanism 
--- with love.touch.getTouches() and love.touch.getPosition() 
+-- (atleast on my mobile phone *wtf*?) So we have to create our own mechanism
+-- using love.touch.getTouches() and love.touch.getPosition()
 -- to "simulate" release and movement.
 
 local touches = {}
@@ -137,18 +138,12 @@ function updateTouches()
 		end
 	end
 	
-	local sx, sy = getScaleRealToVirtual(
-		screen.width, screen.virtualWidth,
-		screen.height, screen.virtualHeight)
-	
 	-- Update active/inactive touches
 	for id, touch in pairs(touches) do
 		if touch.active then
 			-- They are active, process the touchmove
-			-- Get current position
 			local x, y = love.touch.getPosition(id)
-			x = x * sx
-			y = y * sy
+			transformMouseCoordinates(x, y)
 			
 			if x ~= touch.x or y ~= touch.y then
 				mainMenu:handleTouchMove(id, x, y, x - touch.x, y - touch.y)

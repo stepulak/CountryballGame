@@ -102,6 +102,14 @@ function Credits:handleMouseRelease(x, y)
 	self.gui:mouseRelease(x, y)
 end
 
+function Credits:handleTouchPress(id, x, y)
+	self.gui:touchPress(id, x, y)
+end
+
+function Credits:handleTouchRelease(id, tx, ty)
+	self.gui:touchRelease(id, x, y)
+end
+
 function Credits:handleKeyPress(key)
 	if key == "escape" then
 		self.quit = true

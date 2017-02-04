@@ -156,7 +156,7 @@ function Game:handleTouchPress(id, tx, ty)
 end
 
 function Game:handleTouchRelease(id, tx, ty)
-	self.activeMode:handleTouchPress(id, tx, ty)
+	self.activeMode:handleTouchRelease(id, tx, ty)
 end
 
 function Game:handleTouchMove(id, tx, ty, tdx, tdy)
