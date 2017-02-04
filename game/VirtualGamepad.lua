@@ -121,18 +121,13 @@ function VirtualGamepad:addActionButton(label, actionPressed, actionReleased)
 end
 
 -- Return the current direction of direction button (joystick)
--- Possible values: 
--- 	1)		x = 0, y = -1, +1
--- 	2)		x = -1, +1, y = 0
+-- @return [-1,1], [-1,1]
 function VirtualGamepad:getDirection()
+	local dMax = self.dirBut.radius - self.dirBut.smRadius
 	local dX = self.dirBut.smX - self.dirBut.x
 	local dY = self.dirBut.smY - self.dirBut.y
 	
-	if math.abs(dX) < math.abs(dY) then
-		return 0, getUnitValue(dY)
-	else
-		return getUnitValue(dX), 0
-	end
+	return dX/dMax, dY/dMax
 end
 
 function VirtualGamepad:mouseInsideButton(x, y, but)
@@ -200,80 +195,37 @@ end
 
 --
 -- Touch analogue
--- love.touch* is not working properly on my android phone
--- (except the love.touchpress), so I've decided to do the main
--- work in the gamepad's update section.
 --
 function VirtualGamepad:touchPress(x, y, id)
 	if self.touches[id] ~= nil then
-		self:myTouchRelease(-1, -1, id)
+		self:touchRelease(-1, -1, id)
 	end
 	
 	local but = self:getButtonUnderTouch(x, y)
 	
 	if but ~= nil then
-		self.touches[id] = { 
-			button = but,
-			isActive = false,
-		}
+		self.touches[id] = but
 		but:actionPressed(x, y)
 		but.isPressed = true
 	end
 end
 
 function VirtualGamepad:touchRelease(x, y, id)
-	-- not working properly
-end
-
-function VirtualGamepad:touchReleaseNotInside(x, y, id)
-	-- not working properly
-end
-
-function VirtualGamepad:touchMove(x, y, distX, distY, id)
-	-- not working properly
-end
-
-function VirtualGamepad:myTouchRelease(x, y, id)
 	if self.touches[id] ~= nil then
-		local t = self.touches[id]
-		t.button:actionReleased(x, y)
-		t.button.isPressed = false
+		self.touches[id]:actionReleased(x, y)
+		self.touches[id].isPressed = false
 		self.touches[id] = nil
 	end
 end
 
-function VirtualGamepad:update(deltaTime, mouseX, mouseY)
-	local sx, sy = getScaleRealToVirtual(
-		self.camera.screenWidth, self.camera.virtualWidth,
-		self.camera.screenHeight, self.camera.virtualHeight)
-		
-	-- Compare the current touches with the old ones and
-	-- check, if they are still active
-	local touches = love.touch.getTouches()
-	
-	for _, id in pairs(touches) do
-		if self.touches[id] ~= nil then
-			self.touches[id].isActive = true
-			
-			-- Direction button (joystick) only!
-			if self.touches[id].button == self.dirBut then
-				-- Update joystick position
-				local x, y = love.touch.getPosition(id)
-				x = x * sx
-				y = y * sy
-				self.dirBut:actionMove(x, y)
-			end
-		end
-	end
-	
-	-- Remove the inactive touches
-	for id, touch in pairs(self.touches) do
-		if touch.isActive == false then
-			self:myTouchRelease(-1, -1, id)
-			self.touches[id] = nil
-		else
-			self.touches[id].isActive = false
-		end
+function VirtualGamepad:touchReleaseNotInside(x, y, id)
+	self:touchRelease(x, y, id)
+end
+
+function VirtualGamepad:touchMove(x, y, distX, distY, id)
+	-- You can use this only on joystick (direction button)
+	if self.touches[id] == self.dirBut then
+		self.dirBut:actionMove(distX, distY)
 	end
 end
 

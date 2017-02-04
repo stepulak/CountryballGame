@@ -11,6 +11,7 @@ local HorizontaVel = 200
 local StarParticleSize = 20
 local StarParticleSpawnProbabilityQ = 20
 local FartSize = 20 -- :-)
+local SprintVelQ = 1.6
 
 Player = Unit:new()
 
@@ -84,6 +85,8 @@ function Player:softReset()
 	self.immuneToDeadlyObjects = false
 	self.invulnerableTimer = 0
 	self.attackingTimer = 0
+	
+	self.sprintEnabled = false
 end 
 
 function Player:setTotallyInvulnerable(time)
@@ -178,6 +181,20 @@ function Player:getCreatedProjectile()
 	else
 		return nil
 	end
+end
+
+-- @velQ is in [0, 1]
+function Player:moveHorizontally(dirLeft, velQ)
+	self.isMovingHor = true
+	self.isFacingLeft = dirLeft
+	self.horizontalVel = self.horizontalVelBase * velQ
+	
+	-- Do not forget to add additional velocity booster if sprint is enabled
+	if self.sprintEnabled then
+		self.horizontalVel = self.horizontalVel * SprintVelQ
+	end
+	
+	self.isHorMovementActive = true
 end
 
 -- Player function only!
@@ -301,8 +318,6 @@ function Player:updateAnimations(deltaTime)
 
 			return
 		end
-	elseif self.sprintEnabled then
-		deltaTime = deltaTime * self.sprintVelQ
 	end
 	
 	if self.isJumping or self.isFalling then
@@ -315,7 +330,9 @@ function Player:updateAnimations(deltaTime)
 		self.activeAnim = self.idleAnim
 	end
 	
-	self.activeAnim:update(deltaTime)
+	local animationDeltaTimeQ = self.horizontalVel/self.horizontalVelBase
+	
+	self.activeAnim:update(deltaTime * animationDeltaTimeQ)
 	self:resetInactiveAnimations()
 end
 
@@ -398,6 +415,11 @@ function Player:updatePlayer(deltaTime, particleSystem, soundContainer)
 			soundContainer:playEffect("player_jump")
 			self:addFartTexEffect(particleSystem, self.smokeTex)
 		end
+	end
+	
+	-- Sprint update
+	if self.isMovingHor == false then
+		self.sprintEnabled = false
 	end
 end
 

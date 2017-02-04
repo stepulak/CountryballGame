@@ -22,7 +22,7 @@ function Credits:init(virtScrWidth, virtScrHeight, fonts, textureContainer)
 	
 	self.gui = GuiContainer:new()
 	
-	if MOBILE_RELEASE then
+	if IS_MOBILE_RELEASE then
 		self:insertQuitElement(self.gui, self.fonts.medium, 
 			150, self.virtScrWidth, self.virtScrHeight, textureContainer,
 			function() self.started = false end, -- @invokeAction

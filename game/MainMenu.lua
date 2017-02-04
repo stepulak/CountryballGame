@@ -33,6 +33,8 @@ function MainMenu:init(screen, textureContainer, soundContainer,
 	
 	self:createBackgroundWorld()
 	self:setupMenu()
+	
+	self.run = self:newGame(true, {worldLoadFunc = _MainMenuWorldLoad })
 end
 
 function MainMenu:createBackgroundWorld()
@@ -84,8 +86,8 @@ function MainMenu:insertCampaignMenuButton(menuTree)
 end
 
 function MainMenu:insertEditorMenuButton(menuTree)
-	if IS_OFFICIAL_RELEASE or MOBILE_VERSION then
-		-- Editor is not part of the official release
+	if IS_MOBILE_RELEASE then
+		-- Editor is not part of mobile or official (nondevelopment) release
 		return
 	end
 	
@@ -99,6 +101,10 @@ function MainMenu:insertEditorMenuButton(menuTree)
 end
 
 function MainMenu:insertCreatedLevelsMenuButton(menuTree)
+	if IS_MOBILE_RELEASE then
+		return
+	end
+	
 	local items = love.filesystem.getDirectoryItems(SAVE_DIR)
 	local maxButs = MaxButtonsPerScreen - 2
 	local firstLayer = {}
@@ -133,7 +139,7 @@ function MainMenu:insertCreatedLevelsMenuButton(menuTree)
 	currLayer[#currLayer + 1] = { label = "~back" }
 	
 	menuTree[#menuTree + 1] = {
-		label = "Custom levels",
+		label = "Created levels",
 		nextNode = firstLayer,
 	}
 end

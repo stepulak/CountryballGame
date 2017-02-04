@@ -1,4 +1,5 @@
 require "YesNoDialog"
+require "Release"
 
 local QuitElementWidth = 400
 local QuitElementHeight = 100
@@ -36,20 +37,23 @@ function Runnable:insertQuitElement(gui, font, quitButtonCenterX,
 	
 	gui:addElement(dialog)
 	
-	local quitButtonAc = function()
+	local quitBut = nil
+	
+	if IS_MOBILE_RELEASE then
+		local quitButW = 150
+		local quitButtonAc = function()
 			invokeAction()
 			dialog:invoke()
 		end
-	
-	local quitButW = 150
-	
-	local quitBut = TexturedButton:new("Quit", font,
-		quitButtonCenterX - quitButW/2, 50,
-		quitButW, 75,
-		butIdleTex, butClickedTex,
-		quitButtonAc)
 		
-	gui:addElement(quitBut)
+		quitBut = TexturedButton:new("Quit", font,
+			quitButtonCenterX - quitButW/2, 50,
+			quitButW, 75,
+			butIdleTex, butClickedTex,
+			quitButtonAc)
+			
+		gui:addElement(quitBut)
+	end
 	
 	return quitBut, dialog 
 end

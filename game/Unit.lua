@@ -46,9 +46,6 @@ function Unit:init(name,
 	self.isFacingLeft = true
 	self.isHorMovementActive = false
 	
-	self.sprintEnabled = false
-	self.sprintVelQ = 1.5
-	
 	-- If it's dead, then it may be completely erased
 	self.dead = false
 	
@@ -325,10 +322,6 @@ end
 
 function Unit:canBounceTiles()
 	return true
-end
-
-function Unit:tryToEnableSprint()
-	-- VIRTUAL
 end
 
 -- Return new projectile's attributes created by this unit
@@ -725,20 +718,9 @@ function Unit:updateHorizontalMovement(deltaTime, gravityAcc)
 	if self.isMovingHor then
 		if self.isHorMovementActive then
 			self.isHorMovementActive = false
-			
-			if self.sprintEnabled and 
-				self.horizontalVel < self.horizontalVelBase * self.sprintVelQ then
-				-- Sprint enabled? Increase actual horizontal velocity
-				-- if it is possible...
-				self.horizontalVel = self.horizontalVel + 
-					self.horizontalDec * deltaTime
-			end
 		else
 			self.horizontalVel = self.horizontalVel - 
 				self.horizontalDec * deltaTime
-				
-			-- Disable sprint if you are not moving at all
-			self.sprintEnabled = false
 			
 			if self.horizontalVel <= 0 then
 				self.horizontalVel = 0

@@ -24,9 +24,12 @@ function Gameplay:init(world, fonts)
 	
 	self.paused = false
 	
-	if MOBILE_VERSION then
+	if IS_MOBILE_RELEASE then
 		self:createVirtualGamepad()
 	end
+	
+	-- In this case, add the quit dialog aswell even if it's not a mobile rel.,
+	-- because you do not want to quit immediately when user press "escape"
 	
 	local virtW = self.world.camera.virtualWidth
 	local virtH = self.world.camera.virtualHeight
@@ -100,27 +103,46 @@ function Gameplay:isPlayerControllable()
 end
 
 -- @dir can be "up", "down", "left", "right"
-function Gameplay:isDirectionActive(dir)
-	-- When keyboard is not present
-	local x, y
+-- @return value is somewhere in [0, 1], 0 means inactive, 1 full "speed"
+function Gameplay:getPlayerDirection(dir)
+	local x, y = 0, 0
 	
-	if self.gamepad then
-		x, y = self.gamepad:getDirection()
-	else
-		x, y = 0, 0
+	if self.gamepad ~= nil then
+		local gx, gy = self.gamepad:getDirection()
+		local agx, agy = math.abs(gx), math.abs(gy)
+		
+		if agx < agy then
+			if agy > 0.6 then
+				y = getUnitValue(gy)
+			end
+		else
+			x = gx
+		end
 	end
 	
 	if dir == "up" then
-		return love.keyboard.isDown("w") or y == -1
+		if love.keyboard.isDown("w") or y == -1 then
+			return 1
+		end
 	elseif dir == "down" then
-		return love.keyboard.isDown("s") or y == 1
+		if love.keyboard.isDown("s") or y == 1 then
+			return 1
+		end
 	elseif dir == "left" then
-		return love.keyboard.isDown("a") or x == -1
+		if love.keyboard.isDown("a") then
+			return 1
+		elseif x < 0 then
+			return -x
+		end
 	elseif dir == "right" then
-		return love.keyboard.isDown("d") or x == 1
-	else
-		return false
+		if love.keyboard.isDown("d") then
+			return 1
+		elseif x > 0 then
+			return x
+		end
 	end
+	
+	return 0	
 end
 
 -- @ac can be "jump", "shoot"
@@ -169,9 +191,9 @@ function Gameplay:handlePlayerControl(deltaTime)
 	end
 	
 	if self:isActionActive("jump") then
-		if self:isDirectionActive("down") then
+		if self:getPlayerDirection("down") == 1 then
 			self.world.player:tryToJumpOffPlatform()
-		elseif self:isDirectionActive("up") then
+		elseif self:getPlayerDirection("up") == 1 then
 			self.world:activateActiveObject(self.world.player)
 		else
 			-- Regular jump
@@ -184,10 +206,13 @@ function Gameplay:handlePlayerControl(deltaTime)
 		self.world.player:tryToEnableSprint()
 	end
 	
-	if self:isDirectionActive("left") then
-		self.world.player:moveHorizontally(true)
-	elseif self:isDirectionActive("right") then
-		self.world.player:moveHorizontally(false)
+	local leftDir = self:getPlayerDirection("left")
+	local rightDir = self:getPlayerDirection("right")
+	
+	if leftDir ~= 0 then
+		self.world.player:moveHorizontally(true, leftDir)
+	elseif rightDir ~= 0 then
+		self.world.player:moveHorizontally(false, rightDir)
 	end
 end
 

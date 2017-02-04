@@ -151,7 +151,7 @@ function updateTouches()
 			y = y * sy
 			
 			if x ~= touch.x or y ~= touch.y then
-				mainMenu:handleTouchMove(id, x - touch.x, y - touch.y)
+				mainMenu:handleTouchMove(id, x, y, x - touch.x, y - touch.y)
 				touch.x = x
 				touch.y = y
 			end

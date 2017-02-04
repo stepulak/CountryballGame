@@ -58,7 +58,7 @@ function Game:init(screen,
 	self:newGameplay()
 	self.activeMode = self.gameplay
 	
-	if IS_OFFICIAL_RELEASE == false and MOBILE_VERSION == false then
+	if IS_MOBILE_RELEASE == false then
 		self:newEditor()
 		
 		if editorInitMode then
@@ -117,8 +117,8 @@ function Game:loadWorldWithFunc()
 end
 
 function Game:handleKeyPress(key)
-	if key == "`" and IS_OFFICIAL_RELEASE == false then
-		-- "tilde" key
+	-- "tilde" key
+	if key == "`" and IS_MOBILE_RELEASE == false then
 		if self.activeMode == self.gameplay then
 			self.activeMode = self.editor
 		else
