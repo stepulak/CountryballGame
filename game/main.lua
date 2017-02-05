@@ -174,12 +174,23 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
 	-- Not working
 end
 
+-- Mute/unmute if it's paused/unpaused
+function checkAudio()
+	if paused then
+		love.audio.pause()
+	else
+		love.audio.resume()
+	end
+end
+
 function love.focus(foc)
 	paused = not foc
+	checkAudio()
 end
 
 function love.visible(vis)
 	paused = not vis
+	checkAudio()
 end
 
 function love.update(deltaTime)

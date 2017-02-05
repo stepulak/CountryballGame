@@ -1,17 +1,23 @@
 require "Runnable"
 require "Release"
 
-local ScrollVelocity = 100
+local StdScrollVelocity = 100
+local MusicName = "credits"
 
 Credits = Runnable:new()
 
-function Credits:init(virtScrWidth, virtScrHeight, fonts, textureContainer)
+function Credits:init(virtScrWidth, virtScrHeight, fonts,
+	textureContainer, soundContainer)
+	
 	self.virtScrWidth = virtScrWidth
 	self.virtScrHeight = virtScrHeight
 	self.fonts = fonts
 	self.gameLogoTex = textureContainer:getTexture("game_logo")
 	self.backgroundTex = textureContainer:getTexture("credits_background")
 	
+	self.soundContainer = soundContainer
+	self.scrollVelocity = StdScrollVelocity
+		
 	self.offset = 0
 	self.overallHeight = 0
 	self.started = false
@@ -82,6 +88,16 @@ function Credits:addContent(content, height)
 	self.overallHeight = self.overallHeight + height
 end
 
+-- Count music duration according to the overall height of the content
+-- In other words, make sure that the credits scrolling will last as long as
+-- the music is playing.
+function Credits:countMusicDuration()
+	if self.soundContainer:getMusic(MusicName) ~= nil then
+		self.scrollVelocity = self.overallHeight / 
+			self.soundContainer:getMusic(MusicName):getDuration()
+	end
+end
+
 function Credits:shouldQuit()
 	return self.offset >= self.overallHeight + self.virtScrHeight 
 		or self.quit
@@ -92,6 +108,7 @@ function Credits:start()
 	self.started = true
 	self.quit = false
 	self.contentIndex = 1
+	self.soundContainer:playMusic(MusicName, false)
 end
 
 function Credits:handleMouseClick(x, y)
@@ -118,7 +135,7 @@ end
 
 function Credits:update(deltaTime)
 	if self.started then
-		self.offset = self.offset + ScrollVelocity * deltaTime
+		self.offset = self.offset + self.scrollVelocity * deltaTime
 		
 		local firstContent = self.content[self.contentIndex]
 		if firstContent.currHeight + firstContent.height 
@@ -191,6 +208,9 @@ function Credits:fill()
 	self:addVerticalSpaceM()
 	
 	self:addLineM("\"Game Menu\"")
+	self:addVerticalSpaceS()
+	self:addLineM("\"Sculpture garden\"")
+	self:addVerticalSpaceS()
 	self:addLineS("by Eric Matyas")
 	self:addLineS("www.soundimage.org")
 	self:addVerticalSpaceB()
@@ -352,6 +372,8 @@ function Credits:fill()
 	self:addVerticalSpaceS()
 	self:addLineM("https://github.com/stepulak/CountryballGame")
 	self:addVerticalSpaceB()
+	
+	self:countMusicDuration()
 	
 	return self
 end

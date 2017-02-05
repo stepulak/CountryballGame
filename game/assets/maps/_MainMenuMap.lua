@@ -335,4 +335,6 @@ world.playerSpawnY = 570
 world.playerFinishLine = 1050
 -- Player finish line end
 
+world:setBackgroundMusic("game_menu")
+
 end

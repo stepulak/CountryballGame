@@ -47,6 +47,7 @@ function loadSounds()
 	
 	-- Music
 	soundContainer:loadMusic("game_menu", "assets/cmusic/Game-Menu.mp3")
+	soundContainer:loadMusic("credits", "assets/cmusic/Sculpture-Garden.mp3")
 	
 	return soundContainer
 end

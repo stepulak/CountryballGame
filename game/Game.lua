@@ -174,8 +174,15 @@ function Game:totalReset()
 		self:loadWorld()
 	else
 		self:newEditor()
-		-- respawn player
-		self.world:setupPlayer()
+		
+		-- Is player dead? That means he was kicked from active units...
+		if self.player.dead then
+			self.world:addPlayerIntoActiveUnits()
+		end
+		
+		self.world:setPlayerAtSpawnPosition()
+		self.world.shouldEnd = false
+		self.world.playerFinished = false
 	end
 	
 	self:newGameplay()
@@ -183,8 +190,8 @@ function Game:totalReset()
 	self.player:hardReset()
 	
 	-- Run the last active mode
-	self.activeMode = activeModeName == "gameplay" 
-		and self.gameplay or self.editor
+	self.activeMode = 
+		activeModeName == "gameplay" and self.gameplay or self.editor
 end
 
 -- Stop all in-game sounds and be ready to quit

@@ -21,6 +21,11 @@ function Camera:init(x, y, virtualWidth, virtualHeight, screenWidth,
 	self.stackIndex = 0
 end
 
+function Camera:zeroPosition()
+	self.x = 0
+	self.y = 0
+end
+
 -- Save x, y, virtualWidth, virtualHeight
 -- Can be called as many times as wanted
 function Camera:push()

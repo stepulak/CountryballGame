@@ -1,5 +1,5 @@
 require "World"
-require "DeathScreen"
+require "EndScreen"
 require "Gui"
 require "Runnable"
 
@@ -13,7 +13,7 @@ function Gameplay:init(world, fonts)
 	self.fonts = fonts
 	self.playerDeathWaitTimer = 0
 	self.todo = nil
-	self.deathScreen = nil
+	self.endScreen = nil
 	
 	self.gui = GuiContainer:new()
 	
@@ -216,44 +216,61 @@ function Gameplay:handlePlayerControl(deltaTime)
 	end
 end
 
--- Handle it's death procedure and decide what to do next
-function Gameplay:handlePlayersDeath(deltaTime)
-	if self.deathScreen == nil then
-		self.playerDeathWaitTimer = self.playerDeathWaitTimer + deltaTime
-		
-		-- Start the death screen after specified time
-		-- (Just to make sure the player's death effect is handled properly)
-		if self.playerDeathWaitTimer >= PlayerDeathWaitTime then
-			self.playerDeathWaitTimer = 0
-			self.world.soundContainer:stopAll()
-			self.deathScreen = DeathScreen:new(self.world.player, self.fonts.big)
-		else
-			return
-		end
-	end
-	self.deathScreen:update(deltaTime)
+function Gameplay:resolvePlayersDeath(deltaTime)
+	self.playerDeathWaitTimer = self.playerDeathWaitTimer + deltaTime
 	
-	local status = self.deathScreen:endStatus()
+	if self.playerDeathWaitTimer >= PlayerDeathWaitTime then
+		self.playerDeathWaitTimer = 0
+		-- Stop all sound effects, the death screen is comming
+		self.world.soundContainer:stopAll()
+		self.world.camera:zeroPosition()
+		self.endScreen = EndScreen:new(self.fonts.big, self.world.player, true)
+	end
+end
+
+function Gameplay:resolvePlayersFinish(deltaTime)
+	self.world.soundContainer:stopAll()
+	self.world.camera:zeroPosition()
+	
+	self.endScreen = EndScreen:new(
+		self.fonts.big, self.world.player, false,
+		self.world.textureContainer:getAnimation("fireworks"),
+		self.world.soundContainer)
+	
+end
+
+function Gameplay:handleEndScreen(deltaTime)
+	self.endScreen:update(self.world.camera, deltaTime, self.world.sinCosTable)
+	
+	local status = self.endScreen:endStatus()
 	
 	if status == "continue" then
+		-- Player has died, but has some lives to continue
 		self.todo = "reset_world"
-	elseif status == "gameover" then
+	elseif status == "end" then
+		-- Gameover or player has made it to the finish
 		self.todo = "main_menu_soft"
 	end
 end
 
 function Gameplay:update(deltaTime)
-	if self.paused and self.deathScreen == nil then
+	if self.paused and self.endScreen == nil then
 		return
 	end
 	
-	-- Is the player dead?
-	if self.world.player ~= nil and self.world.player.dead == true then
-		self:handlePlayersDeath(deltaTime)
+	-- Is the player dead? Or did he make it to the finish?
+	if self.endScreen == nil then
+		if self.world.player ~= nil and self.world.player.dead then
+			self:resolvePlayersDeath(deltaTime)
+		elseif self.world.shouldEnd then
+			self:resolvePlayersFinish(deltaTime)
+		end
 	end
 	
-	-- Do not update the gameplay when it's deathscreen on
-	if self.deathScreen == nil then
+	-- Do not update the gameplay when it's endScreen on
+	if self.endScreen ~= nil then
+		self:handleEndScreen(deltaTime)
+	else
 		local mx, my = getScaledMousePosition(self.world.camera, false)
 		self.gui:update(deltaTime, mx, my)
 		
@@ -265,8 +282,9 @@ function Gameplay:update(deltaTime)
 end
 
 function Gameplay:draw()
-	if self.deathScreen then
-		self.deathScreen:draw(self.world.camera.virtualWidth, 
+	if self.endScreen then
+		self.endScreen:draw(
+			self.world.camera.virtualWidth, 
 			self.world.camera.virtualHeight)
 	else
 		self.world:draw()

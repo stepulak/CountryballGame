@@ -238,8 +238,8 @@ function ParticleSystem:addPlayersFallEffect(texture, x, y,
 		userUpdate, "up")
 end
 
--- Add a simple effect that imitates a fading out tile...
-function ParticleSystem:addTileFadeOutEffect(texture, x, y, width, height)
+-- Add a simple effect that imitates a fading out texture...
+function ParticleSystem:addTextureFadeOutEffect(texture, x, y, width, height)
 	self:reserveNewParticle():fill(texture,
 		x, y,
 		width, height,

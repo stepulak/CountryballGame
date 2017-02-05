@@ -34,7 +34,13 @@ function MainMenu:init(screen, textureContainer, soundContainer,
 	self:createBackgroundWorld()
 	self:setupMenu()
 	
-	self.run = self:newGame(true, {worldLoadFunc = _MainMenuWorldLoad })
+	--self.run = self:newGame(true, {worldLoadFunc = _MainMenuWorldLoad })
+end
+
+-- Fill the self.run with given run(nable) object
+function MainMenu:setRun(run)
+	self.run = run
+	self.world:stopBackgroundMusic()
 end
 
 function MainMenu:createBackgroundWorld()
@@ -95,7 +101,7 @@ function MainMenu:insertEditorMenuButton(menuTree)
 		label = "Editor",
 		
 		action = function()
-			self.run = self:newGame(true, nil)
+			self:setRun(self:newGame(true, nil))
 		end,
 	}
 end
@@ -116,7 +122,7 @@ function MainMenu:insertCreatedLevelsMenuButton(menuTree)
 			label = string.sub(items[i], 1, string.len(items[i]) - 4),
 			
 			action = function()
-				self.run = self:newGame(false, { worldFilename = items[i] })
+				self:setRun(self:newGame(false, { worldFilename = items[i] }))
 			end
 		}
 		
@@ -152,7 +158,7 @@ function MainMenu:insertCreditsMenuButton(menuTree)
 			if self.credits == nil then
 				self.credits = self:getCredits()
 			end
-			self.run = self.credits
+			self:setRun(self.credits)
 			self.run:start()
 		end,
 	}
@@ -173,7 +179,8 @@ function MainMenu:getCredits()
 		self.screen.virtualWidth,
 		self.screen.virtualHeight, 
 		self.fonts, 
-		self.textureContainer):fill()
+		self.textureContainer,
+		self.soundContainer):fill()
 end
 
 function MainMenu:handleKeyPress(key)
@@ -271,6 +278,9 @@ function MainMenu:update(deltaTime)
 		
 		if self.run:shouldQuit() then
 			self.run = nil
+			self.soundContainer:stopAll()
+			-- Play the background music of the main menu's world again
+			self.world:playBackgroundMusic()
 		end
 	else
 		self.gui:update(deltaTime)

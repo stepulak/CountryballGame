@@ -217,7 +217,11 @@ function loadTextures()
 	textureContainer:newAnimation("explosion", 0.1,
 		"assets/explosion1.png", "assets/explosion2.png",
 		"assets/explosion3.png")
-		
+	
+	textureContainer:newAnimation("fireworks", 0.1,
+		"assets/fireworks1.png", "assets/fireworks2.png",
+		"assets/fireworks3.png", "assets/fireworks4.png")
+	
 	-- Coin
 	textureContainer:newAnimation("coin", 0.3, "assets/coin1.png",
 		"assets/coin2.png", "assets/coin3.png", "assets/coin2.png")

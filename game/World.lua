@@ -88,7 +88,11 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 	
 	self:setPlayersSpawnPosition(1, 1)
 	self:setPlayersFinishLine(numTilesWidth - 3)
-	self:setupPlayer()
+	
+	if self.player then
+		self:addPlayerIntoActiveUnits()
+		self:setPlayerAtSpawnPosition()
+	end
 end
 
 function World:postLoadHandle()
@@ -99,6 +103,10 @@ function World:postLoadHandle()
 	self.player:softReset()
 	self.playerFinished = false
 	self:setPlayerAtSpawnPosition()
+end
+
+function World:addPlayerIntoActiveUnits()
+	self.activeUnits:pushFront(self.player)
 end
 
 --
@@ -152,6 +160,7 @@ function World:saveInto(filename)
 	self.parallaxBackground:saveTo(f)
 	self:savePlayerSpawnPos(f)
 	self:savePlayerFinishLine(f)
+	self:saveBackgroundMusic(f)
 	
 	f:flush()
 	f:close()
@@ -313,12 +322,14 @@ function World:savePlayerFinishLine(file)
 end
 
 function World:saveBackgroundMusic(file)
+	checkWriteLn(file, "-- Background music begin")
+	
 	if self.backgroundMusic ~= nil then
-		checkWriteLn(file, "-- Background music begin")
 		checkWriteLn(file, "world:setBackgroundMusic(\"" .. 
 			self.backgroundMusic .. "\")")
-		checkWriteLn(file, "-- Background music end\n")
 	end
+	
+	checkWriteLn(file, "-- Background music end\n")
 end
 
 --
@@ -335,27 +346,20 @@ end
 
 function World:setBackgroundMusic(name)
 	self.backgroundMusic = name
-	self.soundContainer:playMusic(name, true)
-	
-	if name == nil then
-		self.soundContainer:stopMusic()
-	end
+	self:playBackgroundMusic()
+end
+
+function World:playBackgroundMusic()
+	self.soundContainer:playMusic(self.backgroundMusic, true)
+end
+
+function World:stopBackgroundMusic()
+	self.soundContainer:stopMusic()
 end
 
 function World:setPlayerAtSpawnPosition()
 	self.player.x = self.playerSpawnX
 	self.player.y = self.playerSpawnY
-end
-
--- There must be a reference to player in self.player
-function World:setupPlayer()
-	if self.player == nil then
-		print("Missing player!")
-		return
-	end
-	
-	self.activeUnits:pushFront(self.player)
-	self:setPlayerAtSpawnPosition()
 end
 
 -- @x, @y are tile positions (better manipulation)
@@ -884,7 +888,7 @@ function World:revealSecretTilesInArea(x, y)
 		local realX = x * self.tileWidth + self.tileWidth/2
 		local realY = y * self.tileHeight + self.tileHeight/2
 		
-		self.fParticleSystem:addTileFadeOutEffect(tex, realX, realY,
+		self.fParticleSystem:addTextureFadeOutEffect(tex, realX, realY,
 			self.tileWidth, self.tileHeight)
 		
 		-- Do not forget to delete it!
