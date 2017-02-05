@@ -110,19 +110,14 @@ function setWithinRange(value, minValue, maxValue)
 	return value
 end
 
--- Get a new randomly generated color based on given color
--- That means that you just slightly modify the values of given color.
-function getRandomColor(r, g, b)
-	local max = 20
-	
-	r = r + math.random(-max, max)
-	g = g + math.random(-max, max)
-	b = b + math.random(-max, max)
-	r = setWithinRange(r, 0, 255)
-	g = setWithinRange(g, 0, 255)
-	b = setWithinRange(b, 0, 255)
-	
-	return r, g, b
+local MutMax = 20
+
+-- Mutate given color. In other words, slightly change given color value
+-- except the alpha channel.
+function mutateColor(col)
+	col.r = setWithinRange(col.r + math.random(-MutMax, MutMax), 0, 255)
+	col.g = setWithinRange(col.g + math.random(-MutMax, MutMax), 0, 255)
+	col.b = setWithinRange(col.b + math.random(-MutMax, MutMax), 0, 255)
 end
 
 function colorToString(col)

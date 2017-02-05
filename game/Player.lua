@@ -382,9 +382,7 @@ function Player:updatePlayer(deltaTime, particleSystem, soundContainer)
 		
 		-- Pick a new color
 		if self.starConsumed then
-			self.color.r, self.color.g, self.color.b = 
-				getRandomColor(self.color.r, self.color.g, self.color.b)
-			
+			mutateColor(self.color)
 			self:spawnStars(deltaTime, particleSystem)
 		end
 		

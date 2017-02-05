@@ -240,7 +240,7 @@ function Gameplay:resolvePlayersFinish(deltaTime)
 end
 
 function Gameplay:handleEndScreen(deltaTime)
-	self.endScreen:update(self.world.camera, deltaTime, self.world.sinCosTable)
+	self.endScreen:update(self.world.camera, deltaTime)
 	
 	local status = self.endScreen:endStatus()
 	

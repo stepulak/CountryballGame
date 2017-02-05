@@ -22,3 +22,4 @@ turtle_bump.wav: Some_Person (Super Tux)
 block_unable.wav: Yaniel, GPLv2+CC-by-sa (Super Tux)
 turtle_touch.wav: Some_Person (Super Tux)
 rocket_engine.mp3: http://soundbible.com/1498-Rocket.html
+fireworks.mp3: http://opengameart.org/content/rumbleexplosion

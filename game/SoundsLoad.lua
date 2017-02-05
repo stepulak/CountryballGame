@@ -25,6 +25,7 @@ function loadSounds()
 	soundContainer:loadEffect("canon_shot", "assets/csound/canon_shot.ogg")
 	soundContainer:loadEffect("freeze", "assets/csound/freeze.mp3")
 	soundContainer:loadEffect("coin_pick", "assets/csound/coin_pick.wav")
+	soundContainer:loadEffect("fireworks", "assets/csound/fireworks.mp3")
 	
 	-- Block
 	soundContainer:loadEffect("block_bounce", "assets/csound/block_bounce.mp3")

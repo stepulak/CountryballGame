@@ -349,6 +349,12 @@ function Credits:fill()
 	self:addLineS("Source: http://soundbible.com/1498-Rocket.html")
 	self:addVerticalSpaceB()
 	
+	self:addLineM("Fireworks explosion")
+	self:addLineS("(fireworks.mp3)")
+	self:addLineS("Author: Michel Baradari, CC-BY 3.0")
+	self:addLineS("Source: http://opengameart.org/content/rumbleexplosion")
+	self:addVerticalSpaceB()
+	
 	--
 	-- SPECIAL THANKS
 	--

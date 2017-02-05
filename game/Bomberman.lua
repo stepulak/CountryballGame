@@ -117,9 +117,7 @@ function Bomberman:handleBehaviour(deltaTime, particleSystem, soundContainer)
 		self.isJumping = false
 		self.isFalling = false
 		self.isMovingHor = false
-		
-		local c = self.color
-		c.r, c.g, c.b = getRandomColor(c.r, c.g, c.b)
+		mutateColor(self.color)
 	end
 end
 

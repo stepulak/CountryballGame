@@ -35,8 +35,7 @@ function Star:update(deltaTime, gravityAcc, particleSystem,
 		self:tryToJumpNoTimer()
 	end
 	
-	self.color.r, self.color.g, self.color.b = 
-		getRandomColor(self.color.r, self.color.g, self.color.b)
+	mutateColor(self.color)
 	
 	self:superUpdate(deltaTime, gravityAcc, particleSystem,
 		camera, soundContainer)
