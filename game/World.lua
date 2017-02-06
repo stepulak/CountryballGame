@@ -93,6 +93,8 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 		self:addPlayerIntoActiveUnits()
 		self:setPlayerAtSpawnPosition()
 	end
+	
+	self.backgroundMusic = nil
 end
 
 function World:postLoadHandle()
@@ -1703,7 +1705,15 @@ end
 
 function World:setPlayerFinished()
 	self.playerFinished = true
-	self.finishCountdownTimer = 3	
+	
+	local music = self.soundContainer:getMusic("finish_fanfare")
+	
+	if music == nil then
+		self.finishCountdownTimer = 5
+	else
+		self.finishCountdownTimer = music:getDuration()
+		self.soundContainer:playMusic("finish_fanfare", false)
+	end
 end
 
 function World:checkPlayerFinishLine()
@@ -1734,6 +1744,16 @@ function World:getDrawingClipCoords()
 	return startX, startY, endX, endY
 end
 
+-- Check, if there is any background music playing right now
+-- If not, play if you have some set
+function World:playBackgroundMusicIfPossible()
+	if self.backgroundMusic ~= nil and
+		self.soundContainer:isMusicOn() == false then
+		
+		self.soundContainer:playMusic(self.backgroundMusic)
+	end
+end
+
 function World:update(deltaTime)
 	if self.player ~= nil and self.player.dead == false then
 		self.camera:centerAt(self.player.x, self.player.y)
@@ -1744,7 +1764,7 @@ function World:update(deltaTime)
 		self:updateFinish(deltaTime)
 		-- Make everything slower
 		-- "Finish" effect :-D
-		deltaTime = deltaTime / 4
+		deltaTime = deltaTime / 5
 	end
 	
 	self.headerContainer:updateTileHeaders(deltaTime)
@@ -1773,6 +1793,8 @@ function World:update(deltaTime)
 	-- generators
 	self:updateCoinGenerators(deltaTime)
 	self:updateBoostGenerators(deltaTime)
+	
+	self:playBackgroundMusicIfPossible()
 end
 
 local WorldSpawnColor = { r = 255, g = 100, b = 100 }

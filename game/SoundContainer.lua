@@ -10,8 +10,8 @@ function SoundContainer:init()
 	
 	self.muted = false
 	
-	self.effectVolume = 0.5
-	self.musicVolume = 0.7
+	self.effectVolume = 0.7
+	self.musicVolume = 0.4
 	self.masterVolume = nil
 end
 
@@ -59,7 +59,7 @@ end
 function SoundContainer:playMusic(name, loop)
 	if self.music[name] ~= nil then
 		-- stop the old one
-		if self.musicOn ~= nil then
+		if self:isMusicOn() then
 			self.musicOn:stop()
 		end
 		
@@ -71,6 +71,10 @@ function SoundContainer:playMusic(name, loop)
 			self.musicOn:setLooping(loop)
 		end
 	end
+end
+
+function SoundContainer:isMusicOn()
+	return self.musicOn ~= nil and self.musicOn:isPlaying()
 end
 
 function SoundContainer:playMusicOnce(name)

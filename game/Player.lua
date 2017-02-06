@@ -12,6 +12,7 @@ local StarParticleSize = 20
 local StarParticleSpawnProbabilityQ = 20
 local FartSize = 20 -- :-)
 local SprintVelQ = 1.6
+local StarDuration = 8
 
 Player = Unit:new()
 
@@ -233,9 +234,10 @@ function Player:addHelmet()
 	self.helmetBlinkTimer = 1
 end
 
-function Player:consumeStar()
-	self.invulnerableTimer = 8 -- 8 sec
+function Player:consumeStar(soundContainer)
+	self.invulnerableTimer = StarDuration
 	self.starConsumed = true
+	soundContainer:playMusic("star")
 end
 
 function Player:disappear()
@@ -256,7 +258,7 @@ function Player:boostPlayer(unit, soundContainer)
 		self:addHelmet()
 		soundContainer:playEffect("boost_pick")
 	elseif unit.name == "star" then
-		self:consumeStar()
+		self:consumeStar(soundContainer)
 	elseif unit.name == "fireflower" or unit.name == "iceflower" then
 		if self.helmetEnabled == false then
 			self:addHelmet()
@@ -336,6 +338,22 @@ function Player:updateAnimations(deltaTime)
 	self:resetInactiveAnimations()
 end
 
+-- Lower the volume of the playing "star consumed" music
+-- if your invulnerability is comming to an end.
+function Player:starChangeVolumeMusic(soundContainer)
+	local mus = soundContainer:getMusic("star")
+	
+	if mus ~= nil then
+		local fadeOutTime = StarDuration/10
+		
+		-- The music exists
+		if self.invulnerableTimer < fadeOutTime and self.invulnerableTimer >= 0 then
+			local q = self.invulnerableTimer/fadeOutTime
+			mus:setVolume(q * soundContainer.musicVolume)
+		end
+	end
+end
+
 -- Create fading stars around player if it's moving and also star is consumed
 function Player:spawnStars(deltaTime, particleSystem)
 	if self:isIdle() == false and 
@@ -384,10 +402,13 @@ function Player:updatePlayer(deltaTime, particleSystem, soundContainer)
 		if self.starConsumed then
 			mutateColor(self.color)
 			self:spawnStars(deltaTime, particleSystem)
+			self:starChangeVolumeMusic(soundContainer)
 		end
 		
 		if self.invulnerableTimer < 0 then
 			self.invulnerableTimer = 0
+			self.starConsumed = false
+			soundContainer:stopMusic()
 		end
 	end
 	

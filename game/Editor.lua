@@ -396,6 +396,9 @@ function Editor:loadWorldFrom(filename)
 		return
 	end
 	
+	-- Stop all music and sounds
+	love.audio.stop()
+	
 	if self.world:loadFromSaveDir(filename) then
 		print("World has been loaded")
 	else
