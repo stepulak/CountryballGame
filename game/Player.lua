@@ -12,7 +12,7 @@ local StarParticleSize = 20
 local StarParticleSpawnProbabilityQ = 20
 local FartSize = 20 -- :-)
 local SprintVelQ = 1.6
-local StarDuration = 8
+local StarDuration = 12
 
 Player = Unit:new()
 

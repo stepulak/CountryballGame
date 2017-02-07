@@ -10,7 +10,7 @@ function Particle:init()
 	self.y = 0
 	self.width = 0
 	self.height = 0
-	self.proportionsVel = 0
+	self.proportionsVelQ = 0
 	self.texAngle = 0
 	self.texAngleVel = 0
 	self.texDrawFunc = drawTex
@@ -46,7 +46,7 @@ function Particle:fill(texture,
 	x, y,
 	width, height,
 	texAngle, texAngleVel, texFlipped,
-	proportionsVel, 
+	proportionsVelQ, 
 	dirAngle, dirAngleVel,
 	vel, acc,
 	endTime,
@@ -58,7 +58,7 @@ function Particle:fill(texture,
 	self.y = y
 	self.width = width
 	self.height = height
-	self.proportionsVel = proportionsVel
+	self.proportionsVelQ = proportionsVelQ
 	self.texAngle = texAngle
 	self.texAngleVel = texAngleVel
 	self.texDrawFunc = texFlipped and drawTexFlipped or drawTex
@@ -102,8 +102,8 @@ function Particle:update(camera, deltaTime, sinCosTable, userData)
 	self.texAngle = normalizeAngle(self.texAngle + self.texAngleVel*deltaTime)
 	self.dirAngle = normalizeAngle(self.dirAngle + self.dirAngleVel*deltaTime)
 	
-	self.width = self.width + self.proportionsVel * deltaTime
-	self.height = self.height + self.proportionsVel * deltaTime
+	self.width = self.width + self.width * self.proportionsVelQ * deltaTime
+	self.height = self.height + self.height * self.proportionsVelQ * deltaTime
 	
 	-- The proportions cannot go negative
 	if self.width < 0 then

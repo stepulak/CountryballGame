@@ -94,7 +94,7 @@ function ParticleSystem:addBubbleParticle(texture, x, y, width, height, time)
 		x, y,
 		width, height,
 		0, 0, false,
-		5,
+		0.5,
 		90 + math.random(-45, 45), 0,
 		100, 0,
 		time,
@@ -111,7 +111,7 @@ function ParticleSystem:addSmokeParticle(texture, x, y, width, height,
 		x, y,
 		width, height,
 		0, 180 * math.random(), false,
-		5,
+		0.3,
 		dirAngle, 0,
 		50,	0,
 		time,
@@ -127,7 +127,7 @@ function ParticleSystem:addStarParticle(texture, x, y, width, height,
 		x, y,
 		width, height, 
 		0, 360, false,
-		2,
+		0.8,
 		dirAngle, 0,
 		500, 0,
 		0.3,
@@ -258,7 +258,8 @@ function ParticleSystem:addFrozenUnitEffect(texture, x, y, width, height,
 		texture,
 		x, y,
 		width, height,
-		0, 0, false, 0,
+		0, 0, false,
+		0,
 		0, 0,
 		0, 0,
 		time,
@@ -290,6 +291,26 @@ function ParticleSystem:addFallingRotatingObject(texture, x, y,
 		500, 600,
 		time,
 		true, false, 0.5)
+end
+
+-- Add generic slide particle from ComicIntro
+-- @fadeType = "in", "out", "both", "none"
+function ParticleSystem:addSlideParticle(texture, x, y, width, height,
+	angle, vel, propVelQ, fadeType, endTime, userData, userUpdate)
+	
+	self:reserveNewParticle():fill(
+		texture,
+		x, y,
+		width, height,
+		0, 0, false,
+		propVelQ,
+		angle, 0,
+		vel, 0,
+		endTime,
+		fadeType == "out" or fadeType == "both",
+		fadeType == "in" or fadeType == "both",
+		1,
+		userUpdate, userData)
 end
 
 -- Update particles (movement, behaviour, etc.)
