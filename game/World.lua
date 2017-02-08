@@ -45,13 +45,6 @@ function World:init(player,
 	self.playerSpawnX = tileWidth/2
 	self.playerSpawnY = tileHeight/2
 	self.playerFinishLine = tileWidth/2
-	self.playerFinished = false
-	
-	-- True if you want to close this world and to the next one
-	-- (Only in campaign)
-	self.shouldEnd = false 
-	
-	self.backgroundMusic = nil
 	
 	self.drawCounter = 0
 	self.saveCounter = 0
@@ -94,7 +87,10 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 		self:setPlayerAtSpawnPosition()
 	end
 	
+	self.playerFinished = false
 	self.backgroundMusic = nil
+	self.shouldEnd = false
+	self.escapeRocket = nil
 end
 
 function World:postLoadHandle()
@@ -1299,7 +1295,9 @@ function World:handleUnitWaterCollision(unit)
 	end
 	
 	if waterPresent ~= unit.insideWater then
-		if waterPresent and unit.isFalling then
+		if waterPresent and unit.isFalling and
+			unit:isInsideCamera(self.camera) then
+			
 			self.soundContainer:playEffect("splash")
 		end
 		
@@ -1425,6 +1423,7 @@ function World:specialUpdateUnit(unit, deltaTime)
 		
 		if bot < unit.rocketMinY then
 			self:tryToEnd()
+			self.escapeRocket = unit
 		end
 	end
 end

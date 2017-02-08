@@ -88,6 +88,8 @@ function Player:softReset()
 	self.attackingTimer = 0
 	
 	self.sprintEnabled = false
+	self.movementAndCollisionDisabled = false
+	self.disappeared = false
 end 
 
 function Player:setTotallyInvulnerable(time)

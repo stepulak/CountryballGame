@@ -345,7 +345,7 @@ function ParticleSystem:draw(camera)
 	love.graphics.translate(-camera.x, -camera.y)
 	
 	for i = 0, self.numActiveParticles-1 do
-		self.pool[i]:draw(camera)
+		self.pool[i]:draw()
 	end
 	
 	love.graphics.pop()

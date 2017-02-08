@@ -2,8 +2,9 @@ require "Menu"
 require "Game"
 require "Credits"
 require "Release"
-require "ComicIntro"
+require "AnimationScene"
 require "assets/maps/_MainMenuMap"
+require "assets/anim_scenes/_TestIntro"
 
 local ButtonWidth = 400
 local ButtonHeight = 70
@@ -36,8 +37,11 @@ function MainMenu:init(screen, textureContainer, soundContainer,
 	self:setupMenu()
 	
 	--self.run = self:newGame(true, {worldLoadFunc = _MainMenuWorldLoad })
-	--self:setRun(ComicIntro:new(screen.virtualWidth, screen.virtualHeight, 
-		--fonts.small, soundContainer, sinCosTable))
+	--[[local c = AnimationScene:new(screen.virtualWidth, screen.virtualHeight, 
+		fonts.medium, soundContainer, sinCosTable)
+	_TestIntro(c, textureContainer)
+	self:setRun(c)
+	c:start()]]
 end
 
 -- Fill the self.run with given run(nable) object

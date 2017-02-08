@@ -46,15 +46,11 @@ function Game:init(screen,
 	-- Find out how will you load the world
 	if args ~= nil and args.worldFilename ~= nil then
 		self.worldFilename = args.worldFilename
-		self:loadWorldFromFilename()
 	elseif args ~= nil and args.worldLoadFunc ~= nil then
 		self.worldLoadFunc = args.worldLoadFunc
-		self:loadWorldWithFunc()
-	else
-		-- Or use empty one?
-		self:newEmptyWorld()
 	end
 	
+	self:loadWorld()
 	self:newGameplay()
 	self.activeMode = self.gameplay
 	
@@ -183,6 +179,13 @@ function Game:totalReset()
 		self.world:setPlayerAtSpawnPosition()
 		self.world.shouldEnd = false
 		self.world.playerFinished = false
+		
+		if self.world.escapeRocket ~= nil then
+			-- Player escaped via rocket
+			-- Reset it aswell
+			self.world.escapeRocket:reset()
+			self.world.escapeRocket = nil
+		end 
 	end
 	
 	self:newGameplay()

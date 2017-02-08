@@ -12,19 +12,29 @@ function Rocket:init(x, y, tileWidth, tileHeight, anim, smokeTex)
 	self:super("rocket", x, y, tileWidth * 3, tileHeight * 5,
 		0, 0, anim)
 	
+	self.initX = x
+	self.initY = y
+	
 	self.isFacingLeft = false
 	self.smokeTex = smokeTex
 	self.friendlyToPlayer = true
 	
-	self.started = false
-	self.timer = 0
-	
 	-- Minimum y to dissappear
 	self.rocketMinY = -200
 	
+	self:reset()
+end
+
+-- Reset rocket to it's initial spawn position and state
+function Rocket:reset()
+	self.x = self.initX
+	self.y = self.initY
+	self.started = false
+	self.timer = 0
 	self.shakingAngle = 0
 	self.shakingAngleMax = 10
 	self.shakingDir = -1
+	self.verticalVel = 0
 end
 
 function Rocket:updateAnimations(deltaTime)
