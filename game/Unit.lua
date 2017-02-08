@@ -61,35 +61,27 @@ function Unit:init(name,
 	-- Must be changed manually to avoid collision
 	self.movementAndCollisionDisabled = false
 	
-	-- If it's positive, then try to jump immediately if possible
+	-- Jump up as soon as possible
 	self.tryToJumpTimer = 0
 	
-	-- If it's positive, the tell the world that this unit wants 
-	-- to jump off the platform as soon as possible.
+	-- The unit wants to jump off from platform as soon as possible
 	self.jumpOffPlatformTimer = -1
 	
-	-- Tell the unit itself that it has collided 
-	-- somewhere in horizontal direction...
+	-- The unit itself has collided somewhere in horizontal direction...
 	-- Possibilities: left, right
 	self.collidedHorizontally = nil
 	
-	-- Unit's indicator, if the unit is inside water or not
-	-- If the unit is, then there must be penalty for
+	-- Indicator, if the unit is inside water or not
+	-- If the unit is inside water, then there must be penalty for
 	-- both horizontal and vertical velocity...
 	self.insideWater = false
 	self.waterPenaltyQ = 3
 	
-	-- Tell to the unit that it is jumping on the trampoline
-	self.onTrampoline = false
-	
-	-- Can it hurt player? Or is it a booster or friendly unit?
-	self.friendlyToPlayer = false
-	
-	-- When fade out is enabled, the unit will fastly 
-	-- fadeout and then it will be deleted from the world
+	-- Fade out and be deleted from the world aswell
 	self.isFading = false
 	
-	-- Alpha channel value
+	self.onTrampoline = false
+	self.friendlyToPlayer = false
 	self.alpha = 255
 	
 	self:loadAnimations(idleAnim, movementAnim, jumpingAnim, 
@@ -222,7 +214,7 @@ end
 Unit.superTryToJumpNoTimer = Unit.tryToJumpNoTimer
 
 -- When the unit kills another one by stepping on it,
--- then the killer has to hop a little bit - immediately.
+-- then the killer has to hop up a little bit - immediately.
 function Unit:hop()
 	if self.isFalling then
 		self:stopFalling()
@@ -291,7 +283,7 @@ end
 -- Get simple velocity vector 
 -- @return horizontal_dir, vertical_dir
 -- The possibilities are: { [m, n] | m, n <- {-1, 0, 1} }
--- The value represents movement on axis in specified direction
+-- The value represents movement in specific [x,y] direction
 function Unit:getDirectionVector()
 	local x, y = 0, 0
 	
@@ -429,7 +421,7 @@ function Unit:isInsideCamera(camera)
 		camera.virtualHeight + self.height)
 end
 
--- Check whether the unit is inside "down" world
+-- Check whether the unit is inside the bottom world
 -- (it means that the upper border is not checked)
 function Unit:isInsideDownWorld(camera)
 	local upperBound = -999
@@ -542,8 +534,7 @@ function Unit:resolveUnitVerticalCollision(unit, dist,
 end
 
 function Unit:shouldBeUnitCollisionSkipped(unit)
-	-- Necessary function, but implementation could be done better 
-	-- (via OOP for each unit's class)
+	-- Necessary function, *bad design*
 	
 	-- Skip player - booster collision
 	if self.name == "player" and unit.friendlyToPlayer or
@@ -598,6 +589,7 @@ function Unit:resolveUnitHorizontalCollision(unit, dist,
 			unit.collidedHorizontally = "right"
 		end
 		
+		-- Was handled
 		return true
 	end
 	
@@ -656,8 +648,7 @@ function Unit:resolveDeadlyProjectileCollision(projectile, particleSystem,
 end
 
 -- Check if this unit has collided with given projectile.
--- If yes, then resolve the collision - depends on the
--- projectile's type and direction damage or change this unit.
+-- If yes, then resolve the collision.
 --
 -- The @freezedUnitTexture is optional, 
 -- if it's passed and the projectile is iceball, then this texture
@@ -752,7 +743,7 @@ function Unit:updateBasicTimers(deltaTime)
 end
 
 -- Freeze timer has to be updated separately,
--- because this is the only function which is 
+-- because this is the only update function which is 
 -- called upon unit while it's freezed
 function Unit:updateFreezeTimer(deltaTime)
 	if self.freezeTimer > 0 then
@@ -761,7 +752,7 @@ function Unit:updateFreezeTimer(deltaTime)
 end
 
 -- Camera, particle system and soundContainer are not used right now, 
--- but for some units they may come handy later
+-- but they may come handy later
 function Unit:update(deltaTime, gravityAcc, particleSystem,
 	camera, soundContainer)
 	
@@ -770,7 +761,7 @@ function Unit:update(deltaTime, gravityAcc, particleSystem,
 	self:updateBasicTimers(deltaTime)
 end
 
--- Make update function accessible in inheritance
+-- Make update function accessible via inheritance
 Unit.superUpdate = Unit.update
 
 function Unit:drawRectangleAround(camera)
@@ -778,9 +769,7 @@ function Unit:drawRectangleAround(camera)
 		self.y-self.height/2-camera.y, self.width, self.height)
 end
 
--- Draw unit
 function Unit:draw(camera, texAngle)
-	-- texAngle is either set and not null or null
 	local angle = texAngle ~= nil and texAngle or 0
 	
 	local r, g, b = love.graphics.getColor()

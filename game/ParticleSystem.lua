@@ -18,7 +18,6 @@ function ParticleSystem:reserveNewParticle()
 	return self.pool[self.numActiveParticles - 1]
 end
 
--- Add new particle imitating broken wall (super mario tile's crash)
 function ParticleSystem:addBrokenWallEffect(texture, x, y, 
 	width, height, dirLeft)
 	
@@ -35,7 +34,6 @@ function ParticleSystem:addBrokenWallEffect(texture, x, y,
 		nil, "broken_wall")
 end
 
--- Add new cloud
 function ParticleSystem:addCloudParticle(texture, x, y, 
 	width, height, dirLeft, userUpdate)
 	
@@ -52,7 +50,6 @@ function ParticleSystem:addCloudParticle(texture, x, y,
 		userUpdate, "cloud")
 end
 
--- Add new snow flake
 function ParticleSystem:addSnowParticle(texture, x, y,
 	width, height, userUpdate)
 	
@@ -69,7 +66,6 @@ function ParticleSystem:addSnowParticle(texture, x, y,
 		userUpdate, "snow")
 end
 
--- Add new rain drop
 function ParticleSystem:addRainParticle(texture, x, y, 
 	width, height, userUpdate)
 	
@@ -86,8 +82,6 @@ function ParticleSystem:addRainParticle(texture, x, y,
 		userUpdate, "rain")
 end
 
--- Add new bubble particle 
--- Used when unit is inside water (gasping for air "effect")
 function ParticleSystem:addBubbleParticle(texture, x, y, width, height, time)
 	self:reserveNewParticle():fill(
 		texture,
@@ -101,8 +95,6 @@ function ParticleSystem:addBubbleParticle(texture, x, y, width, height, time)
 		true, true, time/5)
 end
 
--- Add smoke particle (particle is moving is specific direction)
--- and it's texture is rotating as well and it's proportions are increasing
 function ParticleSystem:addSmokeParticle(texture, x, y, width, height,
 	dirAngle, time)
 	
@@ -118,7 +110,6 @@ function ParticleSystem:addSmokeParticle(texture, x, y, width, height,
 		true, false, time/5)
 end
 
--- Star with high velocity moving directly from given position
 function ParticleSystem:addStarParticle(texture, x, y, width, height,
 	dirAngle)
 	
@@ -150,8 +141,6 @@ function ParticleSystem:addCoinEffect(texture, x, y,
 		userUpdate, userData)
 end
 
--- Add an effect representing unit's (death) fall in specific direction
--- This is called when some unit collides with spikes, lava etc...
 function ParticleSystem:addUnitDirectedFallEffect(texture, x, y, 
 	width, height, leftDir, vel)
 	
@@ -159,9 +148,6 @@ function ParticleSystem:addUnitDirectedFallEffect(texture, x, y,
 		vel*1.8, 0, 0, leftDir)
 end
 
-
--- Smashed unit with rotation in specified direction
--- Also the texture is rotating with specific speed and direction
 function ParticleSystem:addUnitRotationFallEffect(texture, x, y,
 	width, height, vel, texAngle, texAngleVel, leftDir)
 	
@@ -187,8 +173,6 @@ function ParticleSystem:addUnitRotationFallEffect(texture, x, y,
 		true, false, 0.5)
 end
 
--- Create an effect that imitates a unit's smash (crash)
--- (into the wall or smashed by player's step)
 -- @texAngle and @dirAngle can be nil (not set)
 function ParticleSystem:addUnitSmashFallEffect(texture, x, y,
 	width, height, texDirLeft, texAngle, dirAngle)
@@ -205,8 +189,6 @@ function ParticleSystem:addUnitSmashFallEffect(texture, x, y,
 		true, false, 0.5)
 end
 
--- Create an static effect with given texture
--- This effect just last given time, nothing more...
 function ParticleSystem:addUnitSmashStaticEffect(texture, x, y,
 	width, height, texDirLeft, time)
 	
@@ -222,7 +204,7 @@ function ParticleSystem:addUnitSmashStaticEffect(texture, x, y,
 		false, false, 0)
 end
 
--- Add particle representing player's fall (death) with own @userUpdate
+-- @userUpdate must be set
 function ParticleSystem:addPlayersFallEffect(texture, x, y, 
 	width, height, userUpdate)
 
@@ -238,7 +220,6 @@ function ParticleSystem:addPlayersFallEffect(texture, x, y,
 		userUpdate, "up")
 end
 
--- Add a simple effect that imitates a fading out texture...
 function ParticleSystem:addTextureFadeOutEffect(texture, x, y, width, height)
 	self:reserveNewParticle():fill(texture,
 		x, y,
@@ -266,7 +247,6 @@ function ParticleSystem:addFrozenUnitEffect(texture, x, y, width, height,
 		true, true, time/10)
 end
 
--- Create falling object that can rotate in specific direction
 -- @dir = nil, "left", "right"
 function ParticleSystem:addFallingRotatingObject(texture, x, y, 
 	width, height, dir, time)
@@ -293,7 +273,7 @@ function ParticleSystem:addFallingRotatingObject(texture, x, y,
 		true, false, 0.5)
 end
 
--- Add generic slide particle from ComicIntro
+-- See AnimationScene.lua
 -- @fadeType = "in", "out", "both", "none"
 function ParticleSystem:addSlideParticle(texture, x, y, width, height,
 	angle, vel, propVelQ, fadeType, endTime, userData, userUpdate)
@@ -317,7 +297,7 @@ end
 function ParticleSystem:update(camera, deltaTime, sinCosTable, userData)
 	-- In Lua, you cannot use for cycle if you want to change the condition value
 	-- during the loop, because the language itself stores the condition value in
-	-- temporary variable, which is constant, immutable.
+	-- temporary variable, which is immutable.
 	
 	local i = 0
 	while i < self.numActiveParticles do
