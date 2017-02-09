@@ -14,6 +14,7 @@ Game = Runnable:new()
 -- Player:	@args.player: use this player instead of creating new one
 -- World:	@args.worldFilename: load world from given filename
 -- or  		@args.worldLoadFunc: use this load function
+--  		@args.editorDisabled: true if you don't want to use editor at all
 --
 -- If both worldFilename and worldLoadFunc are nil, then a new empty world
 -- will be created. Same rules apply for @args.player...
@@ -36,18 +37,22 @@ function Game:init(screen,
 	self.quit = false 
 	self.editorInitMode = editorInitMode
 	
+	local args_ = args or {}
+	
+	self.editorDisabled = args_.editorDisabled or false
+	
 	-- Create new player or use given one (@args.player)
-	if args == nil or args.player == nil then
+	if args_.player == nil then
 		self:newPlayer()
 	else
-		self.player = args.player
+		self.player = args_.player
 	end
 	
 	-- Find out how will you load the world
-	if args ~= nil and args.worldFilename ~= nil then
-		self.worldFilename = args.worldFilename
-	elseif args ~= nil and args.worldLoadFunc ~= nil then
-		self.worldLoadFunc = args.worldLoadFunc
+	if args_.worldFilename ~= nil then
+		self.worldFilename = args_.worldFilename
+	elseif args_.worldLoadFunc ~= nil then
+		self.worldLoadFunc = args_.worldLoadFunc
 	end
 	
 	self:loadWorld()
@@ -114,7 +119,9 @@ end
 
 function Game:handleKeyPress(key)
 	-- "tilde" key
-	if key == "`" and IS_MOBILE_RELEASE == false then
+	if key == "`" and IS_MOBILE_RELEASE == false 
+		and self.editorDisabled == false then
+		
 		if self.activeMode == self.gameplay then
 			self.activeMode = self.editor
 		else

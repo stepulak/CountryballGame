@@ -113,7 +113,7 @@ function AnimationScene:createSlideParticle(slide)
 		angle = 315
 		vel = SlideMovementDist/endTime
 	elseif mvType == "zoom_out" then
-		-- TODO
+		propVelQ = 0.05
 	end
 	
 	if fdType == "fade_in" then
