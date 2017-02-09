@@ -69,7 +69,7 @@ function Editor:createUnitsGrid()
 				function()
 					love.graphics.push()
 					
-					-- Exception! Rotating ghost is tricky one
+					-- Exception! Rotating ghosts are tricky one
 					if unit.name == "rotating_ghost" then
 						unit.x, unit.y = 0, 0
 					else
@@ -107,7 +107,7 @@ function Editor:createActiveObjectsGrid()
 		local data = {
 			name = obj.name,
 			-- obj.realWidth, obj.realHeight can have different 
-			-- overall place proportions, stick with these...
+			-- overall in-place proportions, stick with these...
 			width = obj.width * self.world.tileWidth,
 			height = obj.height * self.world.tileHeight,
 		}
@@ -467,12 +467,16 @@ function Editor:parseCommandFromConsole(cmd)
 		-- format: finish_line default|@tileX
 		self:setPlayersFinishLine(words)
 	elseif words[1] == "save" then
+		-- format: save @name.lua
 		self:saveWorldInto(words[2])
 	elseif words[1] == "load" then
+		-- format: load @name.lua
 		self:loadWorldFrom(words[2])
 	elseif words[1] == "set_music" then
+		-- format: set_music @music_name
 		self:setWorldMusic(words[2])
 	elseif words[1] == "new_world" then
+		-- format: new_world @num-tilesX @num-tilesY
 		self:newWorld(words)
 	end
 end
@@ -577,10 +581,10 @@ function Editor:insertPick()
 	end
 end
 
--- First, try to remove unit on mouse cursor
--- If there is none, try to remove active object
+-- First, try to remove unit where the mouse cursor is poiting.
+-- If there is none, try to remove active object.
 -- Then continue (only if you fail) to animation object
--- and end up with tiles
+-- and end up with world tiles.
 function Editor:removeObj()
 	local mx, my = getScaledMousePosition(self.world.camera, true)
 	

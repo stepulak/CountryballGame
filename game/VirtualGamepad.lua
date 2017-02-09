@@ -31,8 +31,8 @@ local LabelColorPressed = {
 	a = 255,
 }
 
--- Gamepad consist of direction button (joystick)
--- and N action buttons with own one-character-length labels
+-- Gamepad consists of direction button (joystick)
+-- and N action buttons with own one-character-long labels
 VirtualGamepad = GuiElement:new()
 
 function VirtualGamepad:init(camera, font, buttonRad, buttonTex)
@@ -121,7 +121,7 @@ function VirtualGamepad:addActionButton(label, actionPressed, actionReleased)
 end
 
 -- Return the current direction of direction button (joystick)
--- @return [-1,1], [-1,1]
+-- @return two values, each within [-1,1] interval
 function VirtualGamepad:getDirection()
 	local dMax = self.dirBut.radius - self.dirBut.smRadius
 	local dX = self.dirBut.smX - self.dirBut.x

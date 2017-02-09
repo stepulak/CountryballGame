@@ -28,12 +28,6 @@ function loadTileHeaders()
 end
 
 function loadFonts()
-	--[[
-	fonts = {
-		small = Font:new(love.graphics.newFont("assets/font/Crom_v1.ttf", 16)),
-		medium = Font:new(love.graphics.newFont("assets/font/Crom_v1.ttf", 25)),
-		big = Font:new(love.graphics.newFont("assets/font/Crom_v1.ttf", 38))
-	}]]
 	fonts = {
 		small = Font:new(love.graphics.newFont(16)),
 		medium = Font:new(love.graphics.newFont(25)),
@@ -75,7 +69,7 @@ end
 function love.keypressed(key, scancode, isRepeated)
 	mainMenu:handleKeyPress(key)
 	
-	-- Unusual but escape is used for another purposes
+	-- Unusual but escape key is used for other purposes
 	if key == "f1" then
 		love.event.quit()
 	end

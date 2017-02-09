@@ -130,7 +130,7 @@ local constructionList = {
 	end,
 }
 
--- @dirLeft, @type is optional
+-- @dirLeft is optional
 function createUnitFromName(name, 
 	x, y, tileWidth, tileHeight, 
 	textureContainer, dirLeft)

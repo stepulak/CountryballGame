@@ -129,9 +129,10 @@ function World:loadFromSaveDir(filename)
 	return true
 end
 
--- Save whole world into human readable .lua file with given @filename
--- so that when you can import the file back and load the world content.
--- The file will be saved somewhere in love.filesystem.getSaveDirectory().
+-- Save whole world into human readable .lua file with given @filename,
+-- so that you can import the file back and load the world content easily.
+-- The file will be saved somewhere in 
+-- love.filesystem.getSaveDirectory() + SAVE_DIR.
 function World:saveInto(filename)
 	filename = SAVE_DIR .. filename
 	
@@ -296,7 +297,7 @@ function World:saveUnitsFromList(file, unitList)
 end
 
 function World:saveUnits(file)
-	-- You can mix active and waiting units together
+	-- You can mix up active and waiting units together
 	-- Because when you add a new unit into the world,
 	-- it is always set into waiting list and then processed...
 	checkWriteLn(file, "-- Units begin")
@@ -409,7 +410,7 @@ function World:createParallaxBackground()
 end
 
 -- Set new tile into specific position
--- Remember, the old tile will not stay and will be overwritten. 
+-- Remember, the old tile will not remain and will be overwritten. 
 -- @x, @y = grid position
 -- @tileType = "collidable", "background", "water"
 -- @headerName = name of the tile inside headerContainer
@@ -451,7 +452,7 @@ function World:lightUpTilesAtPosition(centerX, centerY, width, height)
 		-- Inside the grid? Green
 		love.graphics.setColor(0, 255, 0, 100)
 	else
-		-- Red
+		-- Outside the grid. Red
 		love.graphics.setColor(255, 0, 0, 100)
 	end
 	
@@ -480,7 +481,7 @@ end
 
 -- Enable specified weather
 -- @weatherName = "Clouds", "Snow", "Rain"
--- See ParallaxBackground:enable*(weatherName)* for another details about arg
+-- See ParallaxBackground:enable*(weatherName)* for another details about ...
 function World:enableWeather(backgroundLvl, weatherName, ...)
 	self.parallaxBackground["enable"..weatherName](self.parallaxBackground,
 		backgroundLvl, ...)
@@ -520,7 +521,8 @@ function World:addActiveObject(obj)
 	return false
 end
 
--- @x, @y are coordinates in tiles, @width, @height is sized in tiles aswell
+-- @x, @y are coordinates in tiles,
+-- @width, @height are sized in tiles aswell
 function World:isAreaEmpty(objName, x, y, width, height)
 	width = width-1
 	height = height-1
@@ -618,7 +620,7 @@ function World:connectTeleports(t1X, t1Y, t2X, t2Y)
 end
 
 -- Add new unit to the waiting list so that it won't break
--- the ascending order according their positions
+-- the ascending order according to their positions
 function World:addUnit(unit)
 	local it = self.waitingUnits.head
 	
@@ -626,7 +628,7 @@ function World:addUnit(unit)
 		-- List is empty
 		self.waitingUnits:pushFront(unit)
 	else	
-		-- You have to find appropriate spot
+		-- You have to find an appropriate spot
 		while it ~= nil do
 			if unit.x+unit.width/2 < it.data.x-it.data.width/2 then
 				-- Add it here
@@ -701,9 +703,9 @@ function World:setCoinGenerator(x, y, generator)
 end
 
 -- Swap collidable tile after "generation"
--- It means that this tile has "ran out of"
--- coins, mushrooms etc... so change it to the static block
--- or if there isn't any set, then make the tile disappears.
+-- It means that this tile has "ran out" of coins, mushrooms etc...
+-- So change it to the static block or if there isn't any set,
+-- then make the tile disappear.
 -- @x, @y = tile coordinates
 function World:swapCollidableTileAfterGeneration(x, y)
 	local name = self.tiles[x][y].collidableTile.staticBlockName
@@ -855,26 +857,26 @@ function World:breakTile(x, y)
 	local particleQ = 2
 	local tile = self.tiles[x][y]
 	
-	-- first particle
+	-- First particle
 	self.fParticleSystem:addBrokenWallEffect(
 		tile.collidableTile.animation:getActiveTexture(), 
 		x * self.tileWidth, y * self.tileHeight, 
 		self.tileWidth/particleQ, self.tileHeight/particleQ, true)
 	
-	-- second particle
+	-- Second particle
 	self.fParticleSystem:addBrokenWallEffect(
 		tile.collidableTile.animation:getActiveTexture(), 
 		(x+1) * self.tileWidth, y * self.tileHeight, 
 		self.tileWidth/particleQ, self.tileHeight/particleQ, false)
 	
-	-- delete the tile from grid
+	-- Delete the tile from the grid
 	self:deleteCollidableTile(x, y)
 	
 	-- Make sound effect
 	self.soundContainer:playEffect("block_break")
 end
 
--- Reveal all tiles marked as secret in one connected tile-area
+-- Reveal all tiles marked as secret in connected tile-area
 -- @x, @y = secret tile's coordinates
 function World:revealSecretTilesInArea(x, y)
 	if self:isInsideGrid(x, y) and isTileSecret(self.tiles[x][y]) then
@@ -900,13 +902,13 @@ function World:revealSecretTilesInArea(x, y)
 	end
 end
 
--- Check, if tile's position is inside grid
+-- Check, if tile's position is inside the grid
 function World:isInsideGrid(x, y)
 	return x >= 0 and x < self.numTilesWidth 
 		and y >= 0 and y < self.numTilesHeight
 end
 
--- Check, if tile's position is inside grid
+-- Check, if tile's position is inside the grid
 -- and return the corrected one if possible
 function World:boundToGrid(x, y)
 	return setWithinRange(x, 0, self.numTilesWidth-1),
@@ -1084,7 +1086,7 @@ function World:handleUnitCollisionDown(unit, deltaTime, distError)
 	unit:moveSpecific(0, dist)
 end
 
--- Check, if beneath the unit is solid ground
+-- Check, if beneath given unit is solid ground
 -- If there is not, let the unit start falling
 function World:findSolidGround(unit, deltaTime, distError)
 	local leftX, leftTileX = unit:getLeftBoundary(self.tileWidth)
@@ -1355,8 +1357,6 @@ end
 
 -- Handle unit-unit collisions in all directions
 function World:handleUnitUnitCollisions(unit, deltaTime)
-	-- Iterate through all next units (bad-guys and player)
-	-- and check their collisions
 	local it = self.activeUnits.head
 	
 	while it ~= nil do
@@ -1417,8 +1417,9 @@ function World:specialUpdateUnit(unit, deltaTime)
 		unit:updateAccordingToPlayer(deltaTime, 
 			self.player, self.camera)
 	elseif unit.name == "rocket" and unit.started then
-		-- Because rocket is only triggered when player is in it
-		-- So then if the rocket is far enough try to end this current world
+		-- Rocket is somewhat like finish line.
+		-- Because rocket is only triggered when player is inside it,
+		-- then check if the rocket is far enough to end this world.
 		local bot = unit:getBotBoundary(self.tileHeight, 0)
 		
 		if bot < unit.rocketMinY then
@@ -1470,8 +1471,9 @@ function World:updateActiveUnits(deltaTime)
 end
 
 -- Iterate through inactive (waiting) units
--- and decide, if the unit can be activated
--- Remember, the list is in ascending order according to their positions
+-- and decide, if the unit can be activated - 
+-- that means the unit inside in camera.
+-- Remember, the list is in ascending order according to their positions.
 function World:setupNewActiveUnits()
 	local it = self.waitingUnits.head
 	local itTmp
@@ -1529,7 +1531,7 @@ function World:handleProjectileTileCollisions(projectile, deltaTime)
 	local tileYAfter = math.floor(y / self.tileHeight)
 	
 	-- Reset velocity reduction 'cause you do not know
-	-- if any collision with this projectile would happen
+	-- if any collision with this projectile will happen
 	projectile:setVelocityReduction(1)
 	
 	if self:isInsideGrid(tileXAfter, tileYAfter) then
@@ -1549,8 +1551,8 @@ function World:handleProjectileTileCollisions(projectile, deltaTime)
 			local skipReversing = false
 			
 			if isTileOblique(tile) ~= 0 then
-				-- There was found and oblique tile, count the collision
-				-- differently
+				-- There was found and oblique tile,
+				-- count the collision differently
 				local dist = self:countDistanceFromObliqueTile(x, y,
 					0, 0, tileXAfter, tileYAfter)
 					
@@ -1602,10 +1604,10 @@ function World:updateProjectiles(deltaTime)
 		
 		if data.fading == false then		
 			if data.isGood then
-				-- Projectile fired by player
+				-- Projectile fired by the player
 				self:handleProjectileBadGuysCollisions(data)
 			else
-				-- Projectile fired by bad guys
+				-- Projectile fired by a bad guy
 				self:handleProjectilePlayerCollisions(data)
 			end
 			
@@ -1626,8 +1628,8 @@ function World:updateProjectiles(deltaTime)
 end
 
 -- Update active objects
--- Remember to call this function every update frame 
--- no matter of object visibility
+-- Remember to call this function every frame
+-- no matter the object's visibility is...
 function World:updateActiveObjects(deltaTime)
 	local it = self.activeObjects.head
 	
@@ -1879,8 +1881,7 @@ function World:drawSpecificTile(posX, posY, keyName, verticalOffset)
 	local header = self.tiles[posX][posY][keyName]
 	
 	if header == nil then
-		-- error
-		return
+		return -- error
 	end
 	
 	header.animation:draw(self.camera, posX*self.tileWidth, 
@@ -1971,7 +1972,7 @@ end
 function World:drawRectangleAroundObjs(objName)
 	local startX, startY, endX, endY = self:getDrawingClipCoords()
 	
-	-- A bit inefficient solution
+	-- A bit inefficient solution, but used only in editor mode...
 	for x = startX, endX do
 		for y = startY, endY do
 			if self.tiles[x][y][objName] ~= nil then
@@ -1994,7 +1995,7 @@ function World:drawUI()
 	font:drawLine(coins, self.camera.virtualWidth - coinsW - offset, offset)
 end
 
--- Draw game staff
+-- Draw game stuff
 function World:draw()
 	self.drawCounter = self.drawCounter + 1
 	

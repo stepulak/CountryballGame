@@ -9,7 +9,8 @@ function AnimationObject:init(name, x, y, width, height,
 	
 	-- Proportions could have been stored somewhere in object header, but
 	-- I've decided to store it separately in each object, so that
-	-- it will be easier to draw both animation and active objects...
+	-- it will be easier to draw both animation and
+	-- active objects with one function...
 	
 	self.name = name
 	self.x = x
@@ -22,10 +23,11 @@ function AnimationObject:init(name, x, y, width, height,
 	self.realHeight = height*tileHeight
 	self.anim = anim
 	
-	-- To tell the others that this object has beel already drawn
+	-- To tell the world's drawing mechanism that this object
+	-- has beel already drawn
 	self.drawCounter = 0
 	
-	-- So that the save mechanism knows that this object has been already saved
+	-- The save mechanism knows that this object has been already saved
 	self.saveCounter = 0
 end
 

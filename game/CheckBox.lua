@@ -26,8 +26,7 @@ function CheckBox:addCheckButton(label, action)
 	local but = CheckButton:new(label, self.font, 
 		self.x, self.y + self.height, 
 		self.width, self.buttonHeight, action)
-		
-	-- Add it to the list
+	
 	self.buttons[#self.buttons + 1] = but
 	
 	-- Increase current height
@@ -58,7 +57,7 @@ function CheckBox:mouseRelease(x, y)
 	local but = self:getButton(y)
 	
 	if but ~= nil and but == self.clickedButton then
-		-- Does exist any old one checked button?
+		-- Does any old checked button exist?
 		if self.checkedButton then
 			self.checkedButton:mouseRelease(x, y)
 		end

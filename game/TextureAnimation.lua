@@ -33,7 +33,6 @@ function TextureAnimation:reset()
 	self.timer = 0
 end
 
--- Switch into next texture
 function TextureAnimation:nextTexture()
 	self.textureIndex = self.textureIndex + 1
 	if self.textureIndex > #self.textures then
@@ -45,7 +44,7 @@ function TextureAnimation:firstTexture()
 	return self.textures[1]
 end
 
--- Update animation, if not, the animation's texture frames would not swap
+-- Update animation and possibly swap textures
 function TextureAnimation:update(deltaTime)
 	if self.updateTime < 0 then
 		return
@@ -58,7 +57,7 @@ function TextureAnimation:update(deltaTime)
 	end
 end
 
--- Get active texture to be drawn
+-- Get active texture which is ought to be drawn
 function TextureAnimation:getActiveTexture()
 	return self.textures[self.textureIndex]
 end

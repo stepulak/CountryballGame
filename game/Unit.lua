@@ -51,8 +51,6 @@ function Unit:init(name,
 	
 	-- If timer > 0 then this unit is freezed
 	self.freezeTimer = 0
-	
-	-- Must be changed manually to avoid possibility of being freezed
 	self.notFreezable = false
 	
 	-- Unit can be killed when you step on it
@@ -68,7 +66,7 @@ function Unit:init(name,
 	self.jumpOffPlatformTimer = -1
 	
 	-- The unit itself has collided somewhere in horizontal direction...
-	-- Possibilities: left, right
+	-- Possibilities: "left", "right"
 	self.collidedHorizontally = nil
 	
 	-- Indicator, if the unit is inside water or not

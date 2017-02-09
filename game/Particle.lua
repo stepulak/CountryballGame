@@ -32,16 +32,14 @@ end
 --
 -- You see, we would rather avoid creating new tables, because is it 
 -- a performance loss, especially for particles that are
--- created very often (like rain drops or snow flakes)
+-- created very often (like rain drops or snow flakes). So every particle
+-- can be reused by filling new data into it.
 --
 -- zero angle ... 3 o'clock
 -- 90 degrees ... 12 o'clock
 --
--- Monstrous function! But I believe it's better to do it in this way
--- than in :setTexture():setPosition():setProportions() way or
--- than passing a table with specified arguments - we would
--- have to always check if each argument is filled or not and that would cost
--- a huge performance, because this method is called many times per frame...
+-- Monstrous function!
+--
 function Particle:fill(texture, 
 	x, y,
 	width, height,

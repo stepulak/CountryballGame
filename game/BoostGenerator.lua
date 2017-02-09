@@ -1,9 +1,8 @@
 require "class"
 
 -- Boost generator
--- This generator creates an effect of in-game
--- production of the new mushrooms and flowers for the player
--- from the bounded tile
+-- This generator creates an in-game effect for production
+-- of new mushrooms and flowers for the player from bounced tiles.
 BoostGenerator = class:new()
 
 -- @boostUnit remember, that proportions of this unit must be

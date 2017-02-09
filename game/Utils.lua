@@ -50,15 +50,16 @@ end
 
 local maxDist = 2^20
 
--- Return shortest distance between the first rectangle
--- and the second rectangle, either horizontal or vertical,
--- so that if you move the first rectangle back with the given distance,
+-- Return shortest distance between two rectangles,
+-- either horizontal or vertical.
+-- So that if you move the first rectangle back with the given distance,
 -- there won't be any collision between them...
 
 -- @vx, vy is direction vector of the first rectangle
--- @cx, cy... center point of the specific rectangle
+-- @cx*, cy*... center point of the specific rectangle
 
--- Remember, the two rectangles must be in collision! 
+-- Remember, these two rectangles must be in collision!
+-- Or anomalies might happen.
 function getShortestDistanceRectRectCollision(vx, vy, 
 	cx1, cy1, w1, h1, cx2, cy2, w2, h2)
 	
@@ -110,6 +111,7 @@ function setWithinRange(value, minValue, maxValue)
 	return value
 end
 
+-- Mutation range
 local MutMax = 20
 
 -- Mutate given color. In other words, slightly change given color value
@@ -136,8 +138,8 @@ function getScaleRealToVirtual(realWidth, virtualWidth,
 	return virtualWidth/realWidth, virtualHeight/realHeight
 end
 
--- if @applyCamTranslate is true, then the mouse position will
--- be translated according to the camera position
+-- If @applyCamTranslate is true, then the mouse position will
+-- be translated according to the camera position.
 function getScaledMousePosition(camera, applyCamTranslate)
 	local sx, sy = getScaleRealToVirtual(
 		camera.screenWidth, camera.virtualWidth,
@@ -165,7 +167,7 @@ function normalizeAngle(angle)
 	return angle
 end
 
--- Return keys from table t, result is indexed from 1
+-- Return all keys from table t, result is indexed from 1.
 function getKeysFromTable(t)
 	local keys = {}
 	
@@ -186,8 +188,8 @@ function splitStringBySpace(s)
 	return words
 end
 
--- Try to write string into file
--- If error occurs, write 
+-- Try to write given string into given file.
+-- If an error occurs, write it into the stdio.
 function checkWriteLn(file, str)
 	local suc, err =  file:write(str .. "\n")
 	
@@ -199,8 +201,8 @@ function checkWriteLn(file, str)
 end
 
 -- Based on https://gist.github.com/MihailJP/3931841
--- Clone the table, it's also possible to clone the table's elements
--- via recursion if deepClone is enabled.
+-- Clone the table.
+-- If @deepClone is enabled, clone also the table's "tables" via recursion.
 function clone(t, deepClone)
     if type(t) ~= "table" then 
 		return t

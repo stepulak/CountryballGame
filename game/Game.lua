@@ -159,9 +159,9 @@ function Game:handleTouchMove(id, tx, ty, tdx, tdy)
 	self.activeMode:handleTouchMove(id, tx, ty, tdx, tdy)
 end
 
--- Total reset of the active game
+-- Total reset of the active game.
 -- According to settings reset the world (load it again) and
--- respawn the player aswell
+-- respawn the player aswell.
 function Game:totalReset()
 	local activeModeName = self.activeMode.name
 	
@@ -171,7 +171,7 @@ function Game:totalReset()
 	else
 		self:newEditor()
 		
-		-- Is player dead? That means he was kicked from active units...
+		-- Is the player dead? That means he was kicked from active units...
 		if self.player.dead then
 			self.world:addPlayerIntoActiveUnits()
 		end

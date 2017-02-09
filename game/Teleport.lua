@@ -11,7 +11,7 @@ local Colors = {
 	[6] = { r = 100, g = 100, b = 200 },
 }
 
-local UnitProcessingTime = 0.25-- 250ms
+local UnitProcessingTime = 0.25
 
 function Teleport:init(x, y, tileWidth, tileHeight, teleportAnim)
 	self:super("teleport", x, y, 1, 1, tileWidth, tileHeight)
@@ -25,8 +25,8 @@ function Teleport:init(x, y, tileWidth, tileHeight, teleportAnim)
 	self.unavailableTimer = 0
 end
 
--- Set twin teleport
 -- Teleport only function!
+-- Set twin teleport
 -- Return the teleport itself so you can concat function calls
 function Teleport:setTwin(twin)
 	self.twin = twin
@@ -44,7 +44,7 @@ end
 
 function Teleport:canBeBounded(unit)
 	-- Every unit in collision with this teleport can be bounded
-	-- if the unit is not dead
+	-- if the unit is *obviously* not dead
 	return unit.dead == false
 end
 
@@ -71,7 +71,7 @@ function Teleport:update(camera, particleSystem, deltaTime)
 		self.unavailableTimer = self.unavailableTimer - deltaTime
 		
 		-- Maybe some units are being teleported
-		-- Precount alpha channel for every teleported unit
+		-- Precount the alpha channel for every teleported unit
 		local alpha = 255 * (self.unavailableTimer / UnitProcessingTime)
 		
 		if self.processingOut == false then
@@ -95,7 +95,7 @@ function Teleport:update(camera, particleSystem, deltaTime)
 					unit.y = unit.y + offsetY
 				end
 				
-				-- Setup twin to recieve the teleported units
+				-- Setup then twin to recieve the teleported units
 				self.twin.processingOut = false
 				self.twin.unavailableTimer = UnitProcessingTime
 				self.twin.processedUnits = self.processedUnits

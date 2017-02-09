@@ -29,7 +29,8 @@ function Gameplay:init(world, fonts)
 	end
 	
 	-- In this case, add the quit dialog aswell even if it's not a mobile rel.,
-	-- because you do not want to quit immediately when user press "escape"
+	-- because you do not want to quit immediately when user press "escape",
+	-- you want to show him a dialog first.
 	
 	local virtW = self.world.camera.virtualWidth
 	local virtH = self.world.camera.virtualHeight

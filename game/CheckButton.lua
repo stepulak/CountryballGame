@@ -66,8 +66,7 @@ function CheckButton:draw()
 	love.graphics.circle("line", 0, 0, self.circleRad, 20)
 	love.graphics.setLineWidth(1)
 	
-	-- If it's also checked, then draw inside the check circle smaller
-	-- circle, but whole filled with color
+	-- Smaller circle inside
 	if self.checked then
 		love.graphics.circle("fill", 0, 0, self.circleRad * 0.8, 20)
 	end

@@ -216,7 +216,8 @@ function Player:tryToEnableSprint()
 end
 
 -- Player function only!
--- Increase coins by one and check, if you have above 100 coins.
+-- Increase the amount of coins by one and check,
+-- if you have more than 100 coins.
 -- If you do, then increase your number of lives.
 function Player:increaseNumCoins()
 	self.coins = self.coins + 1
@@ -294,7 +295,8 @@ function Player:resolveUnitCollision(unit, particleSystem, deltaTime,
 	if unit.friendlyToPlayer then
 		self:boostPlayer(unit, soundContainer)
 	elseif unit.name == "rotating_ghost" and self.invulnerableRGTimer <= 0 then
-		-- HINT: remove if player has not circular shape!
+	
+		-- HINT: remove if player's body has not circular shape!
 		if pointInCircle(unit.x, unit.y, self.x, self.y, self.width/2) then
 			self:hurt("projectile_bottom", particleSystem, soundContainer)
 			self.invulnerableRGTimer = InvulnerabilityRGTime

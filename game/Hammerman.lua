@@ -62,7 +62,7 @@ end
 function Hammerman:updateAccordingToPlayer(deltaTime, player, camera)
 	self:updateJumping(deltaTime, player)
 	
-	-- Change the hammer looking direction directly on player
+	-- Set the hammerman's looking on player
 	self.isFacingLeft = player.x <= self.x
 	
 	if self:isInsideCamera(camera) and 

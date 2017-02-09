@@ -15,12 +15,13 @@ function SoundContainer:init()
 	self.masterVolume = nil
 end
 
--- Multiple effects can be played simultaneously, but one effect just once
+-- Multiple different effects can be played simultaneously, but
+-- each effect just once.
 function SoundContainer:newEffect(name, source)
 	self.effects[name] = source
 end
 
--- There can be only one playing music in the background
+-- There can be only one music playing in the background.
 function SoundContainer:newMusic(name, source)
 	self.music[name] = source
 end

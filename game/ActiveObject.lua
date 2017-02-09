@@ -30,7 +30,7 @@ end
 -- Accessible via inheritance
 ActiveObject.super = ActiveObject.init
 
--- Additional setup after insert into a map
+-- Additional setup after inserting into world's grid
 function ActiveObject:setup()
 	-- VIRTUAL
 end
@@ -40,7 +40,7 @@ function ActiveObject:boundUnit(unit)
 	-- VIRTUAL
 end
 
--- Return true if this unit is already bounded to this active object
+-- Return true if given unit is already bounded to this active object
 function ActiveObject:isAlreadyBounded(unit)
 	return false
 end

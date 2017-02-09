@@ -1,7 +1,7 @@
 require "AnimationObject"
 
--- Animation object container (set) for
--- storing animation objects, for each type (name) only once
+-- Animation object container for storing animation objects,
+-- for each type (name) only once.
 --
 -- Like in the TileHeaderContainer, this is used for
 -- automatic updates of object's animations etc...

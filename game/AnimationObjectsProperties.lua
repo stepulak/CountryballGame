@@ -4,8 +4,8 @@
 
 -- If you want to explicitly specify their animation name,
 -- use the animationName="name" parameter. Otherwise 
--- the object's name will be used as a key for getting
--- the animation from the container.
+-- the object's key will be used as a key for getting
+-- the animation from the animation's container.
 
 require "AnimationObject"
 

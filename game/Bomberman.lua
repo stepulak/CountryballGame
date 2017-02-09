@@ -21,9 +21,7 @@ function Bomberman:init(x, y, tileWidth, tileHeight,
 	
 	self.countdownAnim = countdownAnim:getCopy()
 	
-	-- Resolve explosion animation update time - because you 
-	-- don't want to draw the explosion twice or more, just once
-	-- and exactly within the given explosion time
+	-- The explosion has to be drawn only once within the given time.
 	self.deathAnim.updateTime = 1.1 * (ExplosionTime /
 		self.deathAnim:numTextures())
 	
@@ -43,8 +41,7 @@ function Bomberman:instantDeath(particleSystem, soundContainer)
 	self.isSteppable = false
 	self.notFreezable = true
 	
-	-- The world won't bully because the tile collision
-	-- will be skipped from now
+	-- Increase the proportions of the explosion no matter the tile collision.
 	self.width = self.width * ProportionsInc
 	self.height = self.height * ProportionsInc
 	
@@ -112,8 +109,7 @@ function Bomberman:handleBehaviour(deltaTime, particleSystem, soundContainer)
 			self:instantDeath(particleSystem, soundContainer)
 		end
 	else
-		-- Make sure that world won't move and
-		-- won't resolve collision on this unit anymore...
+		-- Stop moving so that the in-world tile-collision is ignored.
 		self.isJumping = false
 		self.isFalling = false
 		self.isMovingHor = false

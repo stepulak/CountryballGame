@@ -123,7 +123,7 @@ function ParallaxBackground:setBackgroundColor(backgroundLvl, r, g, b, a)
 	end
 end
 
--- Set camera velocity (how much faster or slower will it move
+-- Set camera velocity (how faster or slower will it move
 -- compared to normal foreground camera)
 function ParallaxBackground:setCameraVelocity(backgroundLvl, cameraVel)
 	if self:validBackgroundLvl(backgroundLvl) then
@@ -308,8 +308,11 @@ function ParallaxBackground:preRunWeather(camera, sinCosTable)
 end
 
 -- Update parallax background 
--- disableRandom = used for pre-counting weather (false in normal in-game update)
-function ParallaxBackground:update(camera, deltaTime, sinCosTable, disableRandom)
+-- @disableRandom = used for pre-counting weather 
+-- 	(false in normal in-game update)
+function ParallaxBackground:update(camera, deltaTime,
+	sinCosTable, disableRandom)
+	
 	for i = 1, self.numBackgrounds do
 		-- Update particle system
 		if self.backgrounds[i].particleSystem ~= nil then
@@ -318,7 +321,6 @@ function ParallaxBackground:update(camera, deltaTime, sinCosTable, disableRandom
 			camera:push()
 			
 			camera:scalePosition(background.cameraVel, background.cameraVel)
-			--camera:scaleVirtualProp(1+background.cameraVel, 1+background.cameraVel)
 			
 			background.particleSystem:update(camera, deltaTime, 
 				sinCosTable, background)
@@ -435,8 +437,4 @@ function ParallaxBackground:saveTo(file)
 	end
 	
 	checkWriteLn(file, "-- Parallax background end\n")
-end
-
-function ParallaxBackground:loadFrom(file, textureContainer)
-
 end

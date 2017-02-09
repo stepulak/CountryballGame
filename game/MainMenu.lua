@@ -100,7 +100,7 @@ end
 
 function MainMenu:insertEditorMenuButton(menuTree)
 	if IS_MOBILE_RELEASE then
-		-- Editor is not part of mobile or official (nondevelopment) release
+		-- Editor is not part of the mobile release
 		return
 	end
 	
@@ -115,6 +115,7 @@ end
 
 function MainMenu:insertCreatedLevelsMenuButton(menuTree)
 	if IS_MOBILE_RELEASE then
+		-- You cannot access the user's created levels either
 		return
 	end
 	

@@ -3,7 +3,7 @@ require "TexturedButton"
 Menu = GuiElement:new()
 
 -- @tree is a data structure which consist of array of buttons
--- and their references to the next menu "node" when they are clicked
+-- and their references to the next menu layer when they are clicked
 -- also, each button might have own trigger function (action)
 -- 
 -- example: @tree = { [1] = { label, action, nextNode }, [2] = { ... } ... }

@@ -295,10 +295,6 @@ end
 
 -- Update particles (movement, behaviour, etc.)
 function ParticleSystem:update(camera, deltaTime, sinCosTable, userData)
-	-- In Lua, you cannot use for cycle if you want to change the condition value
-	-- during the loop, because the language itself stores the condition value in
-	-- temporary variable, which is immutable.
-	
 	local i = 0
 	while i < self.numActiveParticles do
 		self.pool[i]:update(camera, deltaTime, sinCosTable, userData)

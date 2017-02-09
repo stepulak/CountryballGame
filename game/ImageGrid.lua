@@ -63,13 +63,13 @@ end
 -- @drawable = either texture (image) or draw function
 -- @name = name of the image (identifier)
 -- @info = brief info about the image 
--- 		(showed only when user points a mouse curson on it)
+-- 		(shown only when user points a mouse curson on it)
 -- @data = data which can be stored
 function ImageGrid:addElement(drawable, name, info, data)
 	local t = {}
 	
 	if type(drawable) == "userdata" then
-		-- It's an image, create a drawing lambda function
+		-- It's an image, create an anonymous drawing func
 		local imgW, imgH = self:getImageProportions()
 		t.draw = 
 			function()

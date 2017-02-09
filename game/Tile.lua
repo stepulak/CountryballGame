@@ -107,11 +107,7 @@ end
 -- 		-1 if is oblique from the left side
 -- 		1 if is oblique from the right side
 function isTileOblique(tile)
-	if isTileCollidable(tile) then
-		return tile.collidableTile.oblique
-	else
-		return 0
-	end
+	return isTileCollidable(tile) and tile.collidableTile.oblique or 0
 end
 
 function hasTileActiveObject(tile)

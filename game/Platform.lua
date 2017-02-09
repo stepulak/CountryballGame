@@ -47,7 +47,7 @@ end
 -- Setup position at the end of the limit immediately 
 -- after you insert the platform into the world's grid.
 -- This little nasty *hack* has to be done because of
--- the editor's grid with active objects, otherwise
+-- the editor's drawing mechanism inside objects grid, otherwise
 -- the object in the grid would move away from it's default position.
 function Platform:setup()
 	if self.setupPosImmediately then
@@ -129,7 +129,6 @@ function Platform:getDistUpdateOffset(deltaTime)
 	self.offset = self.offset + dist
 	
 	-- If you reach the maximum offset, reverse the direction
-	-- and lower the possible distance (you cannot overflow the offset limit)
 	if self.dir == 1 and self.offset >= self.offsetMax then
 		dist = dist - (self.offset - self.offsetMax)
 		self.offset = self.offsetMax

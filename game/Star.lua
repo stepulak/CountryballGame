@@ -30,7 +30,7 @@ function Star:update(deltaTime, gravityAcc, particleSystem,
 	self:reverseDirectionAccordingToCollision()
 	self:moveHorizontally(self.isFacingLeft)
 	
-	-- The star is jumping continuously
+	-- The star is bouncing continuously
 	if self.isJumping == false and self.isFalling == false then
 		self:tryToJumpNoTimer()
 	end

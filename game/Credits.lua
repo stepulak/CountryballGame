@@ -88,8 +88,7 @@ function Credits:addContent(content, height)
 	self.overallHeight = self.overallHeight + height
 end
 
--- Count music duration according to the overall height of the content
--- In other words, make sure that the credits scrolling will last as long as
+-- Make sure that the credits' scrolling will last as long as
 -- the music is playing.
 function Credits:countMusicDuration()
 	if self.soundContainer:getMusic(MusicName) ~= nil then

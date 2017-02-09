@@ -53,7 +53,7 @@ function Trampoline:update(camera, particleSystem, deltaTime)
 			self.platformOffset = 0
 		end
 		
-		-- Continuesly decrease unit's falling velocity
+		-- Continuously decrease unit's falling velocity
 		if self.boundedUnit.isFalling then
 			self.boundedUnit.verticalVel = self.boundedUnit.verticalVel * 43 * deltaTime
 		end

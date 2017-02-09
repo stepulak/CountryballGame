@@ -49,7 +49,7 @@ function Turtle:hurt(type, particleSystem, soundContainer)
 		return -- Collision handled
 	end
 	
-	-- Is covered and not mad? A little push can get you mad...
+	-- Is covered and not mad? A little push can make you mad...
 	if self.isCovered and self.isMad == false then
 		if type == "touch_left" then
 			self.isMad = true

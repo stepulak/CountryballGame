@@ -36,7 +36,7 @@ function CanonBall:instantDeath(particleSystem, soundContainer)
 end
 
 function CanonBall:hurt(type, particleSystem, soundContainer)
-	-- CanonBall generally is easily killable
+	-- CanonBall is easily killable
 	self:instantDeath(particleSystem, soundContainer)
 end
 

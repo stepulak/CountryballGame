@@ -11,7 +11,7 @@ local FireworkSize = 50
 EndScreen = class:new()
 
 -- If @playerDied is true then the EndScreen is used to show player's lives or
--- the "gameover" screen.
+-- for the "gameover" screen. Otherwise "win" screen is shown.
 -- @fireworksAnim and @soundContainer are necessary only if @playerDied is false
 function EndScreen:init(font, player, playerDied,
 	fireworksAnim, soundContainer)
@@ -132,7 +132,6 @@ function EndScreen:drawGameOver(screenWidth, screenHeight)
 	self.font:drawLineCentered("Game Over!", screenWidth/2, yPos)
 end
 
--- @font is font table from Font.lua
 function EndScreen:draw(screenWidth, screenHeight)
 	if self.finishStats == false then
 		if self.player.numLives <= 0 then

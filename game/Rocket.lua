@@ -25,7 +25,7 @@ function Rocket:init(x, y, tileWidth, tileHeight, anim, smokeTex)
 	self:reset()
 end
 
--- Reset rocket to it's initial spawn position and state
+-- Reset rocket to it's initial spawn position and stats
 function Rocket:reset()
 	self.x = self.initX
 	self.y = self.initY

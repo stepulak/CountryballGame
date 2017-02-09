@@ -3,12 +3,13 @@
 -- If the specified property is not set,
 -- then it will be considered as a false value.
 
--- All of the tiles are collidable by default
--- but you can prevent the collision by placing it in the background.
+-- All of the tiles are collidable by default - 
+-- but you cannot change this here, you can prevent
+-- the collision by placing it into the background in the Tile table.
 
 -- You can also explicitly specify their animation name with
 -- animationName = "name" parameter. If it's not set, then their
--- header name will be used as a name to get the animation.
+-- key name will be used as a name to get the animation.
 
 -- See TileHeader table in TileHeader.lua for more details
 -- about how to setup a property.
