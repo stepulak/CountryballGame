@@ -31,14 +31,20 @@ function EndScreen:init(font, player, playerDied,
 	end
 end
 
--- @return "nothing", "end", "continue"
+-- @return:
+-- 	"nothing" => end screen has not ended
+-- 	"player_no_lives" => player has no lives to continue
+--	"player_finished" => player has finished the level
+-- 	"player_just_died" => player has died, but have enough lives to continue
 function EndScreen:endStatus()
 	if self.timer > 0 then
 		return "nothing"
-	elseif self.player.numLives <= 0 or self.finishStats then
-		return "end"
+	elseif self.player.numLives <= 0 then
+		return "player_no_lives"
+	elseif self.finishStats then
+		return "player_finished"
 	else
-		return "continue"
+		return "player_just_died"
 	end
 end
 

@@ -38,7 +38,7 @@ function Gameplay:init(world, fonts)
 	local _, dialog = self:insertQuitElement(self.gui, self.fonts.medium,
 		virtW/2, virtW, virtH, self.world.textureContainer,
 		function() self.paused = true end, -- @invokeAction
-		function() self.todo = "main_menu_hard" end, -- @quitAction
+		function() self.todo = "quit" end, -- @quitAction
 		function() self.paused = false end) -- @continueAction
 	
 	self.quitDialog = dialog
@@ -245,12 +245,8 @@ function Gameplay:handleEndScreen(deltaTime)
 	
 	local status = self.endScreen:endStatus()
 	
-	if status == "continue" then
-		-- Player has died, but has some lives to continue
-		self.todo = "reset_world"
-	elseif status == "end" then
-		-- Gameover or player has made it to the finish
-		self.todo = "main_menu_soft"
+	if status ~= "nothing" then
+		self.todo = status
 	end
 end
 

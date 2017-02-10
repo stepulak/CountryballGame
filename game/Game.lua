@@ -205,26 +205,29 @@ function Game:totalReset()
 end
 
 -- Stop all in-game sounds and be ready to quit
-function Game:prepareToQuit()
+function Game:prepareToQuit(reason)
 	self.soundContainer:stopAll()
 	self.quit = true
+	self.quitReason = reason
 end
 
 -- Handle todos from active mode (gameplay)
 function Game:handleTodo()
-	if self.activeMode.todo == "reset_world" then
-		self:totalReset()
-	elseif self.activeMode.todo == "main_menu_soft" then
+	local todo = self.activeMode.todo
+	
+	if todo == "quit" then
+		self:prepareToQuit("user_quit")
+	elseif todo == "player_no_lives" then
 		if self.editorInitMode then
-			-- In editor mode, you cannot die entirely - reset player's lives
 			self:totalReset()
 			self.player.numLives = 3
 		else
-			self:prepareToQuit()
+			self:prepareToQuit("cannot_continue")
 		end
-	elseif self.activeMode.todo == "main_menu_hard" then
-		-- Do not hasitate with quitting, do it now
-		self:prepareToQuit()
+	elseif todo == "player_finished" then
+		self:prepareToQuit("continue")
+	elseif todo == "player_just_died" then
+		self:totalReset()
 	end
 end
 
