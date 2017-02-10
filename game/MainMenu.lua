@@ -4,7 +4,7 @@ require "Credits"
 require "Release"
 require "AnimationScene"
 require "assets/maps/_MainMenuMap"
-require "assets/anim_scenes/_TestIntro"
+require "assets/campaigns/_MainCampaign"
 
 local ButtonWidth = 400
 local ButtonHeight = 70
@@ -95,7 +95,9 @@ function MainMenu:newGame(editorInitMode, args)
 end
 
 function MainMenu:insertCampaignMenuButton(menuTree)
-	-- TODO
+	menuTree[#menuTree + 1] = {
+		label = "Campaign",
+	}
 end
 
 function MainMenu:insertEditorMenuButton(menuTree)

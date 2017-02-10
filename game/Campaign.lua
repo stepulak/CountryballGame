@@ -48,12 +48,8 @@ function Campaign:addScene(sceneLoadFunc, sceneType)
 	return self
 end
 
-function Campaign:create(name)
+function Campaign:loadSaveFile(name)
 	self.name = name
-	return self
-end
-
-function Campaign:loadsaveFile()
 	self.saveFileLoaded = self:saveFileExists()
 	
 	if self.saveFileLoaded then
@@ -147,7 +143,7 @@ function Campaign:setupActiveContent()
 			self.soundContainer,
 			self.sinCosTable)
 		
-		c.loadFunc(self.run)
+		c.loadFunc(self.run, self.textureContainer)
 	end
 	
 	self:saveCampaignState()
@@ -216,6 +212,13 @@ function Campaign:update(deltaTime)
 			self:removeSaveFile()
 			self.quit = true
 		elseif reason == "continue" or reason == nil then
+			if reason ~= nil then
+				-- You are in game session
+				-- Fetch stats about player
+				self.playerLives = self.run.player.numLives
+				self.playerCoins = self.run.player.coins
+			end
+			
 			-- Continue campaign
 			self:nextContent()
 		end
