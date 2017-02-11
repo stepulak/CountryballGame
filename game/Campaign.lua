@@ -99,7 +99,13 @@ function Campaign:freshStart()
 	self.activeContent = 1
 	self.playerLives = PlayerStdLives
 	self.playerCoins = 0
-	self:setupActiveContent()
+	
+	if self.content[self.activeContent] ~= nil then
+		self:setupActiveContent()
+	else
+		print("No campaign content to run!")
+		self.quit = true
+	end
 end
 
 function Campaign:getSaveFileName()

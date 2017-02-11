@@ -390,6 +390,9 @@ function Editor:changeBackgroundTexture(words)
 	print("Background texture may have been set")
 end
 
+-- "static" variable
+local LastWorldSavefile = "quicksave.lua"
+
 function Editor:loadWorldFrom(filename)
 	if filename == nil then
 		print("Missing filename")
@@ -401,6 +404,7 @@ function Editor:loadWorldFrom(filename)
 	
 	if self.world:loadFromSaveDir(filename) then
 		print("World has been loaded")
+		LastWorldSavefile = filename
 	else
 		print("World hasn't been loaded")
 	end
@@ -413,7 +417,7 @@ function Editor:saveWorldInto(filename)
 	end
 	
 	self.world:saveInto(filename)
-	self.lastSavePath = filename
+	LastWorldSavefile = filename
 	
 	print("World may have been saved")
 end
@@ -481,18 +485,12 @@ function Editor:parseCommandFromConsole(cmd)
 	end
 end
 
-local EditorDefaultWorldPath = "quicksave.lua"
-
 function Editor:quickSave()
-	self:saveWorldInto(self.lastSavePath and self.lastSavePath or EditorDefaultWorldPath)
-	
-	if self.lastSavePath == nil then
-		self.lastSavePath = EditorDefaultWorldPath
-	end
+	self:saveWorldInto(LastWorldSavefile)
 end
 
 function Editor:quickLoad()
-	self:loadWorldFrom(self.lastSavePath or EditorDefaultWorldPath)
+	self:loadWorldFrom(LastWorldSavefile)
 end
 
 function Editor:shouldSelectNewPick()

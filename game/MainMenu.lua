@@ -3,6 +3,7 @@ require "Game"
 require "Credits"
 require "Release"
 require "AnimationScene"
+require "Campaign"
 require "assets/maps/_MainMenuMap"
 require "assets/campaigns/_MainCampaign"
 
@@ -95,8 +96,46 @@ function MainMenu:newGame(editorInitMode, args)
 end
 
 function MainMenu:insertCampaignMenuButton(menuTree)
+	local campaign = Campaign:new(
+		self.screen,
+		self.textureContainer,
+		self.soundContainer,
+		self.headerContainer,
+		self.sinCosTable,
+		self.fonts)
+	
+	_MainCampaign(campaign)
+	
+	local campaignOpts = {}
+	
+	if campaign:canContinue() then
+		campaignOpts[1] = {
+			label = "Continue",
+			
+			action = function()
+				self:setRun(campaign)
+				campaign:continue()
+			end
+		}
+	end
+	
+	campaignOpts[#campaignOpts + 1] = {
+		label = "New campaign",
+		
+		action = function()
+			self:setRun(campaign)
+			campaign:freshStart()
+		end,
+	}
+	
+	-- Back button
+	campaignOpts[#campaignOpts + 1] = {
+		label = "~back"
+	}
+	
 	menuTree[#menuTree + 1] = {
 		label = "Campaign",
+		nextNode = campaignOpts,
 	}
 end
 
@@ -284,13 +323,13 @@ end
 
 function MainMenu:update(deltaTime)
 	if self.run ~= nil then
-		self.run:update(deltaTime)
-		
 		if self.run:shouldQuit() then
 			self.run = nil
 			self.soundContainer:stopAll()
 			-- Play the background music of the main menu's world again
 			self.world:playBackgroundMusic()
+		else
+			self.run:update(deltaTime)
 		end
 	else
 		self.gui:update(deltaTime)

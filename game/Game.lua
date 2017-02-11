@@ -225,7 +225,11 @@ function Game:handleTodo()
 			self:prepareToQuit("cannot_continue")
 		end
 	elseif todo == "player_finished" then
-		self:prepareToQuit("continue")
+		if self.editorInitMode then
+			self:totalReset()
+		else
+			self:prepareToQuit("continue")
+		end
 	elseif todo == "player_just_died" then
 		self:totalReset()
 	end

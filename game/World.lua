@@ -1098,6 +1098,8 @@ function World:findSolidGround(unit, deltaTime, distError)
 	local obliqueTileFound = false
 	
 	for x = leftTileX, rightTileX do
+		self:revealSecretTilesInArea(x, tileY)
+		
 		if self:isInsideGrid(x, tileY) then
 			if isTileCollidable(self.tiles[x][tileY]) then
 				-- We have might have solid ground beneath us, just
