@@ -45,8 +45,8 @@ function Bomberman:instantDeath(particleSystem, soundContainer)
 	self.width = self.width * ProportionsInc
 	self.height = self.height * ProportionsInc
 	
-	-- Make sound effect
-	soundContainer:playEffect("explosion")
+	-- Make 3D sound effect
+	soundContainer:playEffect("explosion", false, self.x, self.y)
 end
 
 function Bomberman:fallDown(particleSystem, soundContainer)

@@ -45,7 +45,7 @@ function Turtle:hurt(type, particleSystem, soundContainer)
 			self.isMad = not self.isMad
 		end
 		
-		soundContainer:playEffect("turtle_touch")
+		soundContainer:playEffect("turtle_touch", false, self.x, self.y)
 		return -- Collision handled
 	end
 	
@@ -54,11 +54,11 @@ function Turtle:hurt(type, particleSystem, soundContainer)
 		if type == "touch_left" then
 			self.isMad = true
 			self.isFacingLeft = false
-			soundContainer:playEffect("turtle_touch")
+			soundContainer:playEffect("turtle_touch", false, self.x, self.y)
 		elseif type == "touch_right" then
 			self.isMad = true
 			self.isFacingLeft = true
-			soundContainer:playEffect("turtle_touch")
+			soundContainer:playEffect("turtle_touch", false, self.x, self.y)
 		end
 		
 		return -- Collision handled
@@ -79,7 +79,7 @@ function Turtle:handleSpecialHorizontalCollision(unit, particleSystem,
 	elseif self.isCovered then
 		self.isFacingLeft = unit.x > self.x
 		self.isMad = true
-		soundContainer:playEffect("turtle_touch")
+		soundContainer:playEffect("turtle_touch", false, self.x, self.y)
 		return true
 	end
 end
@@ -108,7 +108,7 @@ function Turtle:update(deltaTime, gravityAcc, particleSystem,
 	else
 		-- Collided with block, make sound effect
 		if self.collidedHorizontally and self.isMad then
-			soundContainer:playEffect("turtle_bump")
+			soundContainer:playEffect("turtle_bump", false, self.x, self.y)
 		end
 		
 		self:reverseDirectionAccordingToCollision()

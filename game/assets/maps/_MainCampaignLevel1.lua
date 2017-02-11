@@ -4,7 +4,6 @@ function _MainCampaignLevel1(world)
 -- Automatically generated world load file
 -- Can be edited manually
 
-local world = ...
 world:createEmptyWorld(60, 20)
 
 -- Grid begin

@@ -727,7 +727,7 @@ function World:createCoinEffect(x, y)
 	self.bParticleSystem:addCoinEffect(anim:getActiveTexture(), realX, realY,
 		self.tileWidth, self.tileHeight, CointParticleUpdate, anim)
 		
-	self.soundContainer:playEffect("coin_pick")
+	self.soundContainer:playEffect("coin_pick", false, realX, realY)
 end
 
 -- @x, @y = tile's coordinates
@@ -800,7 +800,8 @@ function World:resolveBounceBoostGenerator(x, y)
 	self:swapCollidableTileAfterGeneration(x, y)
 	
 	-- Make sound
-	self.soundContainer:playEffect("boost_spawn")
+	self.soundContainer:playEffect("boost_spawn", false,
+		x * self.tileWidth, y * self.tileHeight)
 end
 
 -- @x, y = world's real coordination of tile's top-left position
@@ -827,8 +828,11 @@ function World:bounceTile(x, y)
 	
 	-- Lets assume that this tile is valid and bouncable
 	if tile and tile.isBouncing == false then
+		local rX = x * self.tileWidth
+		local rY = y * self.tileHeight
+		
 		-- Play boucing effect
-		self.soundContainer:playEffect("block_bounce")
+		self.soundContainer:playEffect("block_bounce", false, rX, rY)
 		
 		-- Let's find out if this tile can generate coin(s)
 		if isTileSingleCoinGenerator(tile) then
@@ -857,23 +861,26 @@ function World:breakTile(x, y)
 	local particleQ = 2
 	local tile = self.tiles[x][y]
 	
+	local firstX = x * self.tileWidth
+	local firstY = y * self.tileHeight
+	
 	-- First particle
 	self.fParticleSystem:addBrokenWallEffect(
 		tile.collidableTile.animation:getActiveTexture(), 
-		x * self.tileWidth, y * self.tileHeight, 
+		firstX, firstY, 
 		self.tileWidth/particleQ, self.tileHeight/particleQ, true)
 	
 	-- Second particle
 	self.fParticleSystem:addBrokenWallEffect(
 		tile.collidableTile.animation:getActiveTexture(), 
-		(x+1) * self.tileWidth, y * self.tileHeight, 
+		firstX + self.tileWidth, firstY,
 		self.tileWidth/particleQ, self.tileHeight/particleQ, false)
 	
 	-- Delete the tile from the grid
 	self:deleteCollidableTile(x, y)
 	
 	-- Make sound effect
-	self.soundContainer:playEffect("block_break")
+	self.soundContainer:playEffect("block_break", false, firstX, firstY)
 end
 
 -- Reveal all tiles marked as secret in connected tile-area
@@ -999,7 +1006,8 @@ function World:handleUnitCollisionUp(unit, deltaTime, distError)
 					self:bounceTile(x, tileYAfter)
 				else
 					-- Unable to bounce
-					self.soundContainer:playEffect("block_unable")
+					self.soundContainer:playEffect("block_unable",
+						false, unit.x, unit.y)
 				end
 				
 				-- Update distance from the tile
@@ -1299,10 +1307,8 @@ function World:handleUnitWaterCollision(unit)
 	end
 	
 	if waterPresent ~= unit.insideWater then
-		if waterPresent and unit.isFalling and
-			unit:isInsideCamera(self.camera) then
-			
-			self.soundContainer:playEffect("splash")
+		if waterPresent and unit.isFalling then
+			self.soundContainer:playEffect("splash", false, unit.x, unit.y)
 		end
 		
 		unit.insideWater = waterPresent
@@ -1758,6 +1764,8 @@ function World:playBackgroundMusicIfPossible()
 end
 
 function World:update(deltaTime)
+	self.soundContainer:update3DSound(self.camera)
+	
 	if self.player ~= nil and self.player.dead == false then
 		self.camera:centerAt(self.player.x, self.player.y)
 		self:checkPlayerFinishLine()

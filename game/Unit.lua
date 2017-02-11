@@ -154,9 +154,9 @@ function Unit:playStdHurtEffect(type, soundContainer)
 	if type == "deadly" or 
 		string.find(type, "projectile") or
 		string.find(type, "touch") then
-		soundContainer:playEffect("unit_death")
+		soundContainer:playEffect("unit_death", false, self.x, self.y)
 	elseif type == "step_on" then
-		soundContainer:playEffect("smash")
+		soundContainer:playEffect("smash", false, self.x, self.y)
 	end
 end
 
@@ -171,7 +171,7 @@ function Unit:freeze(particleSystem, soundContainer, freezedUnitTexture)
 	particleSystem:addFrozenUnitEffect(freezedUnitTexture,
 		self.x, self.y, self.width, self.height, self.freezeTimer)
 		
-	soundContainer:playEffect("freeze")
+	soundContainer:playEffect("freeze", false, self.x, self.y)
 end
 
 function Unit:isFreezed()

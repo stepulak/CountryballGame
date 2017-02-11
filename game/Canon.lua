@@ -55,8 +55,8 @@ function Canon:spawnNewCanonBall(soundContainer)
 	else
 		self.shouldSpawnNewCanonBall = false
 		
-		-- Create sound effect
-		soundContainer:playEffect("canon_shot")
+		-- Create 3D sound effect
+		soundContainer:playEffect("canon_shot", false, self.realX, self.realY)
 		
 		if self.dirLeft then
 			return self.realX - self.realWidth/2 + self.tileWidth, self.realY

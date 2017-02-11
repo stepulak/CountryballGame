@@ -30,7 +30,8 @@ function CanonBall:instantDeath(particleSystem, soundContainer)
 	particleSystem:addUnitSmashFallEffect(self.movementAnim:firstTexture(),
 		x + width/2, self.y, width, self.height, self.isFacingLeft)
 	
-	soundContainer:playEffect("canonball_smash")
+	-- 3D effect
+	soundContainer:playEffect("canonball_smash", false, self.x, self.y)
 	
 	self.dead = true
 end

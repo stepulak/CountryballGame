@@ -1,17 +1,20 @@
 require "class"
 require "Utils"
+require "LinkedList"
 
 SoundContainer = class:new()
 
 function SoundContainer:init()
 	self.effects = {}
+	self.effects3D = LinkedList:new()
 	self.music = {}
 	self.musicOn = nil
 	
 	self.muted = false
 	
-	self.effectVolume = 0.7
-	self.musicVolume = 0.4
+	self.effectVolume = 1
+	self.minEffectVolume = 0
+	self.musicVolume = 0.6
 	self.masterVolume = nil
 end
 
@@ -42,17 +45,29 @@ function SoundContainer:loadMusic(name, path)
 	self:newMusic(name, love.audio.newSource(path))
 end
 
-function SoundContainer:playEffect(name, loop)
+-- If the @x and @y are not nil, then play an effect with volatile
+-- volume - that means the effect's volume is increased/decreased
+-- according to given position compared to the real camera position
+function SoundContainer:playEffect(name, loop, x, y)
 	if self.effects[name] ~= nil then
-		if self.effects[name]:isPlaying() then
-			self.effects[name]:stop()
+		local effect = self.effects[name]
+		
+		if effect:isPlaying() then
+			effect:stop()
 		end
 		
-		self.effects[name]:play()
-		self.effects[name]:setVolume(self.effectVolume)
+		effect:play()
 		
 		if loop == true then
-			self.effects[name]:setLooping()
+			effect:setLooping()
+		end
+		
+		if x ~= nil and y ~= nil then
+			self.effects3D:pushBack({effect = effect, x = x, y = y})
+			effect:setVolume(0)
+		else
+			-- Standart global volume
+			effect:setVolume(self.effectVolume)
 		end
 	end
 end
@@ -70,6 +85,40 @@ function SoundContainer:playMusic(name, loop)
 		
 		if loop == true then
 			self.musicOn:setLooping(loop)
+		end
+	end
+end
+
+function SoundContainer:update3DSound(camera)
+	local maxHearDist = camera.virtualWidth * 1.5
+	local it = self.effects3D.head
+	
+	while it ~= nil do
+		local e = it.data
+		
+		if e.effect:isPlaying() then
+			local dX = e.x - (camera.x + camera.virtualWidth/2)
+			local dY = e.y - (camera.y + camera.virtualHeight/2)
+			local dist = math.sqrt(dX*dX + dY*dY)
+			
+			if dist >= maxHearDist then
+				e.effect:setVolume(0)
+			else
+				local volume = self.effectVolume * (1 - dist/maxHearDist)
+				
+				if volume > self.minEffectVolume then
+					e.effect:setVolume(self.effectVolume * (1 - dist/maxHearDist))
+				else
+					e.effect:setVolume(0)
+				end
+			end
+			
+			it = it.next
+		else
+			-- Delete and skip
+			local it2 = it.next
+			self.effects3D:deleteNode(it)
+			it = it2
 		end
 	end
 end

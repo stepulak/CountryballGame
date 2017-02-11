@@ -32,7 +32,8 @@ function BouncingZombie:smash(particleSystem, soundContainer)
 		self.x, self.y - self.height/2 + height, self.width, height,
 		self.isFacingLeft)
 	
-	soundContainer:playEffect("smash")
+	-- 3D sound effect
+	soundContainer:playEffect("smash", false, self.x, self.y)
 	
 	self.dead = true
 end

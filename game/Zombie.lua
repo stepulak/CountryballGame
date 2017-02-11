@@ -33,9 +33,9 @@ function Zombie:smash(particleSystem, soundContainer)
 	
 	-- Smash effect (smash2 is a joke)
 	if math.random() < 0.7 then
-		soundContainer:playEffect("smash")
+		soundContainer:playEffect("smash", false, self.x, self.y)
 	else
-		soundContainer:playEffect("smash2")
+		soundContainer:playEffect("smash2", false, self.x, self.y)
 	end
 	
 	self.dead = true
