@@ -32,8 +32,6 @@ function MainMenu:init(screen, textureContainer, soundContainer,
 	self.run = nil -- runnable
 	self.quit = false
 	
-	self.gui = GuiContainer:new()
-	
 	self:createBackgroundWorld()
 	self:setupMenu()
 	
@@ -67,6 +65,8 @@ function MainMenu:createBackgroundWorld()
 end
 
 function MainMenu:setupMenu()
+	self.gui = GuiContainer:new()
+	
 	local menuTree = {}
 	
 	self:insertCampaignMenuButton(menuTree)
@@ -328,6 +328,7 @@ function MainMenu:update(deltaTime)
 			self.soundContainer:stopAll()
 			-- Play the background music of the main menu's world again
 			self.world:playBackgroundMusic()
+			self:setupMenu()
 		else
 			self.run:update(deltaTime)
 		end

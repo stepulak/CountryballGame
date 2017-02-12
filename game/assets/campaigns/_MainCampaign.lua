@@ -6,5 +6,6 @@ function _MainCampaign(campaign)
 	campaign:loadSaveFile("_MainCampaign")
 	campaign:addScene(_MainCampaignLevel1Intro, "intro")
 	campaign:addLevel(_MainCampaignLevel1)
+	campaign:addLevel(_MainCampaignLevel1)
 	campaign:addScene(_MainCampaignLevel1Outro, "outro")
 end

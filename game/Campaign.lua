@@ -19,13 +19,22 @@ function Campaign:init(screen, textureContainer, soundContainer,
 	
 	self.name = nil
 	self.content = {}
+	self.activeContent = nil
 	self.run = nil -- Active runnable content
 	
+	self.player = nil -- It's nil till some world is created
+	
 	self.saveFileLoaded = false
-	-- Save file info
-	self.activeContent = nil
+	
+	-- Player's save file info
+	-- It's necessary to have these variables instead of accessing
+	-- directly to player's data - because the player itself doesn't
+	-- exist till some world is created...
+	-- HINT: Make sure it's consistent to real player's data
 	self.playerLives = nil
 	self.playerCoins = nil
+	self.playerHelmet = nil
+	self.playerFlower = nil
 end
 
 function Campaign:addLevel(worldLoadFunc)
@@ -48,6 +57,14 @@ function Campaign:addScene(sceneLoadFunc, sceneType)
 	return self
 end
 
+function Campaign:areSaveDataDamaged()
+	return self.activeContent == nil or
+			self.playerLives == nil or
+			self.playerCoins == nil or
+			self.playerHelmet == nil
+			-- or self.playerFlower
+end
+
 function Campaign:loadSaveFile(name)
 	self.name = name
 	self.saveFileLoaded = self:saveFileExists()
@@ -58,11 +75,10 @@ function Campaign:loadSaveFile(name)
 		self.activeContent = res.activeContent
 		self.playerLives = res.playerLives
 		self.playerCoins = res.playerCoins
+		self.playerHelmet = res.playerHelmet
+		self.playerFlower = res.playerFlower
 		
-		if self.activeContent == nil or
-			self.playerLives == nil or
-			self.playerCoins == nil then
-			
+		if self:areSaveDataDamaged() then
 			self.saveFileLoaded = false
 			print("Damaged savefile.")
 		end
@@ -86,9 +102,9 @@ function Campaign:continue()
 				self.activeContent = self.activeContent - 1
 			end
 			
-			self.run = self.content[self.activeContent]
+			self:setupActiveContent()
 		else
-			print("Campaign unexpected error, level missing")
+			print("Unexpected error, level missing")
 			return
 		end
 	end
@@ -96,6 +112,8 @@ end
 
 -- Reset save file (if it exists) and play the campaign from the start.
 function Campaign:freshStart()
+	self:removeSaveFile()
+	
 	self.activeContent = 1
 	self.playerLives = PlayerStdLives
 	self.playerCoins = 0
@@ -121,26 +139,68 @@ function Campaign:removeSaveFile()
 end
 
 function Campaign:saveCampaignState()
+	if self.player == nil then
+		-- No data to save cause no world has been created yet
+		return
+	end
+	
 	-- Remove old content if any
 	self:removeSaveFile()
+	
 	local f = love.filesystem.newFile(self:getSaveFileName())
-	checkWriteLn(f, "local res = ...")
-	checkWriteLn(f, "res.activeContent = " .. self.activeContent)
-	checkWriteLn(f, "res.playerLives = " .. self.playerLives)
-	checkWriteLn(f, "res.playerCoins = " .. self.playerCoins)
+	
+	if f:open("w") then
+		checkWriteLn(f, "local res = ...")
+		checkWriteLn(f, "res.activeContent = " .. self.activeContent)
+		checkWriteLn(f, "res.playerLives = " .. self.player.numLives)
+		checkWriteLn(f, "res.playerCoins = " .. self.player.coins)
+		checkWriteLn(f, "res.playerHelmet = " .. 
+			tostring(self.player.helmetEnabled))
+			
+		if self.player.flowerType ~= nil then
+			checkWriteLn(f, "res.playerFlower = \"" .. 
+				self.player.flowerType .. "\"")
+		end
+		
+		f:close()
+	else
+		print("Unable to create savefile")
+	end
+end
+
+function Campaign:fillPlayerWithSaveData()
+	self.player.numLives = self.playerLives
+	self.player.coins = self.playerCoins
+	self.player.helmetEnabled = self.playerHelmet
+	self.player.flowerType = self.playerFlower
 end
 
 function Campaign:setupActiveContent()
 	local c = self.content[self.activeContent]
 	
 	if c.type == "level" then
+		local opts = { worldLoadFunc = c.loadFunc }
+		
+		-- Use player from previous world
+		if self.player ~= nil then
+			opts.player = self.player
+		end
+		
 		self.run = Game:new(
 			self.screen,
 			self.textureContainer,
+			self.soundContainer,
 			self.headerContainer,
 			self.sinCosTable,
 			self.fonts,
-			false, { worldLoadFunc = c.loadFunc })
+			false, opts)
+		
+		-- Fresh start or "fresh" continue?
+		-- Make sure you've filled player with savedata
+		if self.player == nil then
+			self.player = self.run.player
+			self:fillPlayerWithSaveData()
+		end
 	elseif c.type == "scene" then
 		self.run = AnimationScene:new(
 			self.screen.virtualWidth,
@@ -148,8 +208,9 @@ function Campaign:setupActiveContent()
 			self.fonts.medium,
 			self.soundContainer,
 			self.sinCosTable)
-		
+			
 		c.loadFunc(self.run, self.textureContainer)
+		self.run:start()
 	end
 	
 	self:saveCampaignState()
@@ -165,6 +226,10 @@ function Campaign:nextContent()
 	else
 		self:setupActiveContent()
 	end
+end
+
+function Campaign:handleKeyPress(key)
+	self.run:handleKeyPress(key)
 end
 
 function Campaign:handleKeyRelease(key)
@@ -210,21 +275,14 @@ function Campaign:update(deltaTime)
 		local reason = self.run.quitReason
 		
 		if reason == "user_quit" then
-			-- Save game and quit to main menu
-			self:saveCampaignState()
+			-- Quit to main menu
+			-- self:saveCampaignState()
 			self.quit = true
 		elseif reason == "cannot_continue" then
 			-- Cannot continue playing campaign, gameover
 			self:removeSaveFile()
 			self.quit = true
 		elseif reason == "continue" or reason == nil then
-			if reason ~= nil then
-				-- You are in game session
-				-- Fetch stats about player
-				self.playerLives = self.run.player.numLives
-				self.playerCoins = self.run.player.coins
-			end
-			
 			-- Continue campaign
 			self:nextContent()
 		end
