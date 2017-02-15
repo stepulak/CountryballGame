@@ -33,7 +33,7 @@ function MainMenu:init(screen, textureContainer, soundContainer,
 	self.quit = false
 	
 	self:createBackgroundWorld()
-	self:setupMenu()
+	self:setupGuiMenu()
 	
 	--self.run = self:newGame(true, {worldLoadFunc = _MainMenuWorldLoad })
 	--[[local c = AnimationScene:new(screen.virtualWidth, screen.virtualHeight, 
@@ -64,7 +64,7 @@ function MainMenu:createBackgroundWorld()
 	self.world:postLoadHandle()
 end
 
-function MainMenu:setupMenu()
+function MainMenu:setupGuiMenu()
 	self.gui = GuiContainer:new()
 	
 	local menuTree = {}
@@ -328,7 +328,7 @@ function MainMenu:update(deltaTime)
 			self.soundContainer:stopAll()
 			-- Play the background music of the main menu's world again
 			self.world:playBackgroundMusic()
-			self:setupMenu()
+			self:setupGuiMenu()
 		else
 			self.run:update(deltaTime)
 		end

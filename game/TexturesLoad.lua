@@ -86,12 +86,6 @@ function loadTextures()
 	-- Snow
 	textureContainer:newAnimationWithOneTexture("snow", "assets/snow.png")
 	
-	textureContainer:newAnimationWithOneTexture("snow_oblique_left", 
-		"assets/snow_oblique_left.png")
-		
-	textureContainer:newAnimationWithOneTexture("snow_oblique_right", 
-		"assets/snow_oblique_right.png")
-	
 	textureContainer:newAnimationWithOneTexture("brick_snow", 
 		"assets/brick_snow.png")
 	
@@ -208,9 +202,6 @@ function loadTextures()
 		"assets/background3_spring_forest.png")
 	
 	-- Particles
-	textureContainer:newTexture("cloud", "assets/cloud.png")
-	textureContainer:newTexture("snow_flake", "assets/snowflake.png")
-	textureContainer:newTexture("rain_drop", "assets/raindrop.png")
 	textureContainer:newTexture("bubble", "assets/bubble.png")
 	textureContainer:newTexture("smoke", "assets/smoke.png")
 	
@@ -243,5 +234,40 @@ function loadTextures()
 	textureContainer:newTexture("button_idle", "assets/button_idle.png")
 	textureContainer:newTexture("button_click", "assets/button_click.png")
 	
+	--
+	-- NEW PACK
+	--
+	-- SNOW PACK
+	textureContainer:newAnimationWithOneTexture("snow", "assets/textures/snow.png")
+	textureContainer:newAnimationWithOneTexture("snow_top", "assets/textures/snow_top.png")
+	textureContainer:newAnimationWithOneTexture("snow_mid", "assets/textures/snow_mid.png")
+	textureContainer:newAnimationWithOneTexture("snow_bot", "assets/textures/snow_bot.png")
+	textureContainer:newAnimationWithOneTexture("snow_block", "assets/textures/snow_block.png")
+	textureContainer:newAnimationWithOneTexture("snow_brick", "assets/textures/snow_brick.png")
+	textureContainer:newAnimationWithOneTexture("snow_oblique_left", "assets/textures/snow_oblique_left.png")
+	textureContainer:newAnimationWithOneTexture("snow_oblique_right", "assets/textures/snow_oblique_right.png")
+	textureContainer:newAnimationWithOneTexture("icicle", "assets/textures/icicle.png")
+	
+	textureContainer:newAnimation("snow_surprise", 0.8,
+		"assets/textures/snow_surprise1.png",
+		"assets/textures/snow_surprise2.png",
+		"assets/textures/snow_surprise3.png",
+		"assets/textures/snow_surprise4.png",
+		"assets/textures/snow_surprise3.png",
+		"assets/textures/snow_surprise2.png")
+	
+	-- PARTICLES
+	textureContainer:newTexture("cloud1", "assets/textures/cloud1.png")
+	textureContainer:newTexture("cloud2", "assets/textures/cloud2.png")
+	textureContainer:newTexture("cloud3", "assets/textures/cloud3.png")
+	textureContainer:newTexture("snowflake", "assets/textures/snowflake.png")
+	textureContainer:newTexture("raindrop", "assets/textures/raindrop.png")
+	textureContainer:newAnimation("fire", 0.15,
+		"assets/textures/fire1.png",
+		"assets/textures/fire2.png",
+		"assets/textures/fire3.png",
+		"assets/textures/fire4.png",
+		"assets/textures/fire5.png")
+		
 	return textureContainer
 end

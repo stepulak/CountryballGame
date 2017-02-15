@@ -45,6 +45,10 @@ local properties = {
 	["torch"] = {
 		width = 1,
 		height = 3,
+	},
+	["fire"] = {
+		width = 1,
+		height = 1,
 	}
 }
 

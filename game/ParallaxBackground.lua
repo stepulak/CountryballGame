@@ -67,12 +67,13 @@ local function snowRainParticleUpdate(particle, camera, deltaTime, background)
 	end
 end
 
+-- @cloudTexs = array of possible cloud textures!
 function ParallaxBackground:init(soundContainer, 
-	cloudTex, snowFlakeTex, rainDropTex)
+	cloudTexs, snowFlakeTex, rainDropTex)
 	
 	self.soundContainer = soundContainer
 	
-	self.cloudTex = cloudTex
+	self.cloudTexs = cloudTexs
 	self.snowFlakeTex = snowFlakeTex
 	self.rainDropTex = rainDropTex
 	
@@ -218,7 +219,7 @@ function ParallaxBackground:updateClouds(background, deltaTime, camera)
 		local x = (camera.x - camera.virtualWidth/2) * background.cameraVel +
 			math.random() * camera.virtualWidth * 2.5
 		local y = camera.y + math.random() * camera.virtualHeight/3
-		local width = 50 + math.random() * camera.virtualWidth/10
+		local width = 70 + math.random() * camera.virtualWidth/10
 		local height = 35 + math.random() * camera.virtualHeight/10
 		
 		if background.bigClouds == true then
@@ -231,8 +232,11 @@ function ParallaxBackground:updateClouds(background, deltaTime, camera)
 		
 		x = fillXPositionIntoMap(x, width, camera)
 		
-		background.particleSystem:addCloudParticle(self.cloudTex, 
-			x, y, width, height, math.random() < 0.5, cloudParticleUpdate)
+		background.particleSystem:addCloudParticle(
+			self.cloudTexs[math.random(1, #self.cloudTexs)], 
+			x, y, width, height,
+			math.random() < 0.5,
+			cloudParticleUpdate)
 			
 		background.numClouds = background.numClouds + 1
 	end

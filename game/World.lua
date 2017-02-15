@@ -404,9 +404,13 @@ end
 function World:createParallaxBackground()
 	self.parallaxBackground = ParallaxBackground:new(
 		self.soundContainer,
-		self.textureContainer:getTexture("cloud"),
-		self.textureContainer:getTexture("snow_flake"),
-		self.textureContainer:getTexture("rain_drop"))
+		{ 
+			self.textureContainer:getTexture("cloud1"),
+			self.textureContainer:getTexture("cloud2"),
+			self.textureContainer:getTexture("cloud3"),
+		},
+		self.textureContainer:getTexture("snowflake"),
+		self.textureContainer:getTexture("raindrop"))
 end
 
 -- Set new tile into specific position

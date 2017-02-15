@@ -17,7 +17,7 @@ function Campaign:init(screen, textureContainer, soundContainer,
 	
 	self.quit = false
 	
-	self.name = nil
+	self.name = nil -- Campaign name
 	self.content = {}
 	self.activeContent = nil
 	self.run = nil -- Active runnable content
@@ -59,10 +59,10 @@ end
 
 function Campaign:areSaveDataDamaged()
 	return self.activeContent == nil or
-			self.playerLives == nil or
-			self.playerCoins == nil or
-			self.playerHelmet == nil
-			-- or self.playerFlower
+		self.playerLives == nil or
+		self.playerCoins == nil or
+		self.playerHelmet == nil
+		-- or self.playerFlower
 end
 
 function Campaign:loadSaveFile(name)
@@ -71,6 +71,7 @@ function Campaign:loadSaveFile(name)
 	
 	if self.saveFileLoaded then
 		local res = {}
+		-- Retrieve data
 		love.filesystem.load(self:getSaveFileName())(res)
 		self.activeContent = res.activeContent
 		self.playerLives = res.playerLives
@@ -95,7 +96,7 @@ function Campaign:continue()
 	if self:canContinue() then
 		if self.content[self.activeContent] ~= nil then
 			-- Is there any "intro" scene for the current level?
-			-- Then play it before you start the wanted level
+			-- Then play it before you start the wanted level!
 			local prev = self.content[self.activeContent - 1]
 			
 			if prev ~= nil and prev.sceneType == "intro" then

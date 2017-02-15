@@ -88,14 +88,6 @@ local properties = {
 		animationName = "snow",
 		isSecret = true,
 	},
-	["snow_oblique_left"] = {
-		isOblique = true,
-		isObliqueLeftSide = true,
-	},
-	["snow_oblique_right"] = {
-		isOblique = true,
-		isObliqueLeftSide = false,
-	},
 	
 	-- Wooden pack
 	["wood"] = {
@@ -131,7 +123,94 @@ local properties = {
 	},
 	["spikes"] = {
 		isDeadly = true,
-	}
+	},
+	
+	-- NEW PACK
+	-- Snow pack
+	["snow"] = {
+	},
+	["snow_top"] = {
+	},
+	["snow_mid"] = {
+	},
+	["snow_bot"] = {
+	},
+	["snow_block"] = {
+	},
+	["snow_brick"] = {
+		isBouncable = true,
+		isBreakable = true,
+	},
+	["snow_brick_coins"] = {
+		animationName = "snow_brick",
+		isBouncable = true,
+		generatorType = "coins",
+		staticBlockName = "snow_block",
+	},
+	["snow_brick_single_coin"] = {
+		animationName = "snow_brick",
+		isBouncable = true,
+		generatorType = "single_coin",
+		staticBlockName = "snow_block",
+	},
+	["snow_brick_mushroom_life"] = {
+		animationName = "snow_brick",
+		isBouncable = true,
+		generatorType = "boost_mushroom_life",
+		staticBlockName = "snow_block",
+	},
+	["snow_brick_mushroom_grow"] = {
+		animationName = "snow_brick",
+		isBouncable = true,
+		generatorType = "boost_mushroom_grow",
+		staticBlockName = "snow_block",
+	},
+	["snow_brick_star"] = {
+		animationName = "snow_brick",
+		isBouncable = true,
+		generatorType = "boost_star",
+		staticBlockName = "snow_block",
+	},
+	["snow_brick_fireflower"] = {
+		animationName = "snow_brick",
+		isBouncable = true,
+		generatorType = "boost_fireflower",
+		staticBlockName = "snow_block",
+	},
+	["snow_brick_iceflower"] = {
+		animationName = "snow_brick",
+		isBouncable = true,
+		generatorType = "boost_iceflower",
+		staticBlockName = "snow_block",
+	},
+	["icicle"] = {
+	},
+	["snow_surprise_fireflower"] = {
+		animationName = "snow_surprise",
+		isBouncable = true,
+		generatorType = "boost_fireflower",
+		staticBlockName = "snow_block",
+	},
+	["snow_brick_iceflower"] = {
+		animationName = "snow_surprise",
+		isBouncable = true,
+		generatorType = "boost_iceflower",
+		staticBlockName = "snow_block",
+	},
+	["snow_surprise_star"] = {
+		animationName = "snow_surprise",
+		isBouncable = true,
+		generatorType = "boost_star",
+		staticBlockName = "snow_block",
+	},
+	["snow_oblique_left"] = {
+		isOblique = true,
+		isObliqueLeftSide = true,
+	},
+	["snow_oblique_right"] = {
+		isOblique = true,
+		isObliqueLeftSide = false,
+	},
 }
 
 -- Create a new Tile header from name

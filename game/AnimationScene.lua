@@ -269,9 +269,9 @@ end
 
 function AnimationScene:handleKeyPress(key)
 	if key == "escape" then
-		self:endIntro()
+		--self:endIntro()
 	elseif key == "space" then
-		self:skipActiveSlide()
+		--self:skipActiveSlide()
 	end
 end
 
