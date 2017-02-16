@@ -15,56 +15,6 @@
 -- about how to setup a property.
 
 local properties = {
-	-- "Day" pack
-	["static_block_bright"] = {
-	},
-	["brick_bright"] = {
-		isBouncable = true,
-		isBreakable = true,
-	},
-	["brick_bright_single_coin"] = {
-		animationName = "brick_bright",
-		isBouncable = true,
-		generatorType = "single_coin",
-		staticBlockName = "static_block_bright",
-	},
-	["brick_bright_coins"] = {
-		animationName = "brick_bright",
-		isBouncable = true,
-		generatorType = "coins",
-		staticBlockName = "static_block_bright",
-	},
-	["brick_bright_mushroom_life"] = {
-		animationName = "brick_bright",
-		isBouncable = true,
-		generatorType = "boost_mushroom_life",
-		staticBlockName = "static_block_bright"
-	},
-	["brick_bright_mushroom_grow"] = {
-		animationName = "brick_bright",
-		isBouncable = true,
-		generatorType = "boost_mushroom_grow",
-		staticBlockName = "static_block_bright"
-	},
-	["brick_bright_star"] = {
-		animationName = "brick_bright",
-		isBouncable = true,
-		generatorType = "boost_star",
-		staticBlockName = "static_block_bright"
-	},
-	["brick_bright_fireflower"] = {
-		animationName = "brick_bright",
-		isBouncable = true,
-		generatorType = "boost_fireflower",
-		staticBlockName = "static_block_bright"
-	},
-	["brick_bright_iceflower"] = {
-		animationName = "brick_bright",
-		isBouncable = true,
-		generatorType = "boost_iceflower",
-		staticBlockName = "static_block_bright"
-	},
-	
 	-- "Night" pack
 	["static_block_dark"] = {
 	},
@@ -85,7 +35,7 @@ local properties = {
 	["snow"] = {
 	},
 	["snow_secret"] = {
-		animationName = "snow",
+		animationName = "block",
 		isSecret = true,
 	},
 	
@@ -106,14 +56,6 @@ local properties = {
 	["wooden_background"] = {
 	},
 	
-	-- Water
-	["water_top"] = {
-		isWater = true,
-	},
-	["water_inside"] = {
-		isWater = true,
-	},
-	
 	-- Deadly
 	["lava_top"] = {
 		isDeadly = true,
@@ -125,7 +67,24 @@ local properties = {
 		isDeadly = true,
 	},
 	
+	--
 	-- NEW PACK
+	--
+	
+	-- Day pack
+	["block"] = {
+	},
+	["dirt"] = {
+	},
+	["dirt_top"] = {
+	},
+	["dirt_bot"] = {
+	},
+	["brick_bright"] = {
+		isBouncable = true,
+		isBreakable = true,
+	},
+	
 	-- Snow pack
 	["snow"] = {
 	},
@@ -193,6 +152,7 @@ local properties = {
 		isOblique = true,
 		isObliqueLeftSide = false,
 	},
+	
 	-- Snow surprise
 	["snow_surprise_coin"] = {
 		animationName = "surprise",
@@ -229,6 +189,14 @@ local properties = {
 		isBouncable = true,
 		generatorType = "boost_star",
 		staticBlockName = "snow_block",
+	},
+	
+	-- Water
+	["water_top"] = {
+		isWater = true,
+	},
+	["water_inside"] = {
+		isWater = true,
 	},
 }
 

@@ -89,13 +89,6 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("wooden_background",
 		"assets/wooden_background.png")
 		
-	-- Day
-	textureContainer:newAnimationWithOneTexture("brick_bright",
-		"assets/brick_bright.png")
-	
-	textureContainer:newAnimationWithOneTexture("static_block_bright",
-		"assets/static_block_bright.png")
-		
 	-- Night
 	textureContainer:newAnimationWithOneTexture("brick_dark",
 		"assets/brick_dark.png")
@@ -103,21 +96,12 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("static_block_dark",
 		"assets/static_block_dark.png")
 	
-	-- Water
-	textureContainer:newAnimationWithOneTexture("water_inside",
-		"assets/water_inside.png")
-	
-	textureContainer:newAnimation("water_top", 0.3,
-		"assets/water_top1.png", "assets/water_top2.png")
-	
 	-- Deadly
 	textureContainer:newAnimationWithOneTexture("lava_inside",
 		"assets/lava_inside.png")
 	
 	textureContainer:newAnimation("lava_top", 0.3,
 		"assets/lava_top1.png", "assets/lava_top2.png")
-		
-	textureContainer:newAnimationWithOneTexture("spikes", "assets/spikes.png")
 	
 	-- Animation objects
 	textureContainer:newAnimation("grass_1_1", 0.3,
@@ -216,6 +200,7 @@ function loadTextures()
 	--
 	-- NEW PACK
 	--
+	
 	-- SNOW PACK
 	textureContainer:newAnimationWithOneTexture("snow", "assets/textures/snow.png")
 	textureContainer:newAnimationWithOneTexture("snow_top", "assets/textures/snow_top.png")
@@ -233,9 +218,22 @@ function loadTextures()
 		"assets/textures/surprise3.png",
 		"assets/textures/surprise4.png")
 	
+	-- DAY PACK
+	textureContainer:newAnimationWithOneTexture("brick", "assets/textures/brick.png")
+	textureContainer:newAnimationWithOneTexture("block", "assets/textures/block.png")
+	
+	-- WATER
+	
+	textureContainer:newAnimationWithOneTexture("water_inside", "assets/textures/water_inside.png")
+	
+	textureContainer:newAnimation("water_top", 0.3,
+		"assets/textures/water_top1.png", 
+		"assets/textures/water_top2.png")
+		
 	-- PLAYER
 	textureContainer:newAnimationWithOneTexture("player_idle", "assets/textures/polandball_idle.png")
 	textureContainer:newAnimationWithOneTexture("player_attacking", "assets/textures/polandball_attacking.png")
+	textureContainer:newAnimationWithOneTexture("player_jumping", "assets/textures/polandball_jumping.png")
 	
 	textureContainer:newAnimation("player_walking", 0.15,
 		"assets/textures/polandball_walking1.png", 
@@ -244,14 +242,15 @@ function loadTextures()
 		"assets/textures/polandball_walking4.png",
 		"assets/textures/polandball_walking5.png")
 	
-	textureContainer:newAnimationWithOneTexture("player_jumping", "assets/textures/polandball_jumping.png")
-	
 	textureContainer:newAnimation("player_swimming", 0.25,
 		"assets/textures/polandball_swimming1.png", 
 		"assets/textures/polandball_swimming2.png")
 		
 	textureContainer:newTexture("player_dead", "assets/textures/polandball_dead.png")
 	textureContainer:newTexture("players_helmet", "assets/helmet.png")
+	
+	-- DEADLY TILES
+	textureContainer:newAnimationWithOneTexture("spikes", "assets/textures/spikes.png")
 	
 	-- PARTICLES
 	textureContainer:newTexture("cloud1", "assets/textures/cloud1.png")
