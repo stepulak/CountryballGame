@@ -1098,13 +1098,24 @@ function World:handleUnitCollisionDown(unit, deltaTime, distError)
 	unit:moveSpecific(0, dist)
 end
 
+function World:checkForDeadlyTiles(xFrom, xTo, y)
+	for x = xFrom, xTo do
+		if self:isInsideGrid(x, y) and isTileDeadly(self.tiles[x][y]) then
+			return true
+		end
+	end
+	
+	return false
+end
+
 -- Check, if beneath given unit is solid ground
 -- If there is not, let the unit start falling
 function World:findSolidGround(unit, deltaTime, distError)
 	local leftX, leftTileX = unit:getLeftBoundary(self.tileWidth)
 	local rightX, rightTileX = unit:getRightBoundary(self.tileWidth, 0.1)
-	
 	local tileY = math.floor((unit.y + unit.height/2) / self.tileHeight)
+	
+	local deadlyTiles = self:checkForDeadlyTiles(leftTileX, rightTileX, tileY)
 	
 	local solidGround = false
 	local obliqueTileFound = false
@@ -1113,10 +1124,12 @@ function World:findSolidGround(unit, deltaTime, distError)
 		self:revealSecretTilesInArea(x, tileY)
 		
 		if self:isInsideGrid(x, tileY) then
-			if isTileCollidable(self.tiles[x][tileY]) then
+			local tile = self.tiles[x][tileY]
+			
+			if isTileCollidable(tile) and isTileDeadly(tile) == false then
 				-- We have might have solid ground beneath us, just
 				-- check if is not oblique.
-				if isTileOblique(self.tiles[x][tileY]) ~= 0 then
+				if isTileOblique(tile) ~= 0 then
 					obliqueTileFound = true
 					
 					if self:countDistanceFromObliqueTile(unit.x, unit.y, 
@@ -1128,10 +1141,10 @@ function World:findSolidGround(unit, deltaTime, distError)
 					solidGround = true
 					break
 				end
-			elseif hasTileActiveObject(self.tiles[x][tileY]) then
+			elseif hasTileActiveObject(tile) then
 				-- Unit collision is implemented, 
 				-- better to leave the handling to it
-				if self.tiles[x][tileY].activeObj.handleUnitCollision then
+				if tile.activeObj.handleUnitCollision then
 					solidGround = true
 					break
 				end
@@ -1140,6 +1153,11 @@ function World:findSolidGround(unit, deltaTime, distError)
 	end
 	
 	if solidGround == false then
+		if deadlyTiles then
+			unit:hurt("deadly", self.fParticleSystem, self.soundContainer)
+			return -- Dead
+		end
+		
 		unit:startFalling()
 		-- You want to "keep the unit on the ground" 
 		-- if the unit is walking on the oblique tile.
@@ -1904,6 +1922,8 @@ function World:drawSpecificTile(posX, posY, keyName, verticalOffset)
 end
 
 function World:drawBackgroundTiles(startX, startY, endX, endY)
+	love.graphics.setColor(150, 150, 150)
+	
 	for y = startY, endY do
 		for x = startX, endX do
 			if isBackgroundOnTile(self.tiles[x][y]) then
@@ -1911,6 +1931,8 @@ function World:drawBackgroundTiles(startX, startY, endX, endY)
 			end
 		end
 	end
+	
+	love.graphics.setColor(255, 255, 255)
 end
 
 -- Draw all visible collidable tiles
