@@ -185,24 +185,6 @@ local properties = {
 	},
 	["icicle"] = {
 	},
-	["snow_surprise_fireflower"] = {
-		animationName = "snow_surprise",
-		isBouncable = true,
-		generatorType = "boost_fireflower",
-		staticBlockName = "snow_block",
-	},
-	["snow_brick_iceflower"] = {
-		animationName = "snow_surprise",
-		isBouncable = true,
-		generatorType = "boost_iceflower",
-		staticBlockName = "snow_block",
-	},
-	["snow_surprise_star"] = {
-		animationName = "snow_surprise",
-		isBouncable = true,
-		generatorType = "boost_star",
-		staticBlockName = "snow_block",
-	},
 	["snow_oblique_left"] = {
 		isOblique = true,
 		isObliqueLeftSide = true,
@@ -210,6 +192,43 @@ local properties = {
 	["snow_oblique_right"] = {
 		isOblique = true,
 		isObliqueLeftSide = false,
+	},
+	-- Snow surprise
+	["snow_surprise_coin"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "single_coin",
+		staticBlockName = "snow_block",
+	},
+	["snow_surprise_mushroom_grow"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_mushroom_grow",
+		staticBlockName = "snow_block",
+	},
+	["snow_surprise_mushroom_life"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_mushroom_life",
+		staticBlockName = "snow_block",
+	},
+	["snow_surprise_fireflower"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_fireflower",
+		staticBlockName = "snow_block",
+	},
+	["snow_surprise_iceflower"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_iceflower",
+		staticBlockName = "snow_block",
+	},
+	["snow_surprise_star"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_star",
+		staticBlockName = "snow_block",
 	},
 }
 

@@ -1,28 +1,10 @@
 require "TextureContainer"
 
+-- FYI I do not stick with 80 characters columns here...
+
 -- Load all game's textures into container
 function loadTextures()
 	local textureContainer = TextureContainer:new()
-	
-	-- Player textures
-	textureContainer:newAnimationWithOneTexture("player_idle",
-		"assets/player_idle.png")
-	
-	textureContainer:newAnimation("player_walking", 0.15,
-		"assets/player_walking1.png", "assets/player_walking2.png",
-		"assets/player_walking3.png")
-	
-	textureContainer:newAnimationWithOneTexture("player_jumping",
-		"assets/player_jumping.png")
-	
-	textureContainer:newAnimation("player_swimming", 0.25,
-		"assets/player_swimming1.png", "assets/player_swimming2.png")
-	
-	textureContainer:newAnimationWithOneTexture("player_attacking", 
-		"assets/player_attacking1.png")
-	
-	textureContainer:newTexture("player_dead", "assets/player_dead.png")
-	textureContainer:newTexture("players_helmet", "assets/helmet.png")
 	
 	-- Units
 	textureContainer:newAnimation("zombie", 0.2,
@@ -202,9 +184,6 @@ function loadTextures()
 		"assets/background3_spring_forest.png")
 	
 	-- Particles
-	textureContainer:newTexture("bubble", "assets/bubble.png")
-	textureContainer:newTexture("smoke", "assets/smoke.png")
-	
 	textureContainer:newAnimation("explosion", 0.1,
 		"assets/explosion1.png", "assets/explosion2.png",
 		"assets/explosion3.png")
@@ -248,13 +227,31 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("snow_oblique_right", "assets/textures/snow_oblique_right.png")
 	textureContainer:newAnimationWithOneTexture("icicle", "assets/textures/icicle.png")
 	
-	textureContainer:newAnimation("snow_surprise", 0.8,
-		"assets/textures/snow_surprise1.png",
-		"assets/textures/snow_surprise2.png",
-		"assets/textures/snow_surprise3.png",
-		"assets/textures/snow_surprise4.png",
-		"assets/textures/snow_surprise3.png",
-		"assets/textures/snow_surprise2.png")
+	textureContainer:newAnimation("surprise", 1,
+		"assets/textures/surprise1.png",
+		"assets/textures/surprise2.png",
+		"assets/textures/surprise3.png",
+		"assets/textures/surprise4.png")
+	
+	-- PLAYER
+	textureContainer:newAnimationWithOneTexture("player_idle", "assets/textures/polandball_idle.png")
+	textureContainer:newAnimationWithOneTexture("player_attacking", "assets/textures/polandball_attacking.png")
+	
+	textureContainer:newAnimation("player_walking", 0.15,
+		"assets/textures/polandball_walking1.png", 
+		"assets/textures/polandball_walking2.png",
+		"assets/textures/polandball_walking3.png",
+		"assets/textures/polandball_walking4.png",
+		"assets/textures/polandball_walking5.png")
+	
+	textureContainer:newAnimationWithOneTexture("player_jumping", "assets/textures/polandball_jumping.png")
+	
+	textureContainer:newAnimation("player_swimming", 0.25,
+		"assets/textures/polandball_swimming1.png", 
+		"assets/textures/polandball_swimming2.png")
+		
+	textureContainer:newTexture("player_dead", "assets/textures/polandball_dead.png")
+	textureContainer:newTexture("players_helmet", "assets/helmet.png")
 	
 	-- PARTICLES
 	textureContainer:newTexture("cloud1", "assets/textures/cloud1.png")
@@ -262,6 +259,8 @@ function loadTextures()
 	textureContainer:newTexture("cloud3", "assets/textures/cloud3.png")
 	textureContainer:newTexture("snowflake", "assets/textures/snowflake.png")
 	textureContainer:newTexture("raindrop", "assets/textures/raindrop.png")
+	textureContainer:newTexture("bubble", "assets/textures/bubble.png")
+	textureContainer:newTexture("smoke", "assets/textures/smoke.png")
 	textureContainer:newAnimation("fire", 0.15,
 		"assets/textures/fire1.png",
 		"assets/textures/fire2.png",
