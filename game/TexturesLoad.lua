@@ -9,11 +9,6 @@ function loadTextures()
 	textureContainer:newAnimation("canonball", 0.3,
 		"assets/canonball1.png", "assets/canonball2.png")
 	
-	textureContainer:newAnimation("turtle", 0.2,
-		"assets/turtle_walking1.png", "assets/turtle_walking2.png")
-	
-	textureContainer:newTexture("turtle_shell", "assets/turtle_shell.png")
-	
 	textureContainer:newAnimationWithOneTexture("jumper_idle",
 		"assets/jumper_idle.png")
 	
@@ -201,7 +196,7 @@ function loadTextures()
 		"assets/textures/polandball_swimming2.png")
 		
 	textureContainer:newTexture("player_dead", "assets/textures/polandball_dead.png")
-	textureContainer:newTexture("players_helmet", "assets/helmet.png")
+	textureContainer:newTexture("players_helmet", "assets/textures/helmet.png")
 	
 	-- DEADLY TILES
 	textureContainer:newAnimationWithOneTexture("spikes", "assets/textures/spikes.png")
@@ -258,5 +253,12 @@ function loadTextures()
 		"assets/textures/zombie1.png", 
 		"assets/textures/zombie2.png")
 		
+	textureContainer:newAnimation("turtle", 0.2,
+		"assets/textures/turtle1.png",
+		"assets/textures/turtle2.png",
+		"assets/textures/turtle3.png")
+	
+	textureContainer:newTexture("turtle_shell", "assets/textures/turtle_shell.png")
+	
 	return textureContainer
 end
