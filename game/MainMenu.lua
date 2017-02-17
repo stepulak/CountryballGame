@@ -60,7 +60,9 @@ function MainMenu:createBackgroundWorld()
 		self.textureContainer, self.soundContainer,
 		self.headerContainer, self.sinCosTable, self.fonts)
 	
-	_MainMenuWorldLoad(self.world)
+	--_MainMenuWorldLoad(self.world)
+	self.world:createSampleWorld()
+	
 	self.world:postLoadHandle()
 end
 
