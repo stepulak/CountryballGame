@@ -6,10 +6,6 @@ require "TextureContainer"
 function loadTextures()
 	local textureContainer = TextureContainer:new()
 	
-	-- Units
-	textureContainer:newAnimation("zombie", 0.2,
-		"assets/zombie1.png", "assets/zombie2.png")
-	
 	textureContainer:newAnimation("canonball", 0.3,
 		"assets/canonball1.png", "assets/canonball2.png")
 	
@@ -60,7 +56,6 @@ function loadTextures()
 	-- Boost (ers)
 	textureContainer:newTexture("mushroom_grow", "assets/mushroom_grow.png")
 	textureContainer:newTexture("mushroom_life", "assets/mushroom_life.png")
-	textureContainer:newTexture("star", "assets/star.png")
 	
 	-- Tile assets
 	-- Snow
@@ -146,30 +141,6 @@ function loadTextures()
 		"assets/fireworks1.png", "assets/fireworks2.png",
 		"assets/fireworks3.png", "assets/fireworks4.png")
 	
-	-- Coin
-	textureContainer:newAnimation("coin_anim", 0.05,
-		"assets/textures/coin1.png",
-		"assets/textures/coin2.png",
-		"assets/textures/coin3.png",
-		"assets/textures/coin4.png",
-		"assets/textures/coin5.png")
-	
-	textureContainer:newTexture("coin_idle", "assets/textures/coin6.png")
-	
-	-- Do not load the texture more than once
-	local coinAnim = textureContainer:getAnimation("coin_anim"):deepCopy()
-	local coinIdle = textureContainer:getTexture("coin_idle")
-	coinAnim:addTextureN(coinIdle, 10)
-	
-	textureContainer:addAnimation("coin", coinAnim)
-		
-	-- Projectiles
-	textureContainer:newAnimation("fireball", 0.2,
-		"assets/fireball1.png", "assets/fireball2.png")
-	
-	textureContainer:newAnimation("iceball", 0.2,
-		"assets/iceball1.png", "assets/iceball2.png")
-	
 	textureContainer:newAnimationWithOneTexture("hammer", "assets/hammer.png")
 		
 	-- Others
@@ -250,9 +221,42 @@ function loadTextures()
 		"assets/textures/fire4.png",
 		"assets/textures/fire5.png")
 	
+	-- PROJECTILES
+	textureContainer:newAnimation("fireball", 0.2,
+		"assets/textures/fireball1.png",
+		"assets/textures/fireball2.png")
+	
+	textureContainer:newAnimation("iceball", 0.2,
+		"assets/textures/iceball1.png",
+		"assets/textures/iceball2.png")
+		
+	-- COIN
+	textureContainer:newAnimation("coin_anim", 0.05,
+		"assets/textures/coin1.png",
+		"assets/textures/coin2.png",
+		"assets/textures/coin3.png",
+		"assets/textures/coin4.png",
+		"assets/textures/coin5.png")
+	
+	textureContainer:newTexture("coin_idle", "assets/textures/coin6.png")
+	
+	-- Do not load the texture more than once
+	local coinAnim = textureContainer:getAnimation("coin_anim"):deepCopy()
+	local coinIdle = textureContainer:getTexture("coin_idle")
+	coinAnim:addTextureN(coinIdle, 10)
+	
+	textureContainer:addAnimation("coin", coinAnim)
+	
 	-- BOOST(ERS)
 	textureContainer:newTexture("fireflower", "assets/textures/fireflower.png")
 	textureContainer:newTexture("iceflower", "assets/textures/iceflower.png")
+	textureContainer:newTexture("star", "assets/textures/star.png")
 	
+	
+	-- UNITS
+	textureContainer:newAnimation("zombie", 0.2,
+		"assets/textures/zombie1.png", 
+		"assets/textures/zombie2.png")
+		
 	return textureContainer
 end
