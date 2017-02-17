@@ -16,9 +16,50 @@ function TextureAnimation:getCopy()
 	return clone(self, false)
 end
 
+-- Get copy of texture animation, copy array of texture references aswell
+function TextureAnimation:deepCopy()
+	local c = self:getCopy()
+	c.textures = {}
+	
+	for i=1, #self.textures do
+		c.textures[i] = self.textures[i]
+	end
+	
+	return c
+end
+
+-- Reverse order of textures of this animation
+function TextureAnimation:reverse()
+	local n = #self.textures
+	local texs = {}
+	
+	for i=n, 1, -1 do
+		texs[i] = self.textures[n-i+1]
+	end
+	self.textures = texs
+	
+	return self
+end
+
+-- Get all textures from @anim and add it to @self
+function TextureAnimation:concat(anim)
+	for i=1, #anim.textures do
+		self.textures[#self.textures + 1] = anim.textures[i]
+	end
+	return self
+end
+
 -- Add new texture into animation
 function TextureAnimation:addTexture(texture)
 	self.textures[#self.textures + 1] = texture
+	return self
+end
+
+-- Add new texture into animation @n times
+function TextureAnimation:addTextureN(texture, n)
+	for i=1, n do
+		self.textures[#self.textures + 1] = texture
+	end
 	return self
 end
 

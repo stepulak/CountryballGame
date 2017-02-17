@@ -193,7 +193,7 @@ function Credits:fill()
 	--
 	-- MAIN DEVELOPMENT
 	--
-	self:addLineB("Development")
+	self:addLineB("Main development")
 	self:addVerticalSpaceM()
 	
 	self:addLineM("Stepan Trcka")
@@ -226,6 +226,16 @@ function Credits:fill()
 	self:addVerticalSpaceS()
 	self:addLineS("by Johan Brodd 2014., CC-BY-SA 3.0")
 	self:addLineS("http://opengameart.org/content/level-finish-fanfares")
+	self:addVerticalSpaceB()
+	
+	--
+	-- ADDITIONAL GRAPHICS
+	--
+	self:addLineB("Additional graphics")
+	self:addVerticalSpaceM()
+	
+	self:addLineM("Dean")
+	self:addLineS("dean2191, https://dean2191.github.io/")
 	self:addVerticalSpaceB()
 	
 	--

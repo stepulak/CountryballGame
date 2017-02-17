@@ -387,7 +387,7 @@ function World:createSampleWorld()
 	self:createEmptyWorld(20, 20)
 	
 	for x = 0, 10 do
-		self:setTile(x, 10, "collidable", "static_block_bright")
+		self:setTile(x, 10, "collidable", "snow")
 	end
 end
 

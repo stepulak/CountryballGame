@@ -61,8 +61,6 @@ function loadTextures()
 	textureContainer:newTexture("mushroom_grow", "assets/mushroom_grow.png")
 	textureContainer:newTexture("mushroom_life", "assets/mushroom_life.png")
 	textureContainer:newTexture("star", "assets/star.png")
-	textureContainer:newTexture("fireflower", "assets/fireflower.png")
-	textureContainer:newTexture("iceflower", "assets/iceflower.png")
 	
 	-- Tile assets
 	-- Snow
@@ -77,31 +75,6 @@ function loadTextures()
 	-- Wood
 	textureContainer:newAnimationWithOneTexture("wooden_platform", 
 		"assets/wooden_platform.png")
-	
-	textureContainer:newAnimationWithOneTexture("wood", "assets/wood.png")
-	
-	textureContainer:newAnimationWithOneTexture("wood_oblique_left",
-		"assets/wood_oblique_left.png")
-	
-	textureContainer:newAnimationWithOneTexture("wood_oblique_right",
-		"assets/wood_oblique_right.png")
-	
-	textureContainer:newAnimationWithOneTexture("wooden_background",
-		"assets/wooden_background.png")
-		
-	-- Night
-	textureContainer:newAnimationWithOneTexture("brick_dark",
-		"assets/brick_dark.png")
-	
-	textureContainer:newAnimationWithOneTexture("static_block_dark",
-		"assets/static_block_dark.png")
-	
-	-- Deadly
-	textureContainer:newAnimationWithOneTexture("lava_inside",
-		"assets/lava_inside.png")
-	
-	textureContainer:newAnimation("lava_top", 0.3,
-		"assets/lava_top1.png", "assets/lava_top2.png")
 	
 	-- Animation objects
 	textureContainer:newAnimation("grass_1_1", 0.3,
@@ -121,9 +94,6 @@ function loadTextures()
 	
 	textureContainer:newAnimationWithOneTexture("tree_naked_2_3",
 		"assets/tree_naked_2_3.png")
-	
-	textureContainer:newAnimation("tree_anim_2_3", 1,
-		"assets/tree_anim_2_3_1.png", "assets/tree_anim_2_3_2.png")
 		
 	textureContainer:newAnimationWithOneTexture("snow_blanket",
 		"assets/snow_blanket.png")
@@ -177,9 +147,22 @@ function loadTextures()
 		"assets/fireworks3.png", "assets/fireworks4.png")
 	
 	-- Coin
-	textureContainer:newAnimation("coin", 0.3, "assets/coin1.png",
-		"assets/coin2.png", "assets/coin3.png", "assets/coin2.png")
+	textureContainer:newAnimation("coin_anim", 0.05,
+		"assets/textures/coin1.png",
+		"assets/textures/coin2.png",
+		"assets/textures/coin3.png",
+		"assets/textures/coin4.png",
+		"assets/textures/coin5.png")
 	
+	textureContainer:newTexture("coin_idle", "assets/textures/coin6.png")
+	
+	-- Do not load the texture more than once
+	local coinAnim = textureContainer:getAnimation("coin_anim"):deepCopy()
+	local coinIdle = textureContainer:getTexture("coin_idle")
+	coinAnim:addTextureN(coinIdle, 10)
+	
+	textureContainer:addAnimation("coin", coinAnim)
+		
 	-- Projectiles
 	textureContainer:newAnimation("fireball", 0.2,
 		"assets/fireball1.png", "assets/fireball2.png")
@@ -266,6 +249,10 @@ function loadTextures()
 		"assets/textures/fire3.png",
 		"assets/textures/fire4.png",
 		"assets/textures/fire5.png")
-		
+	
+	-- BOOST(ERS)
+	textureContainer:newTexture("fireflower", "assets/textures/fireflower.png")
+	textureContainer:newTexture("iceflower", "assets/textures/iceflower.png")
+	
 	return textureContainer
 end

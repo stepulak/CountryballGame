@@ -15,62 +15,6 @@
 -- about how to setup a property.
 
 local properties = {
-	-- "Night" pack
-	["static_block_dark"] = {
-	},
-	["brick_dark"] = {
-		isBouncable = true,
-		isBreakable = true,
-	},
-	["brick_dark_coins"] = {
-		animationName = "brick_dark",
-		isBouncable = true,
-		generatorType = "coins",
-		staticBlockName = "static_block_dark",
-	},
-	
-	-- Snow pack
-	["static_block_snow"] = {
-	},
-	["snow"] = {
-	},
-	["snow_secret"] = {
-		animationName = "block",
-		isSecret = true,
-	},
-	
-	-- Wooden pack
-	["wood"] = {
-	},
-	["wooden_platform"] = {
-		isPlatform = true,
-	},
-	["wood_oblique_left"] = {
-		isOblique = true,
-		isObliqueLeftSide = true,
-	},
-	["wood_oblique_right"] = {
-		isOblique = true,
-		isObliqueLeftSide = false,
-	},
-	["wooden_background"] = {
-	},
-	
-	-- Deadly
-	["lava_top"] = {
-		isDeadly = true,
-	},
-	["lava_inside"] = {
-		isDeadly = true,
-	},
-	["spikes"] = {
-		isDeadly = true,
-	},
-	
-	--
-	-- NEW PACK
-	--
-	
 	-- Day pack
 	["block"] = {
 	},
@@ -197,6 +141,11 @@ local properties = {
 	},
 	["water_inside"] = {
 		isWater = true,
+	},
+	
+	-- Deadly
+	["spikes"] = {
+		isDeadly = true,
 	},
 }
 
