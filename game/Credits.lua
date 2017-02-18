@@ -396,6 +396,10 @@ function Credits:fill()
 	self:addLineS("2D *awesome* game development framework")
 	self:addVerticalSpaceM()
 	
+	self:addLineM("SuperTux")
+	self:addLineS("http://supertux.github.io")
+	self:addVerticalSpaceM()
+	
 	self:addVerticalSpaceB()
 	self:addLineM("(c) 2017 Stepan Trcka")
 	self:addVerticalSpaceS()

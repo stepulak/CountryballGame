@@ -1,27 +1,28 @@
 require "ActiveObject"
 require "CanonBall"
 
-local AboutToShootQuotient = 0.2
+local ShootingDuration = 0.8
+local IdleDuration = 3
 
 Canon = ActiveObject:new()
 
 -- Canon constructor
 -- Remember, the x parameter is the left x position of the canon 
 -- no matter of it's direction!
-function Canon:init(x, y, tileWidth, tileHeight, leftDir, 
-	shootingCountdown, canonAnim)
-	
+function Canon:init(x, y, tileWidth, tileHeight, leftDir, idleAnim, shootAnim)
 	self:super("canon", x, y, 2, 1, tileWidth, tileHeight)
 	
 	self.unitContainer = unitContainer
 	self.leftDir = leftDir
 	
-	self.canonAnim = canonAnim:getCopy()
-	self.canonAnim.updateTime = shootingCountdown * 
-		AboutToShootQuotient / canonAnim:numTextures()
 	
-	self.shootingCountdown = shootingCountdown
-	self.countdown = shootingCountdown
+	self.idleAnim = idleAnim:getCopy()
+	self.shootAnim = shootAnim:getCopy()
+	self.shootAnim.updateTime = ShootingDuration / shootAnim:numTextures()
+	self.timer = 0
+	
+	self.isShooting = false
+	self.activeAnim = self.idleAnim
 	self.shouldSpawnNewCanonBall = false
 	
 	self.tileWidth = tileWidth
@@ -58,10 +59,10 @@ function Canon:spawnNewCanonBall(soundContainer)
 		-- Create 3D sound effect
 		soundContainer:playEffect("canon_shot", false, self.realX, self.realY)
 		
-		if self.dirLeft then
-			return self.realX - self.realWidth/2 + self.tileWidth, self.realY
+		if self.leftDir then
+			return self.realX - self.realWidth/2, self.realY
 		else
-			return self.realX + self.realWidth/2 - self.tileWidth, self.realY
+			return self.realX + self.realWidth/2, self.realY
 		end
 	end
 end
@@ -71,22 +72,28 @@ function Canon:getDir()
 end
 
 function Canon:update(camera, particleSystem, deltaTime)
-	self.countdown = self.countdown - deltaTime
+	self.activeAnim = self.isShooting and self.shootAnim or self.idleAnim
+	self.timer = self.timer + deltaTime
 	
-	if self.countdown < self.shootingCountdown * AboutToShootQuotient then
-		self.canonAnim:update(deltaTime)
-		
-		if self.countdown < 0 then
-			self.countdown = self.shootingCountdown
-			self.shouldSpawnNewCanonBall = true
-		end
+	if self.isShooting == false and self.timer > IdleDuration then
+		self.isShooting = true
+		self.timer = 0
+	elseif self.isShooting and self.timer > ShootingDuration then
+		self.timer = 0
+		self.isShooting = false
+		self.shouldSpawnNewCanonBall = true
+		self.activeAnim:reset()
 	end
+	
+	self.activeAnim:update(deltaTime)
 end
 
 function Canon:draw(camera, drawFrameCounter)
 	self.drawFrameCounter = drawFrameCounter
 	
-	self.canonAnim:draw(camera, self.realX - self.realWidth/2, 
-		self.realY - self.realHeight/2, self.realWidth, self.realHeight,
+	self.activeAnim:draw(camera,
+		self.realX - self.realWidth/2, 
+		self.realY - self.realHeight/2,
+		self.realWidth, self.realHeight,
 		0, self.leftDir)
 end

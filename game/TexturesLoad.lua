@@ -6,9 +6,6 @@ require "TextureContainer"
 function loadTextures()
 	local textureContainer = TextureContainer:new()
 	
-	textureContainer:newAnimation("canonball", 0.3,
-		"assets/canonball1.png", "assets/canonball2.png")
-	
 	textureContainer:newAnimationWithOneTexture("jumper_idle",
 		"assets/jumper_idle.png")
 	
@@ -46,10 +43,6 @@ function loadTextures()
 	textureContainer:newAnimation("fish", 0.3, 
 		"assets/fish1.png", "assets/fish2.png")
 	
-	-- Boost (ers)
-	textureContainer:newTexture("mushroom_grow", "assets/mushroom_grow.png")
-	textureContainer:newTexture("mushroom_life", "assets/mushroom_life.png")
-	
 	-- Tile assets
 	-- Snow
 	textureContainer:newAnimationWithOneTexture("snow", "assets/snow.png")
@@ -65,9 +58,6 @@ function loadTextures()
 		"assets/wooden_platform.png")
 	
 	-- Animation objects
-	textureContainer:newAnimation("grass_1_1", 0.3,
-		"assets/grass_1_1_1.png", "assets/grass_1_1_2.png")
-	
 	textureContainer:newAnimationWithOneTexture("tree_light_1_3",
 		"assets/tree_light_1_3.png")
 	
@@ -91,12 +81,7 @@ function loadTextures()
 	
 	textureContainer:newTexture("floating_platform",
 		"assets/floating_platform.png")
-		
-	-- Canon's animation frame rate is modified for each canon table
-	textureContainer:newAnimation("canon", 999,
-		"assets/canon_idle.png", "assets/canon_shooting1.png",
-		"assets/canon_shooting2.png")
-		
+	
 	-- Parallax background
 	textureContainer:newTexture("background1_day", "assets/background1_day.png")
 	
@@ -117,17 +102,8 @@ function loadTextures()
 	
 	textureContainer:newTexture("background3_spring_forest",
 		"assets/background3_spring_forest.png")
-	
-	-- Particles
-	
-	textureContainer:newAnimation("fireworks", 0.1,
-		"assets/fireworks1.png", "assets/fireworks2.png",
-		"assets/fireworks3.png", "assets/fireworks4.png")
-	
-	textureContainer:newAnimationWithOneTexture("hammer", "assets/hammer.png")
 		
 	-- Others
-	textureContainer:newTexture("freezed_unit", "assets/freezed_unit.png")
 	textureContainer:newTexture("gamepad_button", "assets/gamepad_button.png")
 	
 	--
@@ -154,6 +130,9 @@ function loadTextures()
 	-- DAY PACK
 	textureContainer:newAnimationWithOneTexture("brick", "assets/textures/brick.png")
 	textureContainer:newAnimationWithOneTexture("block", "assets/textures/block.png")
+	
+	-- ADDITIONAL TILES
+	textureContainer:newAnimationWithOneTexture("timber", "assets/textures/timber.png")
 	
 	-- WATER
 	textureContainer:newAnimationWithOneTexture("water_inside", "assets/textures/water_inside.png")
@@ -205,6 +184,13 @@ function loadTextures()
 		"assets/textures/explosion3.png",
 		"assets/textures/explosion4.png",
 		"assets/textures/explosion5.png")
+	
+	
+	textureContainer:newAnimation("fireworks", 0.1,
+		"assets/textures/fireworks1.png",
+		"assets/textures/fireworks2.png",
+		"assets/textures/fireworks3.png",
+		"assets/textures/fireworks4.png")
 		
 	-- PROJECTILES
 	textureContainer:newAnimation("fireball", 0.2,
@@ -214,7 +200,9 @@ function loadTextures()
 	textureContainer:newAnimation("iceball", 0.2,
 		"assets/textures/iceball1.png",
 		"assets/textures/iceball2.png")
-		
+	
+	textureContainer:newAnimationWithOneTexture("hammer", "assets/textures/hammer.png")
+	
 	-- COIN
 	textureContainer:newAnimation("coin_anim", 0.1,
 		"assets/textures/coin1.png",
@@ -235,7 +223,8 @@ function loadTextures()
 	textureContainer:newTexture("fireflower", "assets/textures/fireflower.png")
 	textureContainer:newTexture("iceflower", "assets/textures/iceflower.png")
 	textureContainer:newTexture("star", "assets/textures/star.png")
-	
+	textureContainer:newTexture("mushroom_grow", "assets/textures/mushroom_grow.png")
+	textureContainer:newTexture("mushroom_life", "assets/textures/mushroom_life.png")
 	
 	-- UNITS
 	textureContainer:newAnimation("zombie", 0.2,
@@ -251,14 +240,35 @@ function loadTextures()
 	
 	textureContainer:newAnimationWithOneTexture("rocket", "assets/textures/rocket.png")
 	
+	textureContainer:newAnimation("canonball", 0.25,
+		"assets/textures/canonball1.png",
+		"assets/textures/canonball2.png")
+		
 	-- ACTIVE OBJECTS
 	textureContainer:newTexture("trampoline_platform", "assets/textures/trampoline_platform.png")
+	
+	textureContainer:newAnimation("canon_idle", 0.5,
+		"assets/textures/canon_idle1.png",
+		"assets/textures/canon_idle2.png")
+	
+	textureContainer:newAnimation("canon_shooting", 999,
+		"assets/textures/canon_shooting1.png",
+		"assets/textures/canon_shooting2.png",
+		"assets/textures/canon_shooting3.png",
+		"assets/textures/canon_shooting4.png",
+		"assets/textures/canon_shooting5.png",
+		"assets/textures/canon_shooting6.png")
+	
+	-- ANIMATION OBJECTS
+	textureContainer:newAnimationWithOneTexture("bush_1", "assets/textures/bush_1.png")
+	textureContainer:newAnimationWithOneTexture("bush_2", "assets/textures/bush_2.png")
 		
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")
 	textureContainer:newTexture("button_idle", "assets/textures/button_idle.png")
 	textureContainer:newTexture("button_click", "assets/textures/button_click.png")
 	textureContainer:newTexture("skull", "assets/textures/skull.png")
+	textureContainer:newTexture("frost", "assets/textures/frost.png")
 	
 	return textureContainer
 end

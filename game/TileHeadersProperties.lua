@@ -147,6 +147,10 @@ local properties = {
 	["spikes"] = {
 		isDeadly = true,
 	},
+	
+	-- Additional
+	["timber"] = {
+	}
 }
 
 -- Create a new Tile header from name

@@ -10,8 +10,12 @@
 require "AnimationObject"
 
 local properties = {
-	["grass_1_1"] = {
+	["bush_1"] = {
 		width = 1,
+		height = 1,
+	},
+	["bush_2"] = {
+		width = 2,
 		height = 1,
 	},
 	["tree_light_1_3"] = {

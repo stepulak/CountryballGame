@@ -170,7 +170,7 @@ function Unit:freeze(particleSystem, soundContainer, freezedUnitTexture)
 	
 	particleSystem:addFrozenUnitEffect(freezedUnitTexture,
 		self.x, self.y, self.width, self.height, self.freezeTimer)
-		
+	
 	soundContainer:playEffect("freeze", false, self.x, self.y)
 end
 
