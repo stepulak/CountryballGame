@@ -1,6 +1,6 @@
 require "Unit"
 
-local BallSizeQ = 0.8
+local BallSizeQ = 0.75
 local SmashWidthQ = 0.4
 
 CanonBall = Unit:new()

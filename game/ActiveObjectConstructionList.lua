@@ -13,8 +13,9 @@ local constructionList = {
 	end,
 	
 	["canon"] = function(p)
-		return Canon:new(p.x, p.y, p.tileWidth, p.tileHeight,
-			p.dirLeft, p.arg or 3, p.tc:getAnimation("canon"))
+		return Canon:new(p.x, p.y, p.tileWidth, p.tileHeight, p.dirLeft, 
+			p.tc:getAnimation("canon_idle"),
+			p.tc:getAnimation("canon_shooting"))
 	end,
 	
 	["teleport"] = function(p)

@@ -1530,7 +1530,7 @@ function World:handleProjectileBadGuysCollisions(projectile)
 		if it.data.dead == false then
 			it.data:resolveProjectileCollision(projectile,
 				self.fParticleSystem, self.soundContainer,
-				self.textureContainer:getTexture("freezed_unit"))
+				self.textureContainer:getTexture("frost"))
 		end
 		
 		it = it.next
@@ -1543,7 +1543,7 @@ function World:handleProjectilePlayerCollisions(projectile)
 	end
 	
 	self.player:resolveProjectileCollision(projectile, self.fParticleSystem,
-		self.soundContainer, self.textureContainer:getTexture("freezed_unit"))
+		self.soundContainer, self.textureContainer:getTexture("frost"))
 end
 
 function World:handleProjectileTileCollisions(projectile, deltaTime)
