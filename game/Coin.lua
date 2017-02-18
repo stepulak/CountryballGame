@@ -7,6 +7,7 @@ function Coin:init(x, y, tileWidth, tileHeight, anim)
 		0, 0, anim)
 	
 	self.friendlyToPlayer = true
+	self.isFacingLeft = false
 end
 
 function Coin:updateAnimations(deltaTime)

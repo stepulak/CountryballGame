@@ -14,10 +14,6 @@ local properties = {
 		width = 1,
 		height = 1,
 	},
-	["snow_blanket"] = {
-		width = 1,
-		height = 1,
-	},
 	["tree_light_1_3"] = {
 		width = 1,
 		height = 3,
