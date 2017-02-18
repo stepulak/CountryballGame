@@ -6,17 +6,8 @@ require "TextureContainer"
 function loadTextures()
 	local textureContainer = TextureContainer:new()
 	
-	-- Units
-	textureContainer:newAnimation("zombie", 0.2,
-		"assets/zombie1.png", "assets/zombie2.png")
-	
 	textureContainer:newAnimation("canonball", 0.3,
 		"assets/canonball1.png", "assets/canonball2.png")
-	
-	textureContainer:newAnimation("turtle", 0.2,
-		"assets/turtle_walking1.png", "assets/turtle_walking2.png")
-	
-	textureContainer:newTexture("turtle_shell", "assets/turtle_shell.png")
 	
 	textureContainer:newAnimationWithOneTexture("jumper_idle",
 		"assets/jumper_idle.png")
@@ -55,12 +46,9 @@ function loadTextures()
 	textureContainer:newAnimation("fish", 0.3, 
 		"assets/fish1.png", "assets/fish2.png")
 	
-	textureContainer:newAnimationWithOneTexture("rocket", "assets/rocket.png")
-	
 	-- Boost (ers)
 	textureContainer:newTexture("mushroom_grow", "assets/mushroom_grow.png")
 	textureContainer:newTexture("mushroom_life", "assets/mushroom_life.png")
-	textureContainer:newTexture("star", "assets/star.png")
 	
 	-- Tile assets
 	-- Snow
@@ -94,16 +82,9 @@ function loadTextures()
 	
 	textureContainer:newAnimationWithOneTexture("tree_naked_2_3",
 		"assets/tree_naked_2_3.png")
-		
-	textureContainer:newAnimationWithOneTexture("snow_blanket",
-		"assets/snow_blanket.png")
 	
 	textureContainer:newAnimation("torch", 0.1,
 		"assets/torch1.png", "assets/torch2.png", "assets/torch3.png")
-		
-	-- Active objects
-	textureContainer:newTexture("trampoline_platform",
-		"assets/trampoline_platform.png")
 	
 	textureContainer:newAnimation("teleport", 0.05,
 		"assets/teleport1.png", "assets/teleport2.png")
@@ -138,47 +119,16 @@ function loadTextures()
 		"assets/background3_spring_forest.png")
 	
 	-- Particles
-	textureContainer:newAnimation("explosion", 0.1,
-		"assets/explosion1.png", "assets/explosion2.png",
-		"assets/explosion3.png")
 	
 	textureContainer:newAnimation("fireworks", 0.1,
 		"assets/fireworks1.png", "assets/fireworks2.png",
 		"assets/fireworks3.png", "assets/fireworks4.png")
 	
-	-- Coin
-	textureContainer:newAnimation("coin_anim", 0.05,
-		"assets/textures/coin1.png",
-		"assets/textures/coin2.png",
-		"assets/textures/coin3.png",
-		"assets/textures/coin4.png",
-		"assets/textures/coin5.png")
-	
-	textureContainer:newTexture("coin_idle", "assets/textures/coin6.png")
-	
-	-- Do not load the texture more than once
-	local coinAnim = textureContainer:getAnimation("coin_anim"):deepCopy()
-	local coinIdle = textureContainer:getTexture("coin_idle")
-	coinAnim:addTextureN(coinIdle, 10)
-	
-	textureContainer:addAnimation("coin", coinAnim)
-		
-	-- Projectiles
-	textureContainer:newAnimation("fireball", 0.2,
-		"assets/fireball1.png", "assets/fireball2.png")
-	
-	textureContainer:newAnimation("iceball", 0.2,
-		"assets/iceball1.png", "assets/iceball2.png")
-	
 	textureContainer:newAnimationWithOneTexture("hammer", "assets/hammer.png")
 		
 	-- Others
 	textureContainer:newTexture("freezed_unit", "assets/freezed_unit.png")
-	textureContainer:newTexture("skull", "assets/skull.png")
 	textureContainer:newTexture("gamepad_button", "assets/gamepad_button.png")
-	textureContainer:newTexture("game_logo", "assets/game_logo.png")
-	textureContainer:newTexture("button_idle", "assets/button_idle.png")
-	textureContainer:newTexture("button_click", "assets/button_click.png")
 	
 	--
 	-- NEW PACK
@@ -206,7 +156,6 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("block", "assets/textures/block.png")
 	
 	-- WATER
-	
 	textureContainer:newAnimationWithOneTexture("water_inside", "assets/textures/water_inside.png")
 	
 	textureContainer:newAnimation("water_top", 0.3,
@@ -230,7 +179,7 @@ function loadTextures()
 		"assets/textures/polandball_swimming2.png")
 		
 	textureContainer:newTexture("player_dead", "assets/textures/polandball_dead.png")
-	textureContainer:newTexture("players_helmet", "assets/helmet.png")
+	textureContainer:newTexture("players_helmet", "assets/textures/helmet.png")
 	
 	-- DEADLY TILES
 	textureContainer:newAnimationWithOneTexture("spikes", "assets/textures/spikes.png")
@@ -250,9 +199,66 @@ function loadTextures()
 		"assets/textures/fire4.png",
 		"assets/textures/fire5.png")
 	
+	textureContainer:newAnimation("explosion", 0.05,
+		"assets/textures/explosion1.png",
+		"assets/textures/explosion2.png",
+		"assets/textures/explosion3.png",
+		"assets/textures/explosion4.png",
+		"assets/textures/explosion5.png")
+		
+	-- PROJECTILES
+	textureContainer:newAnimation("fireball", 0.2,
+		"assets/textures/fireball1.png",
+		"assets/textures/fireball2.png")
+	
+	textureContainer:newAnimation("iceball", 0.2,
+		"assets/textures/iceball1.png",
+		"assets/textures/iceball2.png")
+		
+	-- COIN
+	textureContainer:newAnimation("coin_anim", 0.1,
+		"assets/textures/coin1.png",
+		"assets/textures/coin2.png",
+		"assets/textures/coin3.png",
+		"assets/textures/coin4.png")
+	
+	textureContainer:newTexture("coin_idle", "assets/textures/coin5.png")
+	
+	-- Do not load the texture more than once
+	local coinAnim = textureContainer:getAnimation("coin_anim"):deepCopy()
+	local coinIdle = textureContainer:getTexture("coin_idle")
+	coinAnim:addTextureN(coinIdle, 10)
+	
+	textureContainer:addAnimation("coin", coinAnim)
+	
 	-- BOOST(ERS)
 	textureContainer:newTexture("fireflower", "assets/textures/fireflower.png")
 	textureContainer:newTexture("iceflower", "assets/textures/iceflower.png")
+	textureContainer:newTexture("star", "assets/textures/star.png")
+	
+	
+	-- UNITS
+	textureContainer:newAnimation("zombie", 0.2,
+		"assets/textures/zombie1.png", 
+		"assets/textures/zombie2.png")
+		
+	textureContainer:newAnimation("turtle", 0.2,
+		"assets/textures/turtle1.png",
+		"assets/textures/turtle2.png",
+		"assets/textures/turtle3.png")
+	
+	textureContainer:newTexture("turtle_shell", "assets/textures/turtle_shell.png")
+	
+	textureContainer:newAnimationWithOneTexture("rocket", "assets/textures/rocket.png")
+	
+	-- ACTIVE OBJECTS
+	textureContainer:newTexture("trampoline_platform", "assets/textures/trampoline_platform.png")
+		
+	-- OTHERS
+	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")
+	textureContainer:newTexture("button_idle", "assets/textures/button_idle.png")
+	textureContainer:newTexture("button_click", "assets/textures/button_click.png")
+	textureContainer:newTexture("skull", "assets/textures/skull.png")
 	
 	return textureContainer
 end

@@ -5,7 +5,7 @@ local AttackTime = 0.2
 local TrampolineVelQ = 1.5
 -- Invulnerability against rotating ghosts
 local InvulnerabilityRGTime = 1
-local HatBasicColor = 180
+local HatBasicColor = 150
 local JumpingVel = 1000
 local HorizontaVel = 200
 local StarParticleSize = 20
@@ -476,9 +476,14 @@ function Player:drawHelmet(camera)
 	local alpha = self.alpha * 1.5
 	
 	if self.flowerType == "fireflower" then
-		love.graphics.setColor(HatBasicColor * r/255, 0, 0, alpha)
+		love.graphics.setColor(HatBasicColor * r/255,
+			HatBasicColor * g/1020,
+			0, alpha)
 	elseif self.flowerType == "iceflower" then
-		love.graphics.setColor(0, 0, HatBasicColor * b/255, alpha)
+		love.graphics.setColor(0,
+			HatBasicColor * g/510,
+			HatBasicColor * b/255,
+			alpha)
 	else
 		love.graphics.setColor(0, HatBasicColor * g/255, 0, alpha)
 	end

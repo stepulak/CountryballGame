@@ -23,6 +23,8 @@ end
 
 function AnimationObjectContainer:updateAnimObjects(deltaTime)
 	for name, obj in pairs(self.container) do
+	    if deltaTime then
 		obj.anim:update(deltaTime)
+		end
 	end
 end

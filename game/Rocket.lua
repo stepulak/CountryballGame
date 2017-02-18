@@ -2,7 +2,7 @@ require "Unit"
 
 local SmokeParticleSize = 20
 local ParticleCreationTime = 0.05
-local VerticalAcc = 100
+local VerticalAcc = 50
 local ShakingVel = 100
 local ShakingMaxDec = -2
 
