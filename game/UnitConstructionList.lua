@@ -71,8 +71,8 @@ local constructionList = {
 	
 	["jumper"] = function(p)
 		return Jumper:new(p.x, p.y, p.tileWidth, p.tileHeight,
-			p.tc:getAnimation("jumper_idle"),
-			p.tc:getAnimation("jumper_jumping"))
+			p.tc:getAnimation("jumper_bounce"),
+			p.tc:getAnimation("jumper_air"))
 	end,
 	
 	["hammerman"] = function(p)

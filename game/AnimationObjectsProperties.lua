@@ -49,7 +49,7 @@ local properties = {
 	["fire"] = {
 		width = 1,
 		height = 1,
-	}
+	},
 }
 
 -- Create new animation object from given name

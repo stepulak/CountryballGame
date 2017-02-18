@@ -1145,8 +1145,11 @@ function World:findSolidGround(unit, deltaTime, distError)
 				-- Unit collision is implemented, 
 				-- better to leave the handling to it
 				if tile.activeObj.handleUnitCollision then
-					solidGround = true
-					break
+					-- *bugfix*
+					if tile.activeObj:checkUnitCollision(unit) then
+						solidGround = true
+						break
+					end
 				end
 			end
 		end

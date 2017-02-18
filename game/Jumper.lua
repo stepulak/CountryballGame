@@ -1,12 +1,12 @@
 require "Unit"
 
-local KeepIdleAnimTime = 0.4
+local KeepIdleAnimTime = 0.25
 
 Jumper = Unit:new()
 
 function Jumper:init(x, y, tileWidth, tileHeight, idleAnim, jumpingAnim)
 	self:super("jumper", x, y, tileWidth, tileHeight,
-		UnitJumpingVelRecommended * 2, 1, idleAnim, nil, jumpingAnim)
+		UnitJumpingVelRecommended * 1.6, 1, idleAnim, nil, jumpingAnim)
 	
 	self.keepIdleAnimTimer = 0
 end

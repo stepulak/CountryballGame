@@ -6,20 +6,11 @@ require "TextureContainer"
 function loadTextures()
 	local textureContainer = TextureContainer:new()
 	
-	textureContainer:newAnimationWithOneTexture("jumper_idle",
-		"assets/jumper_idle.png")
-	
-	textureContainer:newAnimationWithOneTexture("jumper_jumping",
-		"assets/jumper_jumping.png")
-	
 	textureContainer:newAnimation("rotating_ghost", 0.1,
 		"assets/rotating_ghost1.png", "assets/rotating_ghost2.png")
 	
 	textureContainer:newAnimation("flying_zombie", 0.3,
 		"assets/flying_zombie1.png", "assets/flying_zombie2.png")
-	
-	textureContainer:newAnimationWithOneTexture("bouncing_zombie", 
-		"assets/bouncing_zombie.png")
 	
 	textureContainer:newAnimation("spiky", 0.2,
 		"assets/spiky_walking1.png", "assets/spiky_walking2.png",
@@ -243,7 +234,12 @@ function loadTextures()
 	textureContainer:newAnimation("canonball", 0.25,
 		"assets/textures/canonball1.png",
 		"assets/textures/canonball2.png")
-		
+	
+	
+	textureContainer:newAnimationWithOneTexture("jumper_bounce", "assets/textures/jumper_bounce.png")
+	textureContainer:newAnimationWithOneTexture("jumper_air", "assets/textures/jumper_air.png")
+	textureContainer:newAnimationWithOneTexture("bouncing_zombie", "assets/textures/bouncing_zombie.png")
+	
 	-- ACTIVE OBJECTS
 	textureContainer:newTexture("trampoline_platform", "assets/textures/trampoline_platform.png")
 	
