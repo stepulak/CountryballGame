@@ -12,10 +12,6 @@ function loadTextures()
 	textureContainer:newAnimation("flying_zombie", 0.3,
 		"assets/flying_zombie1.png", "assets/flying_zombie2.png")
 	
-	textureContainer:newAnimation("spiky", 0.2,
-		"assets/spiky_walking1.png", "assets/spiky_walking2.png",
-		"assets/spiky_walking3.png")
-	
 	textureContainer:newAnimation("bomberman_walking", 0.2,
 		"assets/bomberman_walking1.png", "assets/bomberman_walking2.png")
 	
@@ -30,9 +26,6 @@ function loadTextures()
 	
 	textureContainer:newAnimationWithOneTexture("hammerman_attacking",
 		"assets/hammerman_attacking.png")
-	
-	textureContainer:newAnimation("fish", 0.3, 
-		"assets/fish1.png", "assets/fish2.png")
 	
 	-- Tile assets
 	-- Snow
@@ -93,9 +86,6 @@ function loadTextures()
 	
 	textureContainer:newTexture("background3_spring_forest",
 		"assets/background3_spring_forest.png")
-		
-	-- Others
-	textureContainer:newTexture("gamepad_button", "assets/gamepad_button.png")
 	
 	--
 	-- NEW PACK
@@ -235,10 +225,18 @@ function loadTextures()
 		"assets/textures/canonball1.png",
 		"assets/textures/canonball2.png")
 	
-	
+	textureContainer:newAnimation("fish", 0.3, 
+		"assets/textures/fish1.png",
+		"assets/textures/fish2.png")
+		
 	textureContainer:newAnimationWithOneTexture("jumper_bounce", "assets/textures/jumper_bounce.png")
 	textureContainer:newAnimationWithOneTexture("jumper_air", "assets/textures/jumper_air.png")
 	textureContainer:newAnimationWithOneTexture("bouncing_zombie", "assets/textures/bouncing_zombie.png")
+	
+	textureContainer:newAnimation("spiky", 0.2,
+		"assets/textures/spiky1.png",
+		"assets/textures/spiky2.png",
+		"assets/textures/spiky3.png")
 	
 	-- ACTIVE OBJECTS
 	textureContainer:newTexture("trampoline_platform", "assets/textures/trampoline_platform.png")
@@ -265,6 +263,7 @@ function loadTextures()
 	textureContainer:newTexture("button_click", "assets/textures/button_click.png")
 	textureContainer:newTexture("skull", "assets/textures/skull.png")
 	textureContainer:newTexture("frost", "assets/textures/frost.png")
+	textureContainer:newTexture("gamepad_button", "assets/textures/gamepad_button.png")
 	
 	return textureContainer
 end
