@@ -23,11 +23,17 @@ function TileHeader:init(name, isBreakable, isBouncable, isOblique,
 	self.generatorType = generatorType
 	self.staticBlockName = staticBlockName
 	self.animation = animation
+	
+	-- TILE SPECIFIC
+	if self.animation.updateCounter == nil then
+		self.animation.updateCounter = 0
+	end
 end
 
 -- Update tile header (texture swapping in animation)
-function TileHeader:update(deltaTime)
-	if self.animation ~= nil then
+function TileHeader:update(deltaTime, updateCounter)
+	if self.animation ~= nil and self.animation.updateCounter < updateCounter then
 		self.animation:update(deltaTime)
+		self.animation.updateCounter = updateCounter
 	end
 end

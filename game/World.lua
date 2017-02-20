@@ -46,6 +46,7 @@ function World:init(player,
 	self.playerSpawnY = tileHeight/2
 	self.playerFinishLine = tileWidth/2
 	
+	self.updateCounter = 0
 	self.drawCounter = 0
 	self.saveCounter = 0
 end
@@ -1789,6 +1790,8 @@ function World:playBackgroundMusicIfPossible()
 end
 
 function World:update(deltaTime)
+	self.updateCounter = self.updateCounter + 1
+	
 	self.soundContainer:update3DSound(self.camera)
 	
 	if self.player ~= nil and self.player.dead == false then
@@ -1803,7 +1806,7 @@ function World:update(deltaTime)
 		deltaTime = deltaTime / 5
 	end
 	
-	self.headerContainer:updateTileHeaders(deltaTime)
+	self.headerContainer:updateTileHeaders(deltaTime, self.updateCounter)
 	
 	self:updateProjectiles(deltaTime)
 	

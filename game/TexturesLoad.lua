@@ -5,18 +5,6 @@ require "TextureContainer"
 -- Load all game's textures into container
 function loadTextures()
 	local textureContainer = TextureContainer:new()
-	
-	textureContainer:newAnimation("rotating_ghost", 0.1,
-		"assets/rotating_ghost1.png", "assets/rotating_ghost2.png")
-	
-	textureContainer:newAnimation("flying_zombie", 0.3,
-		"assets/flying_zombie1.png", "assets/flying_zombie2.png")
-	
-	textureContainer:newAnimation("bomberman_walking", 0.2,
-		"assets/bomberman_walking1.png", "assets/bomberman_walking2.png")
-	
-	textureContainer:newAnimation("bomberman_countdown", 0.05,
-		"assets/bomberman_countdown1.png", "assets/bomberman_countdown2.png")
 		
 	textureContainer:newAnimationWithOneTexture("hammerman_idle",
 		"assets/hammerman_idle.png")
@@ -42,29 +30,8 @@ function loadTextures()
 		"assets/wooden_platform.png")
 	
 	-- Animation objects
-	textureContainer:newAnimationWithOneTexture("tree_light_1_3",
-		"assets/tree_light_1_3.png")
-	
-	textureContainer:newAnimationWithOneTexture("tree_dark_1_3",
-		"assets/tree_dark_1_3.png")
-	
-	textureContainer:newAnimationWithOneTexture("tree_light_1_2",
-		"assets/tree_light_1_2.png")
-	
-	textureContainer:newAnimationWithOneTexture("tree_dark_1_2",
-		"assets/tree_dark_1_2.png")
-	
-	textureContainer:newAnimationWithOneTexture("tree_naked_2_3",
-		"assets/tree_naked_2_3.png")
-	
-	textureContainer:newAnimation("torch", 0.1,
-		"assets/torch1.png", "assets/torch2.png", "assets/torch3.png")
-	
 	textureContainer:newAnimation("teleport", 0.05,
 		"assets/teleport1.png", "assets/teleport2.png")
-	
-	textureContainer:newTexture("floating_platform",
-		"assets/floating_platform.png")
 	
 	-- Parallax background
 	textureContainer:newTexture("background1_day", "assets/background1_day.png")
@@ -102,17 +69,25 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("snow_oblique_right", "assets/textures/snow_oblique_right.png")
 	textureContainer:newAnimationWithOneTexture("icicle", "assets/textures/icicle.png")
 	
-	textureContainer:newAnimation("surprise", 1,
-		"assets/textures/surprise1.png",
-		"assets/textures/surprise2.png",
-		"assets/textures/surprise3.png",
-		"assets/textures/surprise4.png")
-	
 	-- DAY PACK
 	textureContainer:newAnimationWithOneTexture("brick", "assets/textures/brick.png")
 	textureContainer:newAnimationWithOneTexture("block", "assets/textures/block.png")
 	
 	-- ADDITIONAL TILES
+	textureContainer:newAnimation("surprise_anim", 0.1,
+		"assets/textures/surprise1.png",
+		"assets/textures/surprise2.png",
+		"assets/textures/surprise3.png",
+		"assets/textures/surprise4.png")
+	
+	textureContainer:newTexture("surprise_idle", "assets/textures/surprise5.png")
+	
+	local surpriseAnim = textureContainer:getAnimation("surprise_anim"):deepCopy()
+	local surpriseIdle = textureContainer:getTexture("surprise_idle")
+	surpriseAnim:addTextureN(surpriseIdle, 10)
+	
+	textureContainer:addAnimation("surprise", surpriseAnim)
+	
 	textureContainer:newAnimationWithOneTexture("timber", "assets/textures/timber.png")
 	
 	-- WATER
@@ -233,13 +208,39 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("jumper_air", "assets/textures/jumper_air.png")
 	textureContainer:newAnimationWithOneTexture("bouncing_zombie", "assets/textures/bouncing_zombie.png")
 	
-	textureContainer:newAnimation("spiky", 0.2,
+	textureContainer:newAnimation("spiky_anim", 0.15,
 		"assets/textures/spiky1.png",
 		"assets/textures/spiky2.png",
-		"assets/textures/spiky3.png")
+		"assets/textures/spiky3.png",
+		"assets/textures/spiky4.png")
 	
+	local spikyAnim = textureContainer:getAnimation("spiky_anim")
+	local spikyAnimRev = spikyAnim:deepCopy():reverse()
+	
+	textureContainer:addAnimation("spiky", spikyAnim:deepCopy():concat(spikyAnimRev))
+	
+	textureContainer:newAnimation("flying_zombie", 0.1,
+		"assets/textures/flying_zombie1.png",
+		"assets/textures/flying_zombie2.png",
+		"assets/textures/flying_zombie3.png",
+		"assets/textures/flying_zombie4.png")
+	
+	textureContainer:newAnimation("bomberman_walking", 0.2,
+		"assets/textures/bomberman_walking1.png",
+		"assets/textures/bomberman_walking2.png",
+		"assets/textures/bomberman_walking3.png")
+	
+	textureContainer:newAnimation("bomberman_countdown", 0.1,
+		"assets/textures/bomberman_countdown1.png", 
+		"assets/textures/bomberman_countdown2.png")
+	
+	textureContainer:newAnimation("rotating_ghost", 0.1,
+		"assets/textures/rotating_ghost1.png",
+		"assets/textures/rotating_ghost2.png")
+		
 	-- ACTIVE OBJECTS
 	textureContainer:newTexture("trampoline_platform", "assets/textures/trampoline_platform.png")
+	textureContainer:newTexture("floating_platform", "assets/textures/floating_platform.png")
 	
 	textureContainer:newAnimation("canon_idle", 0.5,
 		"assets/textures/canon_idle1.png",
@@ -256,7 +257,9 @@ function loadTextures()
 	-- ANIMATION OBJECTS
 	textureContainer:newAnimationWithOneTexture("bush_1", "assets/textures/bush_1.png")
 	textureContainer:newAnimationWithOneTexture("bush_2", "assets/textures/bush_2.png")
-		
+	textureContainer:newAnimationWithOneTexture("torch_left", "assets/textures/torch_left.png")
+	textureContainer:newAnimationWithOneTexture("torch_right", "assets/textures/torch_right.png")
+	
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")
 	textureContainer:newTexture("button_idle", "assets/textures/button_idle.png")

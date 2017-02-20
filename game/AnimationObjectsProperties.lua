@@ -18,33 +18,13 @@ local properties = {
 		width = 2,
 		height = 1,
 	},
-	["tree_light_1_3"] = {
+	["torch_left"] = {
 		width = 1,
-		height = 3,
+		height = 1,
 	},
-	["tree_dark_1_3"] = {
+	["torch_right"] = {
 		width = 1,
-		height = 3,
-	},
-	["tree_light_1_2"] = {
-		width = 1,
-		height = 2,
-	},
-	["tree_dark_1_2"] = {
-		width = 1,
-		height = 2,
-	},
-	["tree_anim_2_3"] = {
-		width = 2,
-		height = 3
-	},
-	["tree_naked_2_3"] = {
-		width = 2,
-		height = 3
-	},
-	["torch"] = {
-		width = 1,
-		height = 3,
+		height = 1,
 	},
 	["fire"] = {
 		width = 1,

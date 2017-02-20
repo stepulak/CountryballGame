@@ -1,6 +1,6 @@
 require "Unit"
 
-local CountdownTime = 3
+local CountdownTime = 2
 local ExplosionTime = 0.3
 local ProportionsInc = 3
 

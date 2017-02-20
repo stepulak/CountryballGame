@@ -382,12 +382,16 @@ function Editor:changeBackgroundColor(words)
 end
 
 function Editor:changeBackgroundTexture(words)
-	local backgroundLvl = tonumber(words[2])
-	local textureName = words[3]
-	
-	self.world:setBackgroundTexture(backgroundLvl, textureName)
-	
-	print("Background texture may have been set")
+	if type(words[2]) == "number" then
+		local backgroundLvl = tonumber(words[2])
+		local textureName = words[3]
+		
+		self.world:setBackgroundTexture(backgroundLvl, textureName)
+		
+		print("Background texture may have been set")
+	else
+		print("Background texture hasn't been set")
+	end
 end
 
 -- "static" variable

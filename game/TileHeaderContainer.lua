@@ -19,10 +19,10 @@ function TileHeaderContainer:getHeader(headerName)
 end
 
 -- Update tile headers in the container
-function TileHeaderContainer:updateTileHeaders(deltaTime)
+function TileHeaderContainer:updateTileHeaders(deltaTime, updateCounter)
 	for name, header in pairs(self.tileHeaders) do
 		if header ~= nil then
-			header:update(deltaTime)
+			header:update(deltaTime, updateCounter)
 		end
 	end
 end

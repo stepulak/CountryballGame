@@ -7,7 +7,9 @@ local VelocityDecc = 150
 FlyingZombie = Unit:new()
 
 function FlyingZombie:init(x, y, tileWidth, tileHeight, idleAnim)
-	self:super("flying_zombie", x, y, tileWidth, tileHeight, 0, 1, idleAnim)
+	self:super("flying_zombie", x, y,
+		tileWidth * 1.5, tileHeight,
+		0, 1, idleAnim)
 	
 	self.directionUp = true
 	self.stayTimer = 0
