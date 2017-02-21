@@ -5,33 +5,6 @@ require "TextureContainer"
 -- Load all game's textures into container
 function loadTextures()
 	local textureContainer = TextureContainer:new()
-		
-	textureContainer:newAnimationWithOneTexture("hammerman_idle",
-		"assets/hammerman_idle.png")
-	
-	textureContainer:newAnimationWithOneTexture("hammerman_jumping",
-		"assets/hammerman_jumping.png")
-	
-	textureContainer:newAnimationWithOneTexture("hammerman_attacking",
-		"assets/hammerman_attacking.png")
-	
-	-- Tile assets
-	-- Snow
-	textureContainer:newAnimationWithOneTexture("snow", "assets/snow.png")
-	
-	textureContainer:newAnimationWithOneTexture("brick_snow", 
-		"assets/brick_snow.png")
-	
-	textureContainer:newAnimationWithOneTexture("static_block_snow",
-		"assets/static_block_snow.png")
-	
-	-- Wood
-	textureContainer:newAnimationWithOneTexture("wooden_platform", 
-		"assets/wooden_platform.png")
-	
-	-- Animation objects
-	textureContainer:newAnimation("teleport", 0.05,
-		"assets/teleport1.png", "assets/teleport2.png")
 	
 	-- Parallax background
 	textureContainer:newTexture("background1_day", "assets/background1_day.png")
@@ -72,6 +45,9 @@ function loadTextures()
 	-- DAY PACK
 	textureContainer:newAnimationWithOneTexture("brick", "assets/textures/brick.png")
 	textureContainer:newAnimationWithOneTexture("block", "assets/textures/block.png")
+	textureContainer:newAnimationWithOneTexture("grass_top", "assets/textures/grass_top.png")
+	textureContainer:newAnimationWithOneTexture("mud_mid", "assets/textures/mud_mid.png")
+	textureContainer:newAnimationWithOneTexture("mud_bot", "assets/textures/mud_bot.png")
 	
 	-- ADDITIONAL TILES
 	textureContainer:newAnimation("surprise_anim", 0.1,
@@ -80,6 +56,7 @@ function loadTextures()
 		"assets/textures/surprise3.png",
 		"assets/textures/surprise4.png")
 	
+	-- SURPRISE
 	textureContainer:newTexture("surprise_idle", "assets/textures/surprise5.png")
 	
 	local surpriseAnim = textureContainer:getAnimation("surprise_anim"):deepCopy()
@@ -87,7 +64,9 @@ function loadTextures()
 	surpriseAnim:addTextureN(surpriseIdle, 10)
 	
 	textureContainer:addAnimation("surprise", surpriseAnim)
-	
+
+	textureContainer:newAnimationWithOneTexture("wooden_platform", "assets/textures/wooden_platform.png")
+	textureContainer:newAnimationWithOneTexture("snow_platform", "assets/textures/snow_platform.png")
 	textureContainer:newAnimationWithOneTexture("timber", "assets/textures/timber.png")
 	
 	-- WATER
@@ -96,7 +75,12 @@ function loadTextures()
 	textureContainer:newAnimation("water_top", 0.3,
 		"assets/textures/water_top1.png", 
 		"assets/textures/water_top2.png")
-		
+	
+	-- LAVA 
+	
+	-- DEADLY TILES
+	textureContainer:newAnimationWithOneTexture("spikes", "assets/textures/spikes.png")
+	
 	-- PLAYER
 	textureContainer:newAnimationWithOneTexture("player_idle", "assets/textures/polandball_idle.png")
 	textureContainer:newAnimationWithOneTexture("player_attacking", "assets/textures/polandball_attacking.png")
@@ -115,9 +99,6 @@ function loadTextures()
 		
 	textureContainer:newTexture("player_dead", "assets/textures/polandball_dead.png")
 	textureContainer:newTexture("players_helmet", "assets/textures/helmet.png")
-	
-	-- DEADLY TILES
-	textureContainer:newAnimationWithOneTexture("spikes", "assets/textures/spikes.png")
 	
 	-- PARTICLES
 	textureContainer:newTexture("cloud1", "assets/textures/cloud1.png")
@@ -237,7 +218,14 @@ function loadTextures()
 	textureContainer:newAnimation("rotating_ghost", 0.1,
 		"assets/textures/rotating_ghost1.png",
 		"assets/textures/rotating_ghost2.png")
-		
+	
+	textureContainer:newAnimationWithOneTexture("hammerman_idle", "assets/textures/hammerman_idle.png")
+	
+	textureContainer:newAnimation("hammerman_attacking", 0.1,
+		"assets/textures/hammerman_attacking1.png",
+		"assets/textures/hammerman_attacking3.png",
+		"assets/textures/hammerman_attacking2.png")
+	
 	-- ACTIVE OBJECTS
 	textureContainer:newTexture("trampoline_platform", "assets/textures/trampoline_platform.png")
 	textureContainer:newTexture("floating_platform", "assets/textures/floating_platform.png")
@@ -254,11 +242,18 @@ function loadTextures()
 		"assets/textures/canon_shooting5.png",
 		"assets/textures/canon_shooting6.png")
 	
+	textureContainer:newAnimation("teleport", 0.05,
+		"assets/textures/teleport1.png",
+		"assets/textures/teleport2.png")
+		
 	-- ANIMATION OBJECTS
 	textureContainer:newAnimationWithOneTexture("bush_1", "assets/textures/bush_1.png")
 	textureContainer:newAnimationWithOneTexture("bush_2", "assets/textures/bush_2.png")
-	textureContainer:newAnimationWithOneTexture("torch_left", "assets/textures/torch_left.png")
-	textureContainer:newAnimationWithOneTexture("torch_right", "assets/textures/torch_right.png")
+	textureContainer:newAnimationWithOneTexture("tree_1", "assets/textures/tree_1.png")
+	textureContainer:newAnimationWithOneTexture("tree_2", "assets/textures/tree_2.png")
+	textureContainer:newAnimationWithOneTexture("tree_3", "assets/textures/tree_3.png")
+	textureContainer:newAnimationWithOneTexture("tree_4", "assets/textures/tree_4.png")
+	textureContainer:newAnimationWithOneTexture("snowman", "assets/textures/snowman.png")
 	
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")

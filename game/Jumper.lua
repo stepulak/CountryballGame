@@ -4,9 +4,9 @@ local KeepIdleAnimTime = 0.25
 
 Jumper = Unit:new()
 
-function Jumper:init(x, y, tileWidth, tileHeight, idleAnim, jumpingAnim)
+function Jumper:init(x, y, tileWidth, tileHeight, idleAnim, jumpAnim)
 	self:super("jumper", x, y, tileWidth, tileHeight,
-		UnitJumpingVelRecommended * 1.6, 1, idleAnim, nil, jumpingAnim)
+		UnitJumpingVelRecommended * 1.6, 1, idleAnim, nil, jumpAnim)
 	
 	self.keepIdleAnimTimer = 0
 end
@@ -45,7 +45,7 @@ function Jumper:updateAnimations(deltaTime)
 	
 	if (self.isJumping or self.isFalling) 
 		and self.keepIdleAnimTimer <= 0 then
-		self.activeAnim = self.jumpingAnim
+		self.activeAnim = self.jumpAnim
 	else
 		self.activeAnim = self.idleAnim
 	end

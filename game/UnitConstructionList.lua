@@ -78,7 +78,6 @@ local constructionList = {
 	["hammerman"] = function(p)
 		return Hammerman:new(p.x, p.y, p.tileWidth, p.tileHeight,
 			p.tc:getAnimation("hammerman_idle"),
-			p.tc:getAnimation("hammerman_jumping"),
 			p.tc:getAnimation("hammerman_attacking"))
 	end,
 	

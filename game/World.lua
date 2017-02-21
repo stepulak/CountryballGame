@@ -1449,7 +1449,7 @@ function World:specialUpdateUnit(unit, deltaTime)
 		unit:updateRotatingMovement(deltaTime, self.sinCosTable)
 	elseif unit.name == "hammerman" then
 		unit:updateAccordingToPlayer(deltaTime, 
-			self.player, self.camera)
+			self.player, self.camera, self.soundContainer)
 	elseif unit.name == "rocket" and unit.started then
 		-- Rocket is somewhat like finish line.
 		-- Because rocket is only triggered when player is inside it,

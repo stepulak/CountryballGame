@@ -13,8 +13,8 @@ Unit = class:new()
 function Unit:init(name, 
 	x, y, width, height, 
 	jumpingVelBase, horizontalVelBase,
-	idleAnim, movementAnim, jumpingAnim, 
-	swimmingAnim, attackingAnim, deathAnim)
+	idleAnim, movementAnim, jumpAnim, 
+	swimmingAnim, attackAnim, deathAnim)
 	
 	if name == nil then
 		return
@@ -82,15 +82,15 @@ function Unit:init(name,
 	self.friendlyToPlayer = false
 	self.alpha = 255
 	
-	self:loadAnimations(idleAnim, movementAnim, jumpingAnim, 
-		swimmingAnim, attackingAnim, deathAnim)
+	self:loadAnimations(idleAnim, movementAnim, jumpAnim, 
+		swimmingAnim, attackAnim, deathAnim)
 end
 
 -- Make unit's "constructor" accessible (so Unit is inheritable now)
 Unit.super = Unit.init
 
 function Unit:loadAnimations(idleAnim, movementAnim, 
-	jumpingAnim, swimmingAnim, attackingAnim, deathAnim)
+	jumpAnim, swimmingAnim, attackAnim, deathAnim)
 	
 	-- Always create a copy (but it shares textures storage...)
 	-- Because each unit have different animation's timing
@@ -100,14 +100,14 @@ function Unit:loadAnimations(idleAnim, movementAnim,
 	if movementAnim then
 		self.movementAnim = movementAnim:getCopy()
 	end
-	if jumpingAnim then
-		self.jumpingAnim = jumpingAnim:getCopy()
+	if jumpAnim then
+		self.jumpAnim = jumpAnim:getCopy()
 	end
 	if swimmingAnim then
 		self.swimmingAnim = swimmingAnim:getCopy()
 	end
-	if attackingAnim then
-		self.attackingAnim = attackingAnim:getCopy()
+	if attackAnim then
+		self.attackAnim = attackAnim:getCopy()
 	end
 	if deathAnim then
 		self.deathAnim = deathAnim:getCopy()
@@ -329,8 +329,8 @@ function Unit:resetInactiveAnimations()
 	if self.idleAnim then
 		self.idleAnim:reset()
 	end
-	if self.jumpingAnim then
-		self.jumpingAnim:reset()
+	if self.jumpAnim then
+		self.jumpAnim:reset()
 	end
 	if self.movementAnim then
 		self.movementAnim:reset()
@@ -338,8 +338,8 @@ function Unit:resetInactiveAnimations()
 	if self.swimmingAnim then
 		self.swimmingAnim:reset()
 	end
-	if self.attackingAnim then
-		self.attackingAnim:reset()
+	if self.attackAnim then
+		self.attackAnim:reset()
 	end
 	if self.deathAnim then
 		self.deathAnim:reset()

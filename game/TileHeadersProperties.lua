@@ -16,7 +16,16 @@
 
 local properties = {
 	-- Day pack
-	["block"] = {
+	["wooden_platform"] = {
+		isPlatform = true,
+	},
+	["grass_top"] = {
+	},
+	["mud_mid"] = {
+	},
+	["mud_bot"] = {
+	},
+	--[[["block"] = {
 	},
 	["dirt"] = {
 	},
@@ -27,7 +36,7 @@ local properties = {
 	["brick_bright"] = {
 		isBouncable = true,
 		isBreakable = true,
-	},
+	},]]
 	
 	-- Snow pack
 	["snow"] = {
@@ -43,6 +52,9 @@ local properties = {
 	["snow_brick"] = {
 		isBouncable = true,
 		isBreakable = true,
+	},
+	["snow_platform"] = {
+		isPlatform = true,
 	},
 	["snow_brick_coins"] = {
 		animationName = "snow_brick",

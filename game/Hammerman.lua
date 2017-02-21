@@ -7,15 +7,15 @@ local AttackProbabilityQ = 1
 Hammerman = Unit:new()
 
 function Hammerman:init(x, y, tileWidth, tileHeight, 
-	idleAnim, jumpingAnim, attackingAnim)
+	idleAnim, attackAnim)
 	
 	self:super("hammerman", x, y, tileWidth, tileHeight,
 		UnitJumpingVelRecommended * 1.5, 1, idleAnim, nil, 
-		jumpingAnim, nil, attackingAnim)
+		nil, nil, attackAnim)
 	
-	self.jumpingTimer = 0
+	self.jumpTimer = 0
 	self.projectileFired = false
-	self.attackingTimer = 0
+	self.attackTimer = 0
 end
 
 function Hammerman:instantDeath(particleSystem, soundContainer)
@@ -36,7 +36,7 @@ function Hammerman:getCreatedProjectile()
 		
 		return "hammer",
 			self.x + (self.isFacingLeft and -self.width/2 or self.width/2),
-			self.y - self.height/3, 20, self.isFacingLeft, false
+			self.y - self.height/6, 20, self.isFacingLeft, false
 	else
 		return nil
 	end
@@ -44,10 +44,10 @@ end
 
 -- Hammerman function only!
 function Hammerman:updateJumping(deltaTime, player)
-	self.jumpingTimer = self.jumpingTimer - deltaTime
+	self.jumpTimer = self.jumpTimer - deltaTime
 	
-	if self.jumpingTimer <= 0 then
-		self.jumpingTimer = math.random(TryJumpTimeMin,
+	if self.jumpTimer <= 0 then
+		self.jumpTimer = math.random(TryJumpTimeMin,
 			TryJumpTimeMax)
 		
 		if player.y < self.y or math.random() <= 0.5 then
@@ -59,7 +59,9 @@ function Hammerman:updateJumping(deltaTime, player)
 end
 
 -- Hammerman function only!
-function Hammerman:updateAccordingToPlayer(deltaTime, player, camera)
+function Hammerman:updateAccordingToPlayer(deltaTime, player,
+	camera, soundContainer)
+	
 	self:updateJumping(deltaTime, player)
 	
 	-- Set the hammerman's looking on player
@@ -71,29 +73,31 @@ function Hammerman:updateAccordingToPlayer(deltaTime, player, camera)
 		self.isFalling == false then
 		
 		-- You can try to shoot now
-		if math.random() < deltaTime * AttackProbabilityQ then
+		if self.attackTimer <= 0 and
+			math.random() < deltaTime * AttackProbabilityQ then
 			self.projectileFired = true
-			self.attackingTimer = 0.2
+			-- Last as long as the animation does
+			self.attackTimer = self.attackAnim:numTextures() *
+				self.attackAnim.updateTime
+				
+			soundContainer:playEffect("canon_shot")
 		end
 	end
 end
 
 function Hammerman:updateAnimations(deltaTime)
 	self:resetInactiveAnimations()
-	
-	if self.isJumping or self.isFalling then
-		self.activeAnim = self.jumpingAnim
-	elseif self.attackingTimer > 0 then
-		self.activeAnim = self.attackingAnim
-	else
-		self.activeAnim = self.idleAnim
-	end
-	
+	self.activeAnim = self.attackTimer > 0 and self.attackAnim or self.idleAnim
 	self.activeAnim:update(deltaTime)
 end
 
 function Hammerman:update(deltaTime, gravityAcc, particleSystem,
 	camera, soundContainer)
+	
+	-- Unavailable for next attack
+	if self.attackTimer > 0 then
+		self.attackTimer = self.attackTimer - deltaTime
+	end
 	
 	self:superUpdate(deltaTime, gravityAcc, particleSystem,
 		camera, soundContainer)

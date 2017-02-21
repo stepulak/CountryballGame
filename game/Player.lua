@@ -19,14 +19,14 @@ Player = Unit:new()
 function Player:init(x, y, 
 	tileWidth, tileHeight, 
 	numLives, coins, 
-	idleAnim, walkingAnim, jumpingAnim, 
-	swimmingAnim, attackingAnim, 
+	idleAnim, walkingAnim, jumpAnim, 
+	swimmingAnim, attackAnim, 
 	deathTex, helmetTex, starTex, bubbleTex, smokeTex)
 	
 	self:super("player", x, y, tileWidth, tileHeight, 
 		JumpingVel, HorizontaVel, 
-		idleAnim, walkingAnim, jumpingAnim,
-		swimmingAnim, attackingAnim, nil)
+		idleAnim, walkingAnim, jumpAnim,
+		swimmingAnim, attackAnim, nil)
 	
 	-- There is only one player in the world, so we can afford
 	-- storing such data as texture references etc... in it's table
@@ -42,8 +42,8 @@ function Player:init(x, y,
 	self.smokeTex = smokeTex
 	
 	-- This animation must take exactly AttackTime seconds.
-	self.attackingAnim.updateTime = AttackTime 
-		/ self.attackingAnim:numTextures()
+	self.attackAnim.updateTime = AttackTime 
+		/ self.attackAnim:numTextures()
 	
 	self.numLives = numLives
 	self.coins = coins
@@ -85,7 +85,7 @@ function Player:softReset()
 	self.invulnerableRGTimer = 0
 	self.immuneToDeadlyObjects = false
 	self.invulnerableTimer = 0
-	self.attackingTimer = 0
+	self.attackTimer = 0
 	
 	self.sprintEnabled = false
 	self.movementAndCollisionDisabled = false
@@ -204,7 +204,7 @@ end
 function Player:tryToAttack(soundContainer)
 	if self.helmetEnabled and self.flowerType ~= nil then
 		self.projectileFired = true
-		self.attackingTimer = AttackTime
+		self.attackTimer = AttackTime
 		soundContainer:playEffect("player_shooting")
 	end
 end
@@ -327,11 +327,11 @@ function Player:updateAnimations(deltaTime)
 	end
 	
 	if self.isJumping or self.isFalling then
-		self.activeAnim = self.jumpingAnim
+		self.activeAnim = self.jumpAnim
 	elseif self.isMovingHor then
 		self.activeAnim = self.movementAnim
-	elseif self.attackingTimer > 0 then
-		self.activeAnim = self.attackingAnim
+	elseif self.attackTimer > 0 then
+		self.activeAnim = self.attackAnim
 	else
 		self.activeAnim = self.idleAnim
 	end
@@ -388,11 +388,11 @@ function Player:addFartTexEffect(particleSystem, fartTex)
 end
 
 function Player:updatePlayer(deltaTime, particleSystem, soundContainer)
-	if self.attackingTimer > 0 then
-		self.attackingTimer = self.attackingTimer - deltaTime
+	if self.attackTimer > 0 then
+		self.attackTimer = self.attackTimer - deltaTime
 		
-		if self.attackingTimer < 0 then
-			self.attackingTimer = 0
+		if self.attackTimer < 0 then
+			self.attackTimer = 0
 			-- You can't process the projectile anymore after
 			-- the attacking process has ran out of time.
 			self.projectileFired = false

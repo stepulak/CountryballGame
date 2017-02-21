@@ -18,18 +18,30 @@ local properties = {
 		width = 2,
 		height = 1,
 	},
-	["torch_left"] = {
-		width = 1,
-		height = 1,
+	["tree_1"] = {
+		width = 3,
+		height = 4,
 	},
-	["torch_right"] = {
-		width = 1,
-		height = 1,
+	["tree_2"] = {
+		width = 4,
+		height = 4,
+	},
+	["tree_3"] = {
+		width = 3,
+		height = 4,
+	},
+	["tree_4"] = {
+		width = 3,
+		height = 4,
 	},
 	["fire"] = {
 		width = 1,
 		height = 1,
 	},
+	["snowman"] = {
+		width = 2,
+		height = 3,
+	}
 }
 
 -- Create new animation object from given name
