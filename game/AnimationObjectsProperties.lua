@@ -41,6 +41,18 @@ local properties = {
 	["snowman"] = {
 		width = 2,
 		height = 3,
+	},
+	["rock"] = {
+		width = 1,
+		height = 1,
+	},
+	["snow_rock"] = {
+		width = 1,
+		height = 1,
+	},
+	["finish_line"] = {
+		width = 1,
+		height = 1,
 	}
 }
 

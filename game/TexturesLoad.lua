@@ -41,6 +41,9 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("snow_oblique_left", "assets/textures/snow_oblique_left.png")
 	textureContainer:newAnimationWithOneTexture("snow_oblique_right", "assets/textures/snow_oblique_right.png")
 	textureContainer:newAnimationWithOneTexture("icicle", "assets/textures/icicle.png")
+	textureContainer:newAnimationWithOneTexture("snow_funny_left", "assets/textures/snow_funny_left.png")
+	textureContainer:newAnimationWithOneTexture("snow_funny_mid", "assets/textures/snow_funny_mid.png")
+	textureContainer:newAnimationWithOneTexture("snow_funny_right", "assets/textures/snow_funny_right.png")
 	
 	-- DAY PACK
 	textureContainer:newAnimationWithOneTexture("brick", "assets/textures/brick.png")
@@ -48,15 +51,19 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("grass_top", "assets/textures/grass_top.png")
 	textureContainer:newAnimationWithOneTexture("mud_mid", "assets/textures/mud_mid.png")
 	textureContainer:newAnimationWithOneTexture("mud_bot", "assets/textures/mud_bot.png")
+	textureContainer:newAnimationWithOneTexture("grass_funny_left", "assets/textures/grass_funny_left.png")
+	textureContainer:newAnimationWithOneTexture("grass_funny_mid", "assets/textures/grass_funny_mid.png")
+	textureContainer:newAnimationWithOneTexture("grass_funny_right", "assets/textures/grass_funny_right.png")
 	
 	-- ADDITIONAL TILES
+	textureContainer:newAnimationWithOneTexture("tube", "assets/textures/tube.png")
+	
 	textureContainer:newAnimation("surprise_anim", 0.1,
 		"assets/textures/surprise1.png",
 		"assets/textures/surprise2.png",
 		"assets/textures/surprise3.png",
 		"assets/textures/surprise4.png")
-	
-	-- SURPRISE
+		
 	textureContainer:newTexture("surprise_idle", "assets/textures/surprise5.png")
 	
 	local surpriseAnim = textureContainer:getAnimation("surprise_anim"):deepCopy()
@@ -76,9 +83,13 @@ function loadTextures()
 		"assets/textures/water_top1.png", 
 		"assets/textures/water_top2.png")
 	
-	-- LAVA 
-	
 	-- DEADLY TILES
+	textureContainer:newAnimationWithOneTexture("lava_inside", "assets/textures/lava_mid.png")
+	
+	textureContainer:newAnimation("lava_top", 0.8,
+		"assets/textures/lava_top1.png",
+		"assets/textures/lava_top2.png")
+		
 	textureContainer:newAnimationWithOneTexture("spikes", "assets/textures/spikes.png")
 	
 	-- PLAYER
@@ -254,6 +265,9 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("tree_3", "assets/textures/tree_3.png")
 	textureContainer:newAnimationWithOneTexture("tree_4", "assets/textures/tree_4.png")
 	textureContainer:newAnimationWithOneTexture("snowman", "assets/textures/snowman.png")
+	textureContainer:newAnimationWithOneTexture("rock", "assets/textures/rock.png")
+	textureContainer:newAnimationWithOneTexture("snow_rock", "assets/textures/snow_rock.png")
+	textureContainer:newAnimationWithOneTexture("finish_line", "assets/textures/finish_line.png")
 	
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")

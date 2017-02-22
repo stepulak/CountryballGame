@@ -127,6 +127,8 @@ function World:loadFromSaveDir(filename)
 	love.filesystem.load(filename)(self)
 	self:postLoadHandle()
 	
+	print("World loaded succesfully")
+	
 	return true
 end
 
@@ -476,27 +478,27 @@ end
 
 -- @textureName name of the texture in textureContainer
 function World:setBackgroundTexture(backgroundLvl, textureName)
-	self.parallaxBackground:setBackgroundTexture(backgroundLvl,
+	return self.parallaxBackground:setBackgroundTexture(backgroundLvl,
 		self.textureContainer:getTexture(textureName), textureName)
 end
 
 function World:setBackgroundColor(backgroundLvl, r, g, b, a)
-	self.parallaxBackground:setBackgroundColor(backgroundLvl, r, g, b, a)
+	return self.parallaxBackground:setBackgroundColor(backgroundLvl, r, g, b, a)
 end
 
 -- Enable specified weather
 -- @weatherName = "Clouds", "Snow", "Rain"
 -- See ParallaxBackground:enable*(weatherName)* for another details about ...
 function World:enableWeather(backgroundLvl, weatherName, ...)
-	self.parallaxBackground["enable"..weatherName](self.parallaxBackground,
-		backgroundLvl, ...)
+	return self.parallaxBackground["enable"..weatherName](
+		self.parallaxBackground, backgroundLvl, ...)
 end
 
 -- Disable specified weather
 -- @weatherName = "Clouds", "Snow", "Rain"
 function World:disableWeather(backgroundLvl, weatherName)
-	self.parallaxBackground["disable"..weatherName](self.parallaxBackground,
-		backgroundLvl)
+	return self.parallaxBackground["disable"..weatherName](
+		self.parallaxBackground, backgroundLvl)
 end
 
 function World:preRunWeather()

@@ -25,6 +25,12 @@ local properties = {
 	},
 	["mud_bot"] = {
 	},
+	["grass_funny_left"] = {
+	},
+	["grass_funny_right"] = {
+	},
+	["grass_funny_mid"] = {
+	},
 	--[[["block"] = {
 	},
 	["dirt"] = {
@@ -55,6 +61,12 @@ local properties = {
 	},
 	["snow_platform"] = {
 		isPlatform = true,
+	},
+	["snow_funny_left"] = {
+	},
+	["snow_funny_mid"] = {
+	},
+	["snow_funny_right"] = {
 	},
 	["snow_brick_coins"] = {
 		animationName = "snow_brick",
@@ -159,10 +171,20 @@ local properties = {
 	["spikes"] = {
 		isDeadly = true,
 	},
+	["lava_top"] = {
+		isDeadly = true,
+	},
+	["lava_inside"] = {
+		isDeadly = true,
+	},
 	
 	-- Additional
 	["timber"] = {
-	}
+	},
+	["tube"] = {
+	},
+	["finish_line"] = {
+	},
 }
 
 -- Create a new Tile header from name

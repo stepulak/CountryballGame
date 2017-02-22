@@ -121,15 +121,22 @@ function ParallaxBackground:setBackgroundColor(backgroundLvl, r, g, b, a)
 		local color = {}
 		color.r, color.g, color.b, color.a = r, g, b, a
 		self.backgrounds[backgroundLvl].color = color
+		return true
 	end
+	
+	return false
 end
 
 -- Set camera velocity (how faster or slower will it move
 -- compared to normal foreground camera)
 function ParallaxBackground:setCameraVelocity(backgroundLvl, cameraVel)
-	if self:validBackgroundLvl(backgroundLvl) then
+	if self:validBackgroundLvl(backgroundLvl) and cameraVel >= 0 then
 		self.backgrounds[backgroundLvl].cameraVel = cameraVel
+		
+		return true
 	end
+	
+	return false
 end
 
 -- Enable clouds
@@ -143,7 +150,11 @@ function ParallaxBackground:enableClouds(backgroundLvl,
 		self.backgrounds[backgroundLvl].removeClouds = false
 		
 		self:createParticleSystem(backgroundLvl)
+		
+		return true
 	end
+	
+	return false
 end
 
 -- Disable clouds
@@ -151,7 +162,11 @@ function ParallaxBackground:disableClouds(backgroundLvl)
 	if self:validBackgroundLvl(backgroundLvl) then
 		self.backgrounds[backgroundLvl].cloudsEnabled = false
 		self.backgrounds[backgroundLvl].removeClouds = true
+		
+		return true
 	end
+	
+	return false
 end
 
 -- Enable snow
@@ -162,14 +177,21 @@ function ParallaxBackground:enableSnow(backgroundLvl, heavy)
 			heavy and self.heavySnow or self.lightSnow
 			
 		self:createParticleSystem(backgroundLvl)
+		
+		return true
 	end
+	
+	return false
 end
 
 -- Disable snow
 function ParallaxBackground:disableSnow(backgroundLvl)
 	if self:validBackgroundLvl(backgroundLvl) then
 		self.backgrounds[backgroundLvl].snowEnabled = false
+		return true
 	end
+	
+	return false
 end
 
 -- Enable rain
@@ -181,7 +203,11 @@ function ParallaxBackground:enableRain(backgroundLvl, heavy)
 			
 		self:createParticleSystem(backgroundLvl)
 		self.soundContainer:playEffect("rain", true)
+		
+		return true
 	end
+	
+	return false
 end
 
 -- Disable rain
@@ -198,7 +224,11 @@ function ParallaxBackground:disableRain(backgroundLvl)
 		end
 		
 		self.soundContainer:stopEffect("rain")
+		
+		return true
 	end
+	
+	return false
 end
 
 -- Check, if object is filled into horizontal map properly
@@ -358,11 +388,8 @@ function ParallaxBackground:drawBackgroundTexture(texture, cameraVel, camera)
 end
 
 -- Draw color on background
-function ParallaxBackground:drawBackgroundColor(r, g, b, a, camera)
-	love.graphics.setColor(r, g, b, a)
-	love.graphics.rect("fill", camera.x, camera.y, 
-		camera.virtualWidth, camera.virtualHeight)
-	love.graphics.setColor(255, 255, 255, 255)
+function ParallaxBackground:drawBackgroundColor(col, camera)
+	drawRectC("fill", 0, 0, camera.virtualWidth, camera.virtualHeight, col)
 end
 
 -- Draw parallax background
@@ -371,9 +398,7 @@ function ParallaxBackground:draw(camera)
 		local background = self.backgrounds[i]
 		
 		if background.color ~= nil then
-			background.drawBackgroundColor(background.color.r,
-				background.color.g, background.color.b, background.color.a,
-				camera)
+			self:drawBackgroundColor(background.color, camera)
 		end
 		
 		if background.texture ~= nil then

@@ -305,6 +305,8 @@ function Editor:connectTeleports(words)
 	
 	if self.world:connectTeleports(t1X, t1Y, t2X, t2Y) then
 		print("Teleports connected")
+	else
+		print("Teleports couldn't be connected")
 	end
 end
 
@@ -339,14 +341,15 @@ function Editor:changeWeather(words)
 	local backgroundLvl = tonumber(words[3])
 	
 	if operation == "enable" then
-		self.world:enableWeather(backgroundLvl, weatherName, 
-			words[4] == "true")
-		
-		print(weatherName .. " may have been enabled")
+		if self.world:enableWeather(backgroundLvl, weatherName, 
+			words[4] == "true") then
+
+			print("Weather enabled")
+		end
 	elseif operation == "disable" then
-		self.world:disableWeather(backgroundLvl, weatherName)
-		
-		print(weatherName .. " may have been disabled")
+		if self.world:disableWeather(backgroundLvl, weatherName) then
+			print("Weather disabled")
+		end
 	end
 end
 
@@ -358,37 +361,49 @@ function Editor:changeClouds(words)
 		local bigClouds = (words[4] == "true") -- or "false"
 		local numCloudsMax = tonumber(words[5])
 		
-		self.world:enableWeather(backgroundLvl, "Clouds", 
-			bigClouds, numCloudsMax)
+		if bigClouds ~= nil and numCloudsMax ~= nil and
+			self.world:enableWeather(backgroundLvl, 
+				"Clouds", bigClouds, numCloudsMax) then
 			
-		print("Clouds may have been enabled")
+			print("Clouds enabled")
+		end
 	elseif operation == "disable" then
-		self.world:disableWeather(backgroundLvl, "Clouds")
-		
-		print("Clouds may have been disabled")
+		if self.world:disableWeather(backgroundLvl, "Clouds") then
+			print("Clouds disabled")
+		end
 	end
 end
 
 function Editor:changeBackgroundColor(words)
 	local backgroundLvl = tonumber(words[2])
-	local r = setWithinRange(tonumber(words[3]), 0, 255)
-	local g = setWithinRange(tonumber(words[4]), 0, 255)
-	local b = setWithinRange(tonumber(words[5]), 0, 255)
-	local a = setWithinRange(tonumber(words[6]), 0, 255)
+	local r = tonumber(words[3])
+	local g = tonumber(words[4])
+	local b = tonumber(words[5])
+	local a = tonumber(words[6])
 	
-	self.world:setBackgroundColor(backgroundLvl, r, g, b, a)
-	
-	print("Background color may have been set")
+	if backgroundLvl ~= nil and 
+		r ~= nil and
+		g ~= nil and
+		b ~= nil and
+		a ~= nil then
+		
+		local r = setWithinRange(r, 0, 255)
+		local g = setWithinRange(g, 0, 255)
+		local b = setWithinRange(b, 0, 255)
+		local a = setWithinRange(a, 0, 255)
+		
+		if self.world:setBackgroundColor(backgroundLvl, r, g, b, a) then
+			print("Background color set")
+		end
+	end
 end
 
 function Editor:changeBackgroundTexture(words)
 	local backgroundLvl = tonumber(words[2])
 	local textureName = words[3]
 		
-	if backgroundLvl ~= nil then
-		self.world:setBackgroundTexture(backgroundLvl, textureName)
-	else
-		print("changeBackgroundTexture: invalid params")
+	if self.world:setBackgroundTexture(backgroundLvl, textureName) then
+		print("Background texture set")
 	end
 end
 
@@ -405,10 +420,7 @@ function Editor:loadWorldFrom(filename)
 	love.audio.stop()
 	
 	if self.world:loadFromSaveDir(filename) then
-		print("World has been loaded")
 		LastWorldSavefile = filename
-	else
-		print("World hasn't been loaded")
 	end
 end
 
@@ -420,14 +432,10 @@ function Editor:saveWorldInto(filename)
 	
 	self.world:saveInto(filename)
 	LastWorldSavefile = filename
-	
-	print("World may have been saved")
 end
 
 function Editor:setWorldMusic(name)
 	self.world:setBackgroundMusic(name)
-	
-	print("Music may have been set")
 end
 
 function Editor:newWorld(words)
