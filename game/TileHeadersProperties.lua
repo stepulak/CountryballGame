@@ -15,7 +15,7 @@
 -- about how to setup a property.
 
 local properties = {
-	-- Day pack
+	-- DAY PACK
 	["wooden_platform"] = {
 		isPlatform = true,
 	},
@@ -31,20 +31,68 @@ local properties = {
 	},
 	["grass_funny_mid"] = {
 	},
-	--[[["block"] = {
+	
+	["brick_wall"] = {
 	},
-	["dirt"] = {
+	["brick_oblique_left"] = {
+		isOblique = true,
+		isObliqueLeftSide = true,
 	},
-	["dirt_top"] = {
+	["brick_oblique_right"] = {
+		animationName = "brick_oblique_left",
+		isOblique = true,
+		isObliqueLeftSide = false,
+		isFlipped = true,
 	},
-	["dirt_bot"] = {
-	},
-	["brick_bright"] = {
+	
+	["brick"] = {
 		isBouncable = true,
 		isBreakable = true,
-	},]]
+	},
+	["brick_coins"] = {
+		animationName = "brick",
+		isBouncable = true,
+		generatorType = "coins",
+		staticBlockName = "block",
+	},
+	["brick_single_coin"] = {
+		animationName = "brick",
+		isBouncable = true,
+		generatorType = "single_coin",
+		staticBlockName = "block",
+	},
+	["brick_mushroom_life"] = {
+		animationName = "brick",
+		isBouncable = true,
+		generatorType = "boost_mushroom_life",
+		staticBlockName = "block",
+	},
+	["brick_mushroom_grow"] = {
+		animationName = "brick",
+		isBouncable = true,
+		generatorType = "boost_mushroom_grow",
+		staticBlockName = "block",
+	},
+	["brick_star"] = {
+		animationName = "brick",
+		isBouncable = true,
+		generatorType = "boost_star",
+		staticBlockName = "block",
+	},
+	["brick_fireflower"] = {
+		animationName = "brick",
+		isBouncable = true,
+		generatorType = "boost_fireflower",
+		staticBlockName = "block",
+	},
+	["brick_iceflower"] = {
+		animationName = "brick",
+		isBouncable = true,
+		generatorType = "boost_iceflower",
+		staticBlockName = "block",
+	},
 	
-	-- Snow pack
+	-- SNOW PACK
 	["snow"] = {
 	},
 	["snow_top"] = {
@@ -52,6 +100,12 @@ local properties = {
 	["snow_mid"] = {
 	},
 	["snow_bot"] = {
+	},
+	["snow_mid_left"] = {
+	},
+	["snow_mid_right"] = {
+		animationName = "snow_mid_left",
+		isFlipped = true,
 	},
 	["snow_block"] = {
 	},
@@ -110,6 +164,7 @@ local properties = {
 		generatorType = "boost_iceflower",
 		staticBlockName = "snow_block",
 	},
+	
 	["icicle"] = {
 	},
 	["snow_oblique_left"] = {
@@ -117,11 +172,13 @@ local properties = {
 		isObliqueLeftSide = true,
 	},
 	["snow_oblique_right"] = {
+		animationName = "snow_oblique_left",
 		isOblique = true,
 		isObliqueLeftSide = false,
+		isFlipped = true,
 	},
 	
-	-- Snow surprise
+	-- SNOW SURPRISE
 	["snow_surprise_coin"] = {
 		animationName = "surprise",
 		isBouncable = true,
@@ -207,6 +264,7 @@ function createTileHeaderFromName(name, textureContainer)
 				header.isSecret or false,
 				header.generatorType or nil,
 				header.staticBlockName or nil, -- "after" block or disappear
+				header.isFlipped or false,
 				animation)
 		end
 	end

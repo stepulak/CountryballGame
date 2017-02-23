@@ -30,6 +30,7 @@ local GridObjH = 75
 function Editor:createTilesGrid()
 	local grid = self.multigrid:newImageGrid("Tiles", GridObjW, GridObjH)
 	local headers = self.world.headerContainer.tileHeaders
+	local fakeCam = { x = 0, y = 0 }
 	
 	for name, header in pairs(headers) do
 		local data = {
@@ -38,8 +39,14 @@ function Editor:createTilesGrid()
 			height = self.world.tileHeight,
 		}
 		
-		grid:addElement(header.animation:firstTexture(), header.name,
-			header.generatorType or "", data)
+		grid:addElement(
+			function()
+				-- flip *fix*
+				header.animation:draw(fakeCam, 0, 0,
+					data.width, data.height,
+					0, header.isFlipped)
+			end,
+			header.name, header.generatorType or "", data)
 	end
 end
 

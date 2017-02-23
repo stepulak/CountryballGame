@@ -7,7 +7,7 @@ TileHeader = class:new()
 
 function TileHeader:init(name, isBreakable, isBouncable, isOblique, 
 	isObliqueLeftSide, isPlatform, isWater, isDeadly, isSecret,
-	generatorType, staticBlockName, animation)
+	generatorType, staticBlockName, isFlipped, animation)
 	self.name = name
 	self.isBreakable = isBreakable
 	self.isBouncable = isBouncable
@@ -22,6 +22,7 @@ function TileHeader:init(name, isBreakable, isBouncable, isOblique,
 	self.isSecret = isSecret
 	self.generatorType = generatorType
 	self.staticBlockName = staticBlockName
+	self.isFlipped = isFlipped -- animation flipped horizontally
 	self.animation = animation
 	
 	-- TILE SPECIFIC

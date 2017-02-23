@@ -1926,7 +1926,7 @@ function World:drawSpecificTile(posX, posY, keyName, verticalOffset)
 	
 	header.animation:draw(self.camera, posX*self.tileWidth, 
 		posY*self.tileHeight + verticalOffset,
-		self.tileWidth, self.tileHeight, 0)
+		self.tileWidth, self.tileHeight, 0, header.isFlipped)
 end
 
 function World:drawBackgroundTiles(startX, startY, endX, endY)
