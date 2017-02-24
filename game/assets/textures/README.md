@@ -6,7 +6,6 @@ dean2191, https://dean2191.github.io/:
 
 	wall.png
 	wall_oblique_left.png
-	wall_oblique_right.png
 	fireflower.png
 	iceflower.png
 

@@ -73,6 +73,7 @@ function Bomberman:hurt(type, particleSystem, soundContainer)
 	if self.state == "walking" then
 		if type == "step_on" then
 			self:initCountdown()
+			soundContainer:playEffect("smash2", false, self.x, self.y)
 		else
 			self:instantDeath(particleSystem, soundContainer)
 		end

@@ -51,6 +51,8 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("brick_oblique_left", "assets/textures/brick_oblique_left.png")
 	textureContainer:newAnimationWithOneTexture("block", "assets/textures/block.png")
 	textureContainer:newAnimationWithOneTexture("grass_top", "assets/textures/grass_top.png")
+	textureContainer:newAnimationWithOneTexture("grass_top_left", "assets/textures/grass_top_left.png")
+	textureContainer:newAnimationWithOneTexture("grass_oblique_left", "assets/textures/grass_oblique_left.png")
 	textureContainer:newAnimationWithOneTexture("mud_mid", "assets/textures/mud_mid.png")
 	textureContainer:newAnimationWithOneTexture("mud_bot", "assets/textures/mud_bot.png")
 	textureContainer:newAnimationWithOneTexture("grass_funny_left", "assets/textures/grass_funny_left.png")
@@ -58,6 +60,9 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("grass_funny_right", "assets/textures/grass_funny_right.png")
 	
 	-- ADDITIONAL TILES
+	textureContainer:newAnimationWithOneTexture("wall", "assets/textures/wall.png")
+	textureContainer:newAnimationWithOneTexture("wall_oblique_left", "assets/textures/wall_oblique_left.png")
+	textureContainer:newAnimationWithOneTexture("fence", "assets/textures/fence.png")
 	textureContainer:newAnimationWithOneTexture("tube", "assets/textures/tube.png")
 	
 	textureContainer:newAnimation("surprise_anim", 0.1,
@@ -271,6 +276,10 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("snow_rock", "assets/textures/snow_rock.png")
 	textureContainer:newAnimationWithOneTexture("finish_line", "assets/textures/finish_line.png")
 	
+	textureContainer:newAnimation("streetlamp", 0.2,
+		"assets/textures/streetlamp1.png",
+		"assets/textures/streetlamp2.png")
+		
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")
 	textureContainer:newTexture("button_idle", "assets/textures/button_idle.png")

@@ -21,6 +21,12 @@ local properties = {
 	},
 	["grass_top"] = {
 	},
+	["grass_top_left"] = {
+	},
+	["grass_top_right"] = {
+		animationName = "grass_top_left",
+		isFlipped = true
+	},
 	["mud_mid"] = {
 	},
 	["mud_bot"] = {
@@ -30,6 +36,16 @@ local properties = {
 	["grass_funny_right"] = {
 	},
 	["grass_funny_mid"] = {
+	},
+	["grass_oblique_left"] = {
+		isOblique = true,
+		isObliqueLeftSide = true,
+	},
+	["grass_oblique_right"] = {
+		isOblique = true,
+		isObliqueLeftSide = false,
+		isFlipped = true,
+		animationName = "grass_oblique_left",
 	},
 	
 	["brick_wall"] = {
@@ -242,6 +258,20 @@ local properties = {
 	},
 	["finish_line"] = {
 	},
+	["fence"] = {
+	},
+	["wall"] = {
+	},
+	["wall_oblique_left"]= {
+		isOblique = true,
+		isObliqueLeftSide = true,
+	},
+	["wall_oblique_right"] = {
+		isOblique = true,
+		isObliqueLeftSide = false,
+		isFlipped = true,
+		animationName = "wall_oblique_left"
+	}
 }
 
 -- Create a new Tile header from name

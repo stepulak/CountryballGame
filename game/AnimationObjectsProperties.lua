@@ -53,6 +53,10 @@ local properties = {
 	["finish_line"] = {
 		width = 1,
 		height = 1,
+	},
+	["streetlamp"] = {
+		width = 2,
+		height = 3,
 	}
 }
 
