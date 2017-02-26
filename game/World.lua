@@ -55,6 +55,19 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 	self.numTilesWidth = numTilesWidth
 	self.numTilesHeight = numTilesHeight
 	
+	if self:checkMinWorldSize() == false then
+		-- Extend the minimum proportions of the world so that the camera draws
+		-- everything properly
+		if self:checkMinWorldSizeX() == false then
+			self.numTilesWidth = math.floor(self.screen.virtualWidth / self.tileWidth) + 1
+		end
+		if self:checkMinWorldSizeY() == false then
+			self.numTilesHeight = math.floor(self.screen.virtualHeight / self.tileHeight) + 1
+		end
+		
+		print("Minimum proportions of the world have been extended")
+	end
+		
 	self:createCamera()
 	
 	self.bouncingTilesContainer = 
@@ -92,6 +105,18 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 	self.backgroundMusic = nil
 	self.shouldEnd = false
 	self.escapeRocket = nil
+end
+
+function World:checkMinWorldSizeX()
+	return self.numTilesWidth * self.tileWidth >= self.screen.virtualWidth
+end
+
+function World:checkMinWorldSizeY()
+	return self.numTilesHeight * self.tileHeight >= self.screen.virtualHeight
+end
+
+function World:checkMinWorldSize()
+	return self:checkMinWorldSizeX() and self:checkMinWorldSizeY()
 end
 
 function World:postLoadHandle()
@@ -473,7 +498,7 @@ end
 
 -- @velocity should be from interval of <0, 1>
 function World:setCameraVelocityParallaxBackground(backgroundLvl, velocity)
-	self.parallaxBackground:setCameraVelocity(backgroundLvl, velocity)
+	return self.parallaxBackground:setCameraVelocity(backgroundLvl, velocity)
 end
 
 -- @textureName name of the texture in textureContainer

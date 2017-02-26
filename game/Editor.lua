@@ -296,7 +296,12 @@ function Editor:setCameraVelocity(words)
 	local backgroundLvl = tonumber(words[2])
 	local velocity = math.abs(tonumber(words[3]))
 	
-	f.world:setCameraVelocityParallaxBackground(backgroundLvl, velocity)
+	if backgroundLvl ~= nil and velocity ~= nil then
+		if self.world:setCameraVelocityParallaxBackground(
+			backgroundLvl, velocity) then
+			print("Velocity set")
+		end
+	end 
 end
 
 function Editor:connectTeleports(words)

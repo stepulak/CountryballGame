@@ -279,7 +279,9 @@ function loadTextures()
 	textureContainer:newAnimation("streetlamp", 0.2,
 		"assets/textures/streetlamp1.png",
 		"assets/textures/streetlamp2.png")
-		
+	
+	-- PARALLAX BACKGROUNDS
+	
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")
 	textureContainer:newTexture("button_idle", "assets/textures/button_idle.png")
