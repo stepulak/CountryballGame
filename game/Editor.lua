@@ -41,10 +41,10 @@ function Editor:createTilesGrid()
 		
 		grid:addElement(
 			function()
-				-- flip *fix*
+				-- angle, flip *fix*
 				header.animation:draw(fakeCam, 0, 0,
 					data.width, data.height,
-					0, header.isFlipped)
+					header.angle, header.isFlipped)
 			end,
 			header.name, header.generatorType or "", data)
 	end
@@ -294,11 +294,12 @@ end
 
 function Editor:setCameraVelocity(words)
 	local backgroundLvl = tonumber(words[2])
-	local velocity = math.abs(tonumber(words[3]))
+	local type = words[3]
+	local velocity = math.abs(tonumber(words[4]))
 	
-	if backgroundLvl ~= nil and velocity ~= nil then
+	if backgroundLvl ~= nil and velocity ~= nil and type ~= nil then
 		if self.world:setCameraVelocityParallaxBackground(
-			backgroundLvl, velocity) then
+			backgroundLvl, type, velocity) then
 			print("Velocity set")
 		end
 	end 
@@ -465,7 +466,7 @@ function Editor:parseCommandFromConsole(cmd)
 	local words = splitStringBySpace(cmd)
 	
 	if words[1] == "camera_velocity" then
-		-- format: camera_velocity @backgroundLvl @velocity
+		-- format: camera_velocity @backgroundLvl @type @velocity
 		self:setCameraVelocity(words)
 	elseif words[1] == "background_texture" then
 		-- format: background_texture @backgroundLvl @textureName

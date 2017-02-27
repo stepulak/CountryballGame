@@ -28,7 +28,8 @@ function Background:init()
 	self.numRainDrops = 0
 	
 	self.particleSystem = nil
-	self.cameraVel = 0
+	self.horCamVel = 0
+	self.verCamVel = 0
 end
 
 -- Cloud particle updater (remover)
@@ -111,7 +112,11 @@ function ParallaxBackground:setBackgroundTexture(backgroundLvl,
 	if self:validBackgroundLvl(backgroundLvl) then
 		self.backgrounds[backgroundLvl].texture = texture
 		self.backgrounds[backgroundLvl].textureName = textureName
+		
+		return true
 	end
+	
+	return false
 end
 
 -- Set background color
@@ -129,13 +134,17 @@ end
 
 -- Set camera velocity (how faster or slower will it move
 -- compared to normal foreground camera)
-function ParallaxBackground:setCameraVelocity(backgroundLvl, cameraVel)
+-- @type = "vertical" for Y movement, "horizontal" for X movement
+function ParallaxBackground:setCameraVelocity(backgroundLvl, type, cameraVel)
 	if self:validBackgroundLvl(backgroundLvl) and cameraVel >= 0 then
-		self.backgrounds[backgroundLvl].cameraVel = cameraVel
-		
-		return true
+		if type == "vertical" then
+			self.backgrounds[backgroundLvl].verCamVel = cameraVel
+			return true
+		elseif type == "horizontal" then
+			self.backgrounds[backgroundLvl].horCamVel = cameraVel
+			return true
+		end
 	end
-	
 	return false
 end
 
@@ -375,15 +384,15 @@ function ParallaxBackground:update(camera, deltaTime,
 end
 
 -- Draw texture on background
-function ParallaxBackground:drawBackgroundTexture(texture, cameraVel, camera)
-	local texW = texture:getWidth()
-	local texH = camera.virtualHeight * (cameraVel+1)
-	local startX = -math.fmod(camera.x*cameraVel, texW)
+function ParallaxBackground:drawBackgroundTexture(background, camera)
+	local texW = background.texture:getWidth()
+	local texH = camera.virtualHeight * (background.verCamVel + 1)
+	local startX = -math.fmod(camera.x * background.horCamVel, texW)
 	local startY = camera.y / (camera.mapHeight-camera.virtualHeight) *
-		camera.virtualHeight * cameraVel
+		camera.virtualHeight * background.verCamVel
 	
 	for x = startX, camera.virtualWidth, texW do
-		drawTex(texture, x, -startY, texW, texH)
+		drawTex(background.texture, x, -startY, texW, texH)
 	end
 end
 
@@ -402,8 +411,7 @@ function ParallaxBackground:draw(camera)
 		end
 		
 		if background.texture ~= nil then
-			self:drawBackgroundTexture(background.texture,
-				background.cameraVel, camera)
+			self:drawBackgroundTexture(background, camera)
 		end
 		
 		-- Particle system
@@ -460,7 +468,10 @@ function ParallaxBackground:saveTo(file)
 		end
 		
 		checkWriteLn(file, "world:setCameraVelocityParallaxBackground(" ..
-			i .. ", " .. b.cameraVel .. ")")
+			i .. ", \"vertical\", " .. b.verCamVel .. ")")
+		
+		checkWriteLn(file, "world:setCameraVelocityParallaxBackground(" ..
+			i .. ", \"horizontal\", " .. b.horCamVel .. ")")
 		
 		checkWriteLn(file, "-- Background end")
 	end

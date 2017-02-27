@@ -23,6 +23,7 @@ function Gameplay:init(world, fonts)
 	self.shootButtonPressed = false
 	
 	self.paused = false
+	self.justScenery = false
 	
 	if IS_MOBILE_RELEASE then
 		self:createVirtualGamepad()
@@ -177,6 +178,8 @@ function Gameplay:handleKeyPress(key)
 			self.quitDialog:invoke()
 			self.paused = true
 		end
+	elseif key == "2" then
+		self.justScenery = not self.justScenery
 	else
 		-- Wasn't processed
 		return false
@@ -237,7 +240,6 @@ function Gameplay:resolvePlayersFinish(deltaTime)
 		self.fonts.big, self.world.player, false,
 		self.world.textureContainer:getAnimation("fireworks"),
 		self.world.soundContainer)
-	
 end
 
 function Gameplay:handleEndScreen(deltaTime)
@@ -284,8 +286,11 @@ function Gameplay:draw()
 			self.world.camera.virtualWidth, 
 			self.world.camera.virtualHeight)
 	else
-		self.world:draw()
-		self.world:drawUI()
-		self.gui:draw(self.world.camera)
+		self.world:draw(self.justScenery)
+		
+		if self.justScenery == false then
+			self.world:drawUI()
+			self.gui:draw(self.world.camera)
+		end
 	end
 end

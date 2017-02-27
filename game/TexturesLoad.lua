@@ -44,6 +44,7 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("snow_funny_left", "assets/textures/snow_funny_left.png")
 	textureContainer:newAnimationWithOneTexture("snow_funny_mid", "assets/textures/snow_funny_mid.png")
 	textureContainer:newAnimationWithOneTexture("snow_funny_right", "assets/textures/snow_funny_right.png")
+	textureContainer:newAnimationWithOneTexture("snow_wood_oblique_left", "assets/textures/snow_wood_oblique_left.png")
 	
 	-- DAY PACK
 	textureContainer:newAnimationWithOneTexture("brick", "assets/textures/brick.png")
@@ -60,6 +61,12 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("grass_funny_right", "assets/textures/grass_funny_right.png")
 	
 	-- ADDITIONAL TILES
+	textureContainer:newAnimationWithOneTexture("wood", "assets/textures/wood.png")
+	textureContainer:newAnimationWithOneTexture("wood_hor_mid", "assets/textures/wood_hor_mid.png")
+	textureContainer:newAnimationWithOneTexture("wood_left", "assets/textures/wood_left.png")
+	textureContainer:newAnimationWithOneTexture("wood_right", "assets/textures/wood_right.png")
+	textureContainer:newAnimationWithOneTexture("wood_oblique_left", "assets/textures/wood_oblique_left.png")
+	
 	textureContainer:newAnimationWithOneTexture("wall", "assets/textures/wall.png")
 	textureContainer:newAnimationWithOneTexture("wall_oblique_left", "assets/textures/wall_oblique_left.png")
 	textureContainer:newAnimationWithOneTexture("fence", "assets/textures/fence.png")
@@ -281,6 +288,9 @@ function loadTextures()
 		"assets/textures/streetlamp2.png")
 	
 	-- PARALLAX BACKGROUNDS
+	--textureContainer:newTexture("background3_snow", "assets/textures/background3_snow.png")
+	--textureContainer:newTexture("background2_snow", "assets/textures/background2_snow.png")
+	--textureContainer:newTexture("background1_snow", "assets/textures/background1_snow.png")
 	
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")

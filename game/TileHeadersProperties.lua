@@ -48,6 +48,67 @@ local properties = {
 		animationName = "grass_oblique_left",
 	},
 	
+	-- Wood
+	["wood"] = {
+	},
+	-- Horizontal
+	["wood_hor_mid"] = {
+	},
+	["wood_hor_mid2"] = {
+		isFlipped = true,
+		animationName = "wood_hor_mid",
+	},
+	["wood_left"] = {
+	},
+	["wood_left2"] = {
+		isFlipped = true,
+		animationName = "wood_right"
+	},
+	["wood_right"] = {
+	},
+	["wood_right2"] = {
+		isFlipped = true,
+		animationName = "wood_left"
+	},
+	-- Vertical
+	["wood_ver_mid"] = {
+		angle = 90,
+		animationName = "wood_hor_mid",
+	},
+	["wood_ver_mid2"] = {
+		angle = 90,
+		isFlipped = true,
+		animationName = "wood_hor_mid"
+	},
+	["wood_top"] = {
+		angle = 90,
+		animationName = "wood_left",
+	},
+	["wood_top2"] = {
+		angle = 90,
+		isFlipped = true,
+		animationName = "wood_right",
+	},
+	["wood_bot"] = {
+		angle = 90,
+		animationName = "wood_right",
+	},
+	["wood_bot2"] = {
+		angle = 90,
+		isFlipped = true,
+		animationName = "wood_left",
+	},
+	["wood_oblique_left"] = {
+		isOblique = true,
+		isObliqueLeftSide = true,
+	},
+	["wood_oblique_right"] = {
+		isOblique = true,
+		isObliqueLeftSide = false,
+		isFlipped = true,
+		animationName = "wood_oblique_left"
+	},
+	
 	["brick_wall"] = {
 	},
 	["brick_oblique_left"] = {
@@ -65,6 +126,11 @@ local properties = {
 		isBouncable = true,
 		isBreakable = true,
 	},
+	["brick_secret"] = {
+		isSecret = true,
+		animationName = "brick"
+	},
+	
 	["brick_coins"] = {
 		animationName = "brick",
 		isBouncable = true,
@@ -129,6 +195,10 @@ local properties = {
 		isBouncable = true,
 		isBreakable = true,
 	},
+	["snow_brick_secret"] = {
+		isSecret = true,
+		animationName = "snow_brick"
+	},
 	["snow_platform"] = {
 		isPlatform = true,
 	},
@@ -192,6 +262,16 @@ local properties = {
 		isOblique = true,
 		isObliqueLeftSide = false,
 		isFlipped = true,
+	},
+	["snow_wood_oblique_left"] = {
+		isOblique = true,
+		isObliqueLeftSide = true,
+	},
+	["snow_wood_oblique_right"] = {
+		isOblique = true,
+		isObliqueLeftSide = false,
+		isFlipped = true,
+		animationName = "snow_wood_oblique_left",
 	},
 	
 	-- SNOW SURPRISE
@@ -294,6 +374,7 @@ function createTileHeaderFromName(name, textureContainer)
 				header.isSecret or false,
 				header.generatorType or nil,
 				header.staticBlockName or nil, -- "after" block or disappear
+				header.angle or 0,
 				header.isFlipped or false,
 				animation)
 		end

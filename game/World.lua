@@ -496,9 +496,11 @@ function World:lightUpTilesAtPosition(centerX, centerY, width, height)
 	love.graphics.setColor(255, 255, 255, 255)
 end
 
--- @velocity should be from interval of <0, 1>
-function World:setCameraVelocityParallaxBackground(backgroundLvl, velocity)
-	return self.parallaxBackground:setCameraVelocity(backgroundLvl, velocity)
+-- @vel should be from interval of <0, 1>
+-- @type = "vertical", "horizontal"
+-- See @ParallaxBackground.setCameraVelocity
+function World:setCameraVelocityParallaxBackground(backgroundLvl, type, vel)
+	return self.parallaxBackground:setCameraVelocity(backgroundLvl, type, vel)
 end
 
 -- @textureName name of the texture in textureContainer
@@ -1951,7 +1953,7 @@ function World:drawSpecificTile(posX, posY, keyName, verticalOffset)
 	
 	header.animation:draw(self.camera, posX*self.tileWidth, 
 		posY*self.tileHeight + verticalOffset,
-		self.tileWidth, self.tileHeight, 0, header.isFlipped)
+		self.tileWidth, self.tileHeight, header.angle, header.isFlipped)
 end
 
 function World:drawBackgroundTiles(startX, startY, endX, endY)
@@ -2065,7 +2067,8 @@ function World:drawUI()
 end
 
 -- Draw game stuff
-function World:draw()
+-- If @noUnits is true, then no units will be drawn
+function World:draw(noUnits)
 	self.drawCounter = self.drawCounter + 1
 	
 	self.parallaxBackground:draw(self.camera)
@@ -2080,8 +2083,10 @@ function World:draw()
 	
 	self:drawProjectiles()
 	
-	-- Units
-	self:drawActiveUnits()
+	if not noUnits then
+		-- Units
+		self:drawActiveUnits()
+	end
 	
 	self:drawCollidableTiles(startX, startY, endX, endY)
 	self:drawObjects(startX, startY, endX, endY, "activeObj")
