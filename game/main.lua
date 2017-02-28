@@ -66,12 +66,19 @@ function transformMouseCoordinates(x, y)
 	return x * sx, y * sy
 end
 
+function screenshot()
+	local sh = love.graphics.newScreenshot()
+	sh:encode("png", os.time() .. ".png")
+end
+
 function love.keypressed(key, scancode, isRepeated)
 	mainMenu:handleKeyPress(key)
 	
 	-- Unusual but escape key is used for other purposes
 	if key == "f1" then
 		love.event.quit()
+	elseif key == "f12" then
+		screenshot()
 	end
 end
 

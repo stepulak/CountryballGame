@@ -34,7 +34,7 @@ end
 
 -- Update tile header (texture swapping in animation)
 function TileHeader:update(deltaTime, updateCounter)
-	if self.animation ~= nil and self.animation.updateCounter < updateCounter then
+	if self.animation ~= nil and self.animation.updateCounter ~= updateCounter then
 		self.animation:update(deltaTime)
 		self.animation.updateCounter = updateCounter
 	end

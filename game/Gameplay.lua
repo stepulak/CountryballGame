@@ -178,7 +178,7 @@ function Gameplay:handleKeyPress(key)
 			self.quitDialog:invoke()
 			self.paused = true
 		end
-	elseif key == "2" then
+	elseif key == "2" and JUST_SCENERY_ENABLED == true then
 		self.justScenery = not self.justScenery
 	else
 		-- Wasn't processed

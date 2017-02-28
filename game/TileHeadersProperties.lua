@@ -16,6 +16,8 @@
 
 local properties = {
 	-- DAY PACK
+	["block"] = {
+	},
 	["wooden_platform"] = {
 		isPlatform = true,
 	},
@@ -46,6 +48,44 @@ local properties = {
 		isObliqueLeftSide = false,
 		isFlipped = true,
 		animationName = "grass_oblique_left",
+	},
+	
+	
+	["surprise_coin"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "single_coin",
+		staticBlockName = "block",
+	},
+	["surprise_mushroom_grow"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_mushroom_grow",
+		staticBlockName = "block",
+	},
+	["surprise_mushroom_life"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_mushroom_life",
+		staticBlockName = "block",
+	},
+	["surprise_fireflower"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_fireflower",
+		staticBlockName = "block",
+	},
+	["surprise_iceflower"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_iceflower",
+		staticBlockName = "block",
+	},
+	["surprise_star"] = {
+		animationName = "surprise",
+		isBouncable = true,
+		generatorType = "boost_star",
+		staticBlockName = "block",
 	},
 	
 	-- Wood

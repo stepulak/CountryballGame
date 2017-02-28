@@ -87,7 +87,9 @@ function YesNoDialog:mouseClick(x, y)
 		self.clickedButton = self.noButton
 	end
 	
-	self.clickedButton:mouseClick(x, y)
+	if self.clickedButton ~= nil then
+		self.clickedButton:mouseClick(x, y)
+	end
 end
 
 function YesNoDialog:mouseRelease(x, y)

@@ -25,6 +25,7 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("snow_wood_oblique_left", "assets/textures/snow_wood_oblique_left.png")
 	
 	-- DAY PACK
+	textureContainer:newAnimationWithOneTexture("block", "assets/textures/block.png")
 	textureContainer:newAnimationWithOneTexture("brick", "assets/textures/brick.png")
 	textureContainer:newAnimationWithOneTexture("brick_wall", "assets/textures/brick_wall.png")
 	textureContainer:newAnimationWithOneTexture("brick_oblique_left", "assets/textures/brick_oblique_left.png")
@@ -266,8 +267,8 @@ function loadTextures()
 		"assets/textures/streetlamp2.png")
 	
 	-- PARALLAX BACKGROUNDS
-	textureContainer:newTexture("bg_blue", "assets/textures/bg_blue.png")
-	textureContainer:newTexture("bg_mountains", "assets/textures/bg_mountains.png")
+	textureContainer:newTexture("bg_snow", "assets/textures/bg_snow.png")
+	textureContainer:newTexture("bg_snow2", "assets/textures/bg_snow2.png")
 	
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")
