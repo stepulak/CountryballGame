@@ -236,7 +236,7 @@ function Credits:fill()
 	
 	self:addLineM("Dean")
 	self:addLineS("dean2191, https://dean2191.github.io/")
-	self:addVerticalSpaceB()
+	self:addVerticalSpaceM()
 	
 	--
 	-- SOUNDS

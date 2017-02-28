@@ -127,6 +127,8 @@ function Console:textInput(text)
 end
 
 function Console:draw()
+	love.graphics.setColor(255, 0, 0)
+	
 	-- Text
 	self.font:drawLine(self.content, self.x, self.y)
 	
@@ -134,5 +136,6 @@ function Console:draw()
 	love.graphics.setColor(255, 0, 0)
 	love.graphics.line(self.x + self.indexPosition, self.y - 2, 
 		self.x + self.indexPosition, self.y + self.height + 2)
+		
 	love.graphics.setColor(255, 255, 255)
 end

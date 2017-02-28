@@ -5,28 +5,6 @@ require "TextureContainer"
 -- Load all game's textures into container
 function loadTextures()
 	local textureContainer = TextureContainer:new()
-	
-	-- Parallax background
-	textureContainer:newTexture("background1_day", "assets/background1_day.png")
-	
-	textureContainer:newTexture("background1_night", 
-		"assets/background1_night.png")
-	
-	textureContainer:newTexture("background2_snow_mountains",
-		"assets/background2_snow_mountains.png")
-	
-	textureContainer:newTexture("background2_spring_mountains",
-		"assets/background2_spring_mountains.png")
-		
-	textureContainer:newTexture("background3_snow_mountains",
-		"assets/background3_snow_mountains.png")
-	
-	textureContainer:newTexture("background3_spring_mountains",
-		"assets/background3_spring_mountains.png")
-	
-	textureContainer:newTexture("background3_spring_forest",
-		"assets/background3_spring_forest.png")
-	
 	--
 	-- NEW PACK
 	--
@@ -288,9 +266,8 @@ function loadTextures()
 		"assets/textures/streetlamp2.png")
 	
 	-- PARALLAX BACKGROUNDS
-	--textureContainer:newTexture("background3_snow", "assets/textures/background3_snow.png")
-	--textureContainer:newTexture("background2_snow", "assets/textures/background2_snow.png")
-	--textureContainer:newTexture("background1_snow", "assets/textures/background1_snow.png")
+	textureContainer:newTexture("bg_blue", "assets/textures/bg_blue.png")
+	textureContainer:newTexture("bg_mountains", "assets/textures/bg_mountains.png")
 	
 	-- OTHERS
 	textureContainer:newTexture("game_logo", "assets/textures/game_logo.png")

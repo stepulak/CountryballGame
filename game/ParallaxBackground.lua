@@ -48,12 +48,12 @@ local function snowRainParticleUpdate(particle, camera, deltaTime, background)
 	if particle.x <= -particle.width or 
 		
 		particle.x >= camera.virtualWidth + particle.width +
-		(camera.mapWidth - camera.virtualWidth) * background.cameraVel or
+		(camera.mapWidth - camera.virtualWidth) * background.horCamVel or
 		
 		particle.y >= camera.virtualHeight + particle.height +
-		(camera.mapHeight - camera.virtualHeight) * background.cameraVel or
+		(camera.mapHeight - camera.virtualHeight) * background.verCamVel or
 		
-		particle.y < camera.y-background.cameraVel 
+		particle.y < camera.y-background.verCamVel 
 			* camera.virtualHeight/2 - particle.height then
 		
 		-- Out of map, the particle has to be deleted
@@ -93,7 +93,8 @@ end
 
 -- Check if background lvl is valid
 function ParallaxBackground:validBackgroundLvl(lvl)
-	return lvl >= 1 and lvl <= self.numBackgrounds
+	return lvl ~= nil and type(lvl) == "number" and
+		lvl >= 1 and lvl <= self.numBackgrounds
 end
 
 -- Check, if background has already a created particle system.
@@ -255,7 +256,7 @@ end
 -- Update clouds generation if possible
 function ParallaxBackground:updateClouds(background, deltaTime, camera)
 	if background.numClouds < background.numCloudsMax then
-		local x = (camera.x - camera.virtualWidth/2) * background.cameraVel +
+		local x = (camera.x - camera.virtualWidth/2) * background.horCamVel +
 			math.random() * camera.virtualWidth * 2.5
 		local y = camera.y + math.random() * camera.virtualHeight/3
 		local width = 70 + math.random() * camera.virtualWidth/10
@@ -294,7 +295,7 @@ function ParallaxBackground:updateSnow(background, deltaTime,
 		-- Setup position and proportions
 		local x = math.random() * camera.virtualWidth * 2 + 
 			camera.x - camera.virtualWidth/2
-		local y = camera.y - camera.virtualHeight/3 * background.cameraVel
+		local y = camera.y - camera.virtualHeight/3 * background.verCamVel
 		local size = 10 + math.random() * 10
 		
 		-- Cannot be outside the map
@@ -363,7 +364,7 @@ function ParallaxBackground:update(camera, deltaTime,
 			
 			camera:push()
 			
-			camera:scalePosition(background.cameraVel, background.cameraVel)
+			camera:scalePosition(background.horCamVel, background.verCamVel)
 			
 			background.particleSystem:update(camera, deltaTime, 
 				sinCosTable, background)
@@ -418,7 +419,7 @@ function ParallaxBackground:draw(camera)
 		if background.particleSystem ~= nil then
 			-- Save camera position
 			camera:push()
-			camera:scalePosition(background.cameraVel, background.cameraVel)
+			camera:scalePosition(background.horCamVel, background.verCamVel)
 			
 			background.particleSystem:draw(camera)
 			
