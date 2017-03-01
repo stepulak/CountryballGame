@@ -464,45 +464,46 @@ end
 
 function Editor:parseCommandFromConsole(cmd)
 	local words = splitStringBySpace(cmd)
+	local c = words[1]
 	
-	if words[1] == "camera_velocity" then
+	if c == "camera_velocity" or c == "cv" then
 		-- format: camera_velocity @backgroundLvl @type @velocity
 		self:setCameraVelocity(words)
-	elseif words[1] == "background_texture" then
+	elseif c == "background_texture" or c == "bt" then
 		-- format: background_texture @backgroundLvl @textureName
 		-- Note that @textureName must be valid texture from textureContainer
 		self:changeBackgroundTexture(words)
-	elseif words[1] == "background_color" then
+	elseif c == "background_color" or c == "bc" then
 		-- format: background_color @backgroundLvl @r @g @b @a
 		-- @r,g,b,a from range [0, 255]
 		self:changeBackgroundColor(words)
-	elseif words[1] == "clouds" then
+	elseif c == "clouds" or c == "c" then
 		-- 1) format: clouds enable @backgroundLvl @bigClouds @numCloudsMax
 		-- 2) format: clouds disable @backgroundLvl
 		self:changeClouds(words)
-	elseif words[1] == "snow" or words[1] == "rain" then
+	elseif c == "snow" or c == "rain" or c == "s" or c == "r" then
 		-- 1) format: snow|rain enable @backgroundLvl light|heavy
 		-- 2) format: snow|rain disable @backgroundLvl
 		self:changeWeather(words)
-	elseif words[1] == "spawn_pos" then
+	elseif c == "spawn_pos" or c == "sp" then
 		-- format: spawn_pos default|(@tileX @tileY)
 		self:setPlayersSpawnPos(words)
-	elseif words[1] == "connect_teleports" then
+	elseif c == "connect_teleports" or c == "ct" then
 		-- format: connect_teleports @t1-tileX @t1-tileY @t2-tileX @t2-tileY
 		self:connectTeleports(words)
-	elseif words[1] == "finish_line" then
+	elseif c == "finish_line" or c == "fl" then
 		-- format: finish_line default|@tileX
 		self:setPlayersFinishLine(words)
-	elseif words[1] == "save" then
+	elseif c == "save" then
 		-- format: save @name.lua
 		self:saveWorldInto(words[2])
-	elseif words[1] == "load" then
+	elseif c == "load" then
 		-- format: load @name.lua
 		self:loadWorldFrom(words[2])
-	elseif words[1] == "set_music" then
+	elseif c == "set_music" or c == "sm" then
 		-- format: set_music @music_name
 		self:setWorldMusic(words[2])
-	elseif words[1] == "new_world" then
+	elseif c == "new_world" or c == "nw" then
 		-- format: new_world @num-tilesX @num-tilesY
 		self:newWorld(words)
 	end

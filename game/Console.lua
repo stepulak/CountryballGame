@@ -26,7 +26,7 @@ function Console:mouseInArea(x, y)
 	return false
 end
 
-function Console:setisActive()
+function Console:setActive()
 	self.isActive = true
 	love.keyboard.setTextInput(true)
 end
@@ -88,7 +88,7 @@ end
 
 function Console:keyPress(key)
 	if key == "t" then
-		self:setisActive()
+		self:setActive()
 		return true 
 	elseif self.isActive then
 		if key == "return" then
