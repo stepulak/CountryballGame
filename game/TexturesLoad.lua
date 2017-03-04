@@ -283,9 +283,15 @@ function loadTextures()
 	textureContainer:newTexture("gamepad_button", "assets/textures/gamepad_button.png")
 	
 	-- ANIMATION SCENES
+	
 	-- Campaign intro
 	for i=1, 12 do
 		textureContainer:newTexture("i" .. i, "assets/textures/anim_scenes/i" ..i .. ".png")
+	end
+	
+	-- Capaign outro
+	for i=1, 6 do
+		textureContainer:newTexture("o" .. i, "assets/textures/anim_scenes/o" .. i .. ".png")
 	end
 	
 	return textureContainer
