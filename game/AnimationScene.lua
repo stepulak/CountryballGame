@@ -1,7 +1,6 @@
 require "Runnable"
 require "ParticleSystem"
 
-local SlideStdLastTime = 6
 local DoubleClickTime = 0.5
 local SlideMovementDist = 100
 local SlideZoomQ = 0.5
@@ -24,6 +23,7 @@ function AnimationScene:init(virtScrWidth, virtScrHeight,
 	self.lastClickTimer = 999
 	self.shouldEnd = false
 	self.timerToEnd = 0
+	self.slideLastTime = 7
 	
 	self.slides = {}
 	self.activeSlideIndex = 1
@@ -34,22 +34,27 @@ function AnimationScene:init(virtScrWidth, virtScrHeight,
 	self.backgroundColor = nil
 end
 
--- @movemenType = "horizontal", "vertical", "diagonal", "static", "zoom_out"
+-- @movemenType = "horizontal", "vertical", "diagonal", "static", "zoom_out", "zoom_in"
 -- @fadeType = "fade_in", "fade_out", "fade_in_wait", "fade_in_out", "static"
 --
+-- If @texW or @texH is nil, then default @texture proportion is used...
+--
 -- @opts consist of optinal values:
--- 	@opts.lastTime - if not set, then SlideStdLastTime is used
+-- 	@opts.backgroundColor - use this background color instead 
+--								of default background color
+-- 	@opts.lastTime - if not set, then self.slideLastTime is used
 -- 	@opts.subtitles - array of texts
 --  @opts.subtitlesColor - color of subtitles
 -- 	@opts.speechSoundName - speech sound which will be played
 --								 during slide's presentation
+--  @opts.zoomVel - use this velocity instead of default zoom velocity
 function AnimationScene:addTextureSlide(texture, texW, texH,
 	movementType, fadeType, opts)
 	
 	local slide = {
 		texture = texture,
-		texW = texW,
-		texH = texH,
+		texW = texW or texture:getWidth(),
+		texH = texH or texture:getHeight(),
 		movementType = movementType,
 		fadeType = fadeType,
 		shouldEnd = false, -- for particle's update func
@@ -65,13 +70,13 @@ function AnimationScene:addTextureSlide(texture, texW, texH,
 			
 			-- Setup the slide duration - choose higher time
 			local dur = sound:getDuration()
-			slide.lastTime = dur < SlideStdLastTime and SlideStdLastTime or dur
+			slide.lastTime = dur < self.slideLastTime and self.slideLastTime or dur
 		end
 	end
 	
 	if slide.lastTime == nil then
 		-- Last time still not set
-		slide.lastTime = opts_.lastTime or SlideStdLastTime
+		slide.lastTime = opts_.lastTime or self.slideLastTime
 	end
 	
 	if opts_.subtitles ~= nil then
@@ -81,6 +86,9 @@ function AnimationScene:addTextureSlide(texture, texW, texH,
 		slide.subtitlesUpdateTime = slide.lastTime/#slide.subtitles
 		slide.subtitlesColor = opts_.subtitlesColor or StdSubtitlesColor
 	end
+	
+	slide.backgroundColor = opts_.backgroundColor
+	slide.zoomVel = opts_.zoomVel or 0.1
 	
 	-- Add it into the list
 	self.slides[#self.slides + 1] = slide
@@ -113,7 +121,9 @@ function AnimationScene:createSlideParticle(slide)
 		angle = 315
 		vel = SlideMovementDist/endTime
 	elseif mvType == "zoom_out" then
-		propVelQ = 0.05
+		propVelQ = -slide.zoomVel
+	elseif mvType == "zoom_in" then
+		propVelQ = slide.zoomVel
 	end
 	
 	if fdType == "fade_in" then
@@ -163,6 +173,10 @@ end
 
 function AnimationScene:setBackgroundColor(color)
 	self.backgroundColor = color
+end
+
+function AnimationScene:setSlideLastTime(lastTime)
+	self.slideLastTime = lastTime
 end
 
 -- Let completely end the scene after some time
@@ -314,9 +328,16 @@ end
 
 function AnimationScene:draw()
 	if self.backgroundColor ~= nil then
+		local color = self.backgroundColor
+		local ac = self.slides[self.activeSlideIndex]
+		
+		if ac ~= nil and ac.backgroundColor ~= nil then
+			color = self.slides[self.activeSlideIndex].backgroundColor
+		end
+		
 		drawRectC("fill", 0, 0,
 			self.virtScrWidth, self.virtScrHeight,
-			self.backgroundColor)
+			color)
 	end
 	
 	self.particleSystem:draw(FakeCam)

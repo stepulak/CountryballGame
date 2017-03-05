@@ -28,6 +28,16 @@ function TextureContainer:getTexture(name)
 	return self.textures[name]
 end
 
+-- Get width of specific texture or -1 if the texture does not exist
+function TextureContainer:getTextureWidth(name)
+	return self.textures[name] and self.textures[name]:getWidth() or -1
+end
+
+-- Get height of specific texture of -1 if the texture does not exist
+function TextureContainer:getTextureHeight(name)
+	return self.textures[name] and self.textures[name]:getHeight() or -1
+end
+
 -- Create an animation with single texture
 function TextureContainer:newAnimationWithOneTexture(name, file)
 	self:newTexture(name, file)

@@ -1,11 +1,9 @@
-require "assets/maps/_MainCampaignLevel1"
-require "assets/anim_scenes/_MainCampaignLevel1Intro"
-require "assets/anim_scenes/_MainCampaignLevel1Outro"
+require "assets/anim_scenes/_CampaignIntro"
+require "assets/anim_scenes/_CampaignOutro"
 
 function _MainCampaign(campaign)
 	campaign:loadSaveFile("_MainCampaign")
-	campaign:addScene(_MainCampaignLevel1Intro, "intro")
-	campaign:addLevel(_MainCampaignLevel1)
-	campaign:addLevel(_MainCampaignLevel1)
-	campaign:addScene(_MainCampaignLevel1Outro, "outro")
+	--campaign:addScene(_CampaignIntro, "intro")
+	--campaign:addLevel(_MainCampaignLevel1)
+	campaign:addScene(_CampaignOutro, "outro")
 end
