@@ -138,7 +138,7 @@ function AnimationScene:createSlideParticle(slide)
 		if mus ~= nil then
 			endTime = mus:getDuration() - mus:tell()
 			slide.lastTime = endTime
-			vel = SlideMovementDist/endTime
+			--vel = SlideMovementDist/endTime
 		end
 	elseif fdType == "fade_in_out" then
 		fadeType = "both"
@@ -156,12 +156,8 @@ function AnimationScene:createSlideParticle(slide)
 			function(particle, cam, deltaTime)
 				-- Let this particle die
 				if particle.userData.shouldEnd then
-					-- With or without fadeout effect?
-					if particle.fadeOut then
-						particle.timer = particle.endTime - particle.fadeTime
-					else
-						particle.timer = particle.endTime
-					end
+					particle.userData.shouldEnd = false
+					particle.timer = particle.endTime
 				end
 			end)
 	end

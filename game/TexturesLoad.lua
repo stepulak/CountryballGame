@@ -290,7 +290,7 @@ function loadTextures()
 	end
 	
 	-- Capaign outro
-	for i=1, 6 do
+	for i=1, 7 do
 		textureContainer:newTexture("o" .. i, "assets/textures/anim_scenes/o" .. i .. ".png")
 	end
 	
