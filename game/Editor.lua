@@ -462,6 +462,42 @@ function Editor:newWorld(words)
 	print("New world created")
 end
 
+function Editor:fillTiles(words)
+	local tileType = words[2]
+	
+	if tileType ~= "collidable" and
+		tileType ~= "background" and
+		tileType ~= "water" then
+		print("Invalid tile position")
+		return
+	end
+	
+	if words[3] == nil then
+		print("Missing header name")
+		return
+	end
+	
+	local sx, sy = tonumber(words[4]), tonumber(words[5])
+	local ex, ey = tonumber(words[6]), tonumber(words[7])
+	
+	if sx == nil or sy == nil or ex == nil or ey == nil then
+		print("Missing tile coordinates")
+		return
+	elseif type(sx) ~= "number" or type(sy) ~= "number" or
+		type(ex) ~= "number" or type(ey) ~= "number" then
+		print("Invalid tile coordinates")
+		return
+	end
+	
+	for x = sx, ex do
+		for y = sy, ey do
+			self.world:setTile(x, y, tileType, words[3])
+		end
+	end
+	
+	print("Tiles filled")
+end
+
 function Editor:parseCommandFromConsole(cmd)
 	local words = splitStringBySpace(cmd)
 	local c = words[1]
@@ -506,6 +542,9 @@ function Editor:parseCommandFromConsole(cmd)
 	elseif c == "new_world" or c == "nw" then
 		-- format: new_world @num-tilesX @num-tilesY
 		self:newWorld(words)
+	elseif c == "fill_tiles" or c == "ft" then
+		-- format fill_tiles @position @tileheader @fromX @fromY @toX @toY
+		self:fillTiles(words)
 	end
 end
 
