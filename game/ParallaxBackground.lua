@@ -463,7 +463,7 @@ function ParallaxBackground:saveTo(file)
 		end
 		
 		-- Rain
-		if b.snowEnabled then
+		if b.rainEnabled then
 			checkWriteLn(file, "world:enableWeather(" .. i .. ", \"Rain\", "
 			.. tostring(b.numRainDropsMax == self.heavyRain) .. ")")
 		end

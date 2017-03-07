@@ -6,14 +6,11 @@ function loadSounds()
 	
 	-- Player
 	soundContainer:loadEffect("player_jump", "assets/csound/fart.mp3")
-	soundContainer:loadEffect("player_shooting", 
-		"assets/csound/player_shooting.wav")
+	soundContainer:loadEffect("player_shooting", "assets/csound/player_shooting.wav")
 	
-	soundContainer:loadEffect("player_drop_helmet", 
-		"assets/csound/player_death.wav")
+	soundContainer:loadEffect("player_drop_helmet", "assets/csound/player_death.wav")
 		
-	soundContainer:newEffect("player_death", 
-		soundContainer:getEffect("player_drop_helmet"))
+	soundContainer:newEffect("player_death", soundContainer:getEffect("player_drop_helmet"))
 
 	soundContainer:loadEffect("boost_pick", "assets/csound/boost_pick.mp3")
 	soundContainer:loadEffect("boost_spawn", "assets/csound/boost_spawn.mp3")
@@ -40,11 +37,9 @@ function loadSounds()
 	soundContainer:loadEffect("turtle_touch", "assets/csound/turtle_touch.wav")
 	soundContainer:loadEffect("turtle_bump", "assets/csound/turtle_bump.wav")
 	
-	soundContainer:loadEffect("rocket_engine",
-		"assets/csound/rocket_engine.mp3")
+	soundContainer:loadEffect("rocket_engine", "assets/csound/rocket_engine.mp3")
 		
-	soundContainer:loadEffect("canonball_smash", 
-		"assets/csound/canonball_smash.mp3")
+	soundContainer:loadEffect("canonball_smash", "assets/csound/canonball_smash.mp3")
 	
 	-- Music
 	soundContainer:loadMusic("game_menu", "assets/cmusic/Game-Menu.mp3")
@@ -52,6 +47,7 @@ function loadSounds()
 	soundContainer:loadMusic("star", "assets/cmusic/Dancing-on-Clouds.mp3")
 	soundContainer:loadMusic("night1", "assets/cmusic/Still-of-Night_Looping.mp3")
 	soundContainer:loadMusic("winter1", "assets/cmusic/Surreal-Chase_Looping.mp3")
+	soundContainer:loadMusic("winter2", "assets/cmusic/Unforgiving-Himalayas_Looping.mp3")
 	soundContainer:loadMusic("outro", "assets/cmusic/Pond-at-Twilight.mp3")
 	
 	soundContainer:loadMusic("finish_fanfare", 

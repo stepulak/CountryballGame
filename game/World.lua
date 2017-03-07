@@ -661,16 +661,23 @@ function World:addUnit(unit)
 	if it == nil then
 		-- List is empty
 		self.waitingUnits:pushFront(unit)
-	else	
+	else
+		local added = false
+		
 		-- You have to find an appropriate spot
 		while it ~= nil do
 			if unit.x+unit.width/2 < it.data.x-it.data.width/2 then
 				-- Add it here
 				self.waitingUnits:addBefore(it, unit)
+				added = true
 				break
 			end
 			
 			it = it.next
+		end
+		
+		if added == false then
+			self.waitingUnits:pushBack(unit)
 		end
 	end
 	
@@ -1540,14 +1547,16 @@ end
 function World:setupNewActiveUnits()
 	local it = self.waitingUnits.head
 	local itTmp
+	local camEnd = self.camera.x+self.camera.virtualHeight
 	
-	while it ~= nil and it.data:isInsideCamera(self.camera) do
+	while it ~= nil and camEnd >= it.data.x-it.data.width/2 do
 		-- Activate
 		self.activeUnits:pushBack(it.data)
 		-- Remove it from the list
 		itTmp = it.next
-		self.waitingUnits:deleteNode(it)
+		self.activeUnits:deleteNode(it)
 		it = itTmp
+		-- TODO *fix* bug
 	end
 end
 
