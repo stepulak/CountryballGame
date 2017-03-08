@@ -286,7 +286,7 @@ function Gameplay:draw()
 			self.world.camera.virtualWidth, 
 			self.world.camera.virtualHeight)
 	else
-		self.world:draw(self.justScenery)
+		self.world:draw(self.justScenery and "no_units" or nil)
 		
 		if self.justScenery == false then
 			self.world:drawUI()

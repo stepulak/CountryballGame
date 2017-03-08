@@ -689,7 +689,7 @@ function Editor:handleCameraConrol(deltaTime)
 		dirY = dirY + 1
 	end
 	
-	self.world.camera:move(dirX, dirY, 300 * deltaTime)
+	self.world.camera:move(dirX, dirY, 600 * deltaTime)
 end
 
 function Editor:handleKeyPress(key)
@@ -851,7 +851,7 @@ function Editor:drawWorkMode()
 end
 
 function Editor:draw()
-	self.world:draw()
+	self.world:draw("all_units")
 	self.world:drawPlayersSpawnPosition()
 	self.world:drawPlayersFinishLine()
 	self.world:drawRectangleAroundUnits()

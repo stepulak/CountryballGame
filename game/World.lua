@@ -666,7 +666,7 @@ function World:addUnit(unit)
 		
 		-- You have to find an appropriate spot
 		while it ~= nil do
-			if unit.x+unit.width/2 < it.data.x-it.data.width/2 then
+			if unit.x-unit.width/2 < it.data.x-it.data.width/2 then
 				-- Add it here
 				self.waitingUnits:addBefore(it, unit)
 				added = true
@@ -1547,16 +1547,15 @@ end
 function World:setupNewActiveUnits()
 	local it = self.waitingUnits.head
 	local itTmp
-	local camEnd = self.camera.x+self.camera.virtualHeight
+	local camEnd = self.camera.x + self.camera.virtualWidth
 	
 	while it ~= nil and camEnd >= it.data.x-it.data.width/2 do
 		-- Activate
 		self.activeUnits:pushBack(it.data)
 		-- Remove it from the list
 		itTmp = it.next
-		self.activeUnits:deleteNode(it)
+		self.waitingUnits:deleteNode(it)
 		it = itTmp
-		-- TODO *fix* bug
 	end
 end
 
@@ -2022,8 +2021,8 @@ function World:drawWaterTiles(startX, startY, endX, endY)
 	love.graphics.setColor(255, 255, 255, 255)
 end
 
-function World:drawActiveUnits(rectangleAround)
-	local it = self.activeUnits.head
+function World:drawUnits(list)
+	local it = list.head
 	
 	while it ~= nil do
 		it.data:draw(self.camera)
@@ -2076,8 +2075,8 @@ function World:drawUI()
 end
 
 -- Draw game stuff
--- If @noUnits is true, then no units will be drawn
-function World:draw(noUnits)
+-- @unitMode = "no_units", "all_units", nil
+function World:draw(unitMode)
 	self.drawCounter = self.drawCounter + 1
 	
 	self.parallaxBackground:draw(self.camera)
@@ -2092,9 +2091,12 @@ function World:draw(noUnits)
 	
 	self:drawProjectiles()
 	
-	if not noUnits then
+	if unitMode ~= "no_units" then
 		-- Units
-		self:drawActiveUnits()
+		if unitMode == "all_units" then
+			self:drawUnits(self.waitingUnits)
+		end
+		self:drawUnits(self.activeUnits)
 	end
 	
 	self:drawCollidableTiles(startX, startY, endX, endY)
