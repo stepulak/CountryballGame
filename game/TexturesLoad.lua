@@ -23,6 +23,8 @@ function loadTextures()
 	textureContainer:newAnimationWithOneTexture("snow_funny_mid", "assets/textures/snow_funny_mid.png")
 	textureContainer:newAnimationWithOneTexture("snow_funny_right", "assets/textures/snow_funny_right.png")
 	textureContainer:newAnimationWithOneTexture("snow_wood_oblique_left", "assets/textures/snow_wood_oblique_left.png")
+	textureContainer:newAnimationWithOneTexture("dark_snow", "assets/textures/dark_snow.png")
+	textureContainer:newAnimationWithOneTexture("dark_snow_oblique_left", "assets/textures/dark_snow_oblique_left.png")
 	
 	-- DAY PACK
 	textureContainer:newAnimationWithOneTexture("block", "assets/textures/block.png")
@@ -269,7 +271,7 @@ function loadTextures()
 	-- PARALLAX BACKGROUNDS
 	textureContainer:newTexture("bg_snow", "assets/textures/bg_snow.png")
 	textureContainer:newTexture("bg_snow2", "assets/textures/bg_snow2.png")
-	textureContainer:newTexture("bg_snow3", "assets/textures/bg_snow3.png")
+	textureContainer:newTexture("bg_dark", "assets/textures/bg_dark.png")
 	textureContainer:newTexture("bg_blue", "assets/textures/bg_blue.png")
 	textureContainer:newTexture("bg_light_blue", "assets/textures/bg_light_blue.png")
 	textureContainer:newTexture("bg_mud", "assets/textures/bg_mud.png")

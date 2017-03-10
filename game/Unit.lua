@@ -302,6 +302,11 @@ function Unit:getDirectionVector()
 	return x, y
 end
 
+-- Each unit can have it's own initial "hardpoint" (spawnposition)
+function Unit:getSavePosition()
+	return self.x, self.y
+end
+
 function Unit:canBeRemoved()
 	return self.dead
 end

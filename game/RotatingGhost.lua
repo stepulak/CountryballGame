@@ -18,6 +18,10 @@ function RotatingGhost:init(x, y, tileWidth, tileHeight, idleAnim)
 	self.isSteppable = false
 end
 
+function RotatingGhost:getSavePosition()
+	return self.hardX, self.hardY
+end
+
 function RotatingGhost:isInvulnerable()
 	return true
 end

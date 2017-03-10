@@ -1,6 +1,7 @@
 
 function _CampaignIntro(scene, tc)
 	scene:setBackgroundColor({ r = 255, g = 255, b = 255 })
+	scene:addBackgroundMusic("intro_outro")
 	
 	local imgQ = 0.7
 	local imgW, imgH = scene.virtScrWidth * imgQ, scene.virtScrHeight * imgQ

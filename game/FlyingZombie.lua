@@ -11,9 +11,15 @@ function FlyingZombie:init(x, y, tileWidth, tileHeight, idleAnim)
 		tileWidth * 1.5, tileHeight,
 		0, 1, idleAnim)
 	
+	self.hardX = x
+	self.hardY = y
 	self.directionUp = true
 	self.stayTimer = 0
 	self.verticalVel = VelocityBase
+end
+
+function FlyingZombie:getSavePosition()
+	return self.hardX, self.hardY
 end
 
 -- When this function is called with no specified height, then

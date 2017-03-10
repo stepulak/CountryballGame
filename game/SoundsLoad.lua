@@ -48,7 +48,8 @@ function loadSounds()
 	soundContainer:loadMusic("night1", "assets/cmusic/Still-of-Night_Looping.mp3")
 	soundContainer:loadMusic("winter1", "assets/cmusic/Surreal-Chase_Looping.mp3")
 	soundContainer:loadMusic("winter2", "assets/cmusic/Unforgiving-Himalayas_Looping.mp3")
-	soundContainer:loadMusic("outro", "assets/cmusic/Pond-at-Twilight.mp3")
+	soundContainer:loadMusic("intro_outro", "assets/cmusic/Pond-at-Twilight.mp3")
+	soundContainer:loadMusic("cave", "assets/cmusic/Theyre-Closing-In_Looping.mp3")
 	
 	soundContainer:loadMusic("finish_fanfare", 
 		"assets/cmusic/3 Open Surge score jingle - C.mp3")

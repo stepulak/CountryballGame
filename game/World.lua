@@ -312,10 +312,11 @@ function World:saveUnitsFromList(file, unitList)
 		-- Player is not saved, only his spawn position
 		if it.data.name ~= "player" then
 			local u = it.data
+			local x, y = u:getSavePosition()
 			local dir = u:getFaceDir() == "left" and "true" or "false"
 			
 			checkWriteLn(file, "unit = createUnitFromName(\"" .. u.name ..
-				"\", " .. u.x .. ", " .. u.y .. ", world.tileWidth, " ..
+				"\", " .. x .. ", " .. y .. ", world.tileWidth, " ..
 				"world.tileHeight, world.textureContainer, " .. dir .. ")")
 			checkWriteLn(file, "world:addUnit(unit)")
 		end

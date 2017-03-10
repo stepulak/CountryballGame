@@ -2,7 +2,7 @@
 function _CampaignOutro(scene, tc)
 	scene:setBackgroundColor({ r = 255, g = 255, b = 255 })
 	scene:setSlideLastTime(15)
-	scene:addBackgroundMusic("outro")
+	scene:addBackgroundMusic("intro_outro")
 	
 	local opts = {lastTime=10}
 	local imgQ = 1.2

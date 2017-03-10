@@ -672,6 +672,9 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("snow_mid")
 world.tiles[39][15] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
+h1 = world.headerContainer:getHeader("snow_mid_left")
+world.tiles[40][11] = Tile:new(h1, h2, h3)
+h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("snow_mid")
 world.tiles[40][12] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
@@ -773,6 +776,9 @@ world.tiles[46][14] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("snow_mid")
 world.tiles[46][15] = Tile:new(h1, h2, h3)
+h1, h2, h3 = nil, nil, nil
+h1 = world.headerContainer:getHeader("snow_mid_right")
+world.tiles[47][11] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("snow_mid")
 world.tiles[47][12] = Tile:new(h1, h2, h3)
@@ -3508,6 +3514,10 @@ unit = createUnitFromName("jumper", 7110, 363.3081087315, world.tileWidth, world
 world:addUnit(unit)
 unit = createUnitFromName("hammerman", 7590, 450, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
+unit = createUnitFromName("canonball", 9534.9568048552, 630, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
+unit = createUnitFromName("canonball", 9654.9568048552, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
 unit = createUnitFromName("flying_zombie", 11205, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 unit = createUnitFromName("fish", 11730, 810, world.tileWidth, world.tileHeight, world.textureContainer, true)
@@ -3582,10 +3592,6 @@ unit = createUnitFromName("coin", 1167, 627, world.tileWidth, world.tileHeight, 
 world:addUnit(unit)
 unit = createUnitFromName("coin", 1227, 627, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
-unit = createUnitFromName("canonball", 9534.9568048552, 630, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("canonball", 9654.9568048552, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
 -- Units end
 
 -- Parallax background begin
@@ -3608,8 +3614,8 @@ world:setCameraVelocityParallaxBackground(3, "horizontal", 0.45)
 -- Background end
 -- Background begin: 4
 world:enableWeather(4, "Snow", false)
-world:setCameraVelocityParallaxBackground(4, "vertical", 0)
-world:setCameraVelocityParallaxBackground(4, "horizontal", 0)
+world:setCameraVelocityParallaxBackground(4, "vertical", 0.8)
+world:setCameraVelocityParallaxBackground(4, "horizontal", 0.9)
 -- Background end
 -- Parallax background end
 

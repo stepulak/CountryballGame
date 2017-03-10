@@ -2313,10 +2313,10 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("snow_brick")
 world.tiles[166][5] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("brick_coins")
+h1 = world.headerContainer:getHeader("brick")
 world.tiles[166][6] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("brick_coins")
+h1 = world.headerContainer:getHeader("brick")
 world.tiles[166][7] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("brick")
@@ -2340,10 +2340,10 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("snow_brick")
 world.tiles[167][5] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("brick_coins")
+h1 = world.headerContainer:getHeader("brick")
 world.tiles[167][6] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("brick_coins")
+h1 = world.headerContainer:getHeader("brick")
 world.tiles[167][7] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("brick_coins")
@@ -2367,10 +2367,10 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("snow_brick")
 world.tiles[168][5] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("brick_coins")
+h1 = world.headerContainer:getHeader("brick")
 world.tiles[168][6] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("brick_coins")
+h1 = world.headerContainer:getHeader("brick")
 world.tiles[168][7] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("brick")
@@ -2926,10 +2926,6 @@ world:addActiveObject(acObj)
 
 -- Units begin
 local unit
-unit = createUnitFromName("zombie", 2652.5917356891, 690, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("flying_zombie", 4125, 555.8019448581, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
 unit = createUnitFromName("turtle", 5042.6885689904, 690, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 unit = createUnitFromName("coin", 5487, 807, world.tileWidth, world.tileHeight, world.textureContainer, false)
@@ -2984,8 +2980,6 @@ unit = createUnitFromName("zombie", 11010, 690, world.tileWidth, world.tileHeigh
 world:addUnit(unit)
 unit = createUnitFromName("zombie", 11130, 690, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
-unit = createUnitFromName("zombie", 11250, 690, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
 unit = createUnitFromName("turtle", 11370, 690, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 unit = createUnitFromName("coin", 927, 567, world.tileWidth, world.tileHeight, world.textureContainer, false)
@@ -2993,6 +2987,10 @@ world:addUnit(unit)
 unit = createUnitFromName("coin", 1047, 567, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
 unit = createUnitFromName("coin", 807, 567, world.tileWidth, world.tileHeight, world.textureContainer, false)
+world:addUnit(unit)
+unit = createUnitFromName("zombie", 2652.5917356891, 690, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
+unit = createUnitFromName("flying_zombie", 4125, 690, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 -- Units end
 

@@ -7,11 +7,11 @@ local TrampolineVelQ = 1.5
 local InvulnerabilityRGTime = 1
 local HatBasicColor = 150
 local JumpingVel = 1000
-local HorizontaVel = 200
+local HorizontaVel = 250
 local StarParticleSize = 20
 local StarParticleSpawnProbabilityQ = 20
 local FartSize = 20 -- :-)
-local SprintVelQ = 1.6
+local SprintVelQ = 1.3
 local StarDuration = 12
 
 Player = Unit:new()

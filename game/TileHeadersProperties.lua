@@ -313,6 +313,18 @@ local properties = {
 		isFlipped = true,
 		animationName = "snow_wood_oblique_left",
 	},
+	["dark_snow"] = {
+	},
+	["dark_snow_oblique_left"] = {
+		isOblique = true,
+		isObliqueLeftSide = true,
+	},
+	["dark_snow_oblique_right"] = {
+		animationName = "dark_snow_oblique_left",
+		isOblique = true,
+		isObliqueLeftSide = false,
+		isFlipped = true,
+	},
 	
 	-- SNOW SURPRISE
 	["snow_surprise_coin"] = {
