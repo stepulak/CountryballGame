@@ -57,7 +57,11 @@ local properties = {
 	["streetlamp"] = {
 		width = 2,
 		height = 3,
-	}
+	},
+	["water_grass"] = {
+		width = 1,
+		height = 1,
+	},
 }
 
 -- Create new animation object from given name

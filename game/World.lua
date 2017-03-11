@@ -1436,7 +1436,10 @@ function World:handleUnitUnitCollisions(unit, deltaTime)
 		-- Unit cannot collide with itself
 		if unit ~= unit2 and unit2.dead == false
 			and unit2.movementAndCollisionDisabled == false
-			and unit:doesCollideWithUnit(unit2) then
+			and unit:collisionActive(unit2) 
+			and unit:canCollideWith(unit2) 
+			and unit2:canCollideWith(unit) then
+			
 			unit:resolveUnitCollision(unit2, self.fParticleSystem, 
 				deltaTime, self.soundContainer)
 		end
@@ -1447,13 +1450,13 @@ end
 
 -- This unit wants to fire a new projectile
 function World:addProjectileCreatedByUnit(unit)
-	local name, x, y, size, dirLeft, isGood = unit:getCreatedProjectile()
+	local name, x, y, size, dirLeft, byPlayer = unit:getCreatedProjectile()
 	
 	if name == nil then
 		return -- Is not valid
 	end
 	
-	self.projectiles:pushBack(Projectile:new(name, x, y, size, dirLeft, isGood,
+	self.projectiles:pushBack(Projectile:new(name, x, y, size, dirLeft, byPlayer,
 		self.textureContainer:getAnimation(name)))
 end
 
@@ -1569,7 +1572,7 @@ function World:handleProjectileBadGuysCollisions(projectile)
 	local it = self.activeUnits.head.next
 	
 	while it do
-		if it.data.dead == false then
+		if it.data.dead == false and it.data.immuneToProjectiles == false then
 			it.data:resolveProjectileCollision(projectile,
 				self.fParticleSystem, self.soundContainer,
 				self.textureContainer:getTexture("frost"))
@@ -1580,12 +1583,17 @@ function World:handleProjectileBadGuysCollisions(projectile)
 end
 
 function World:handleProjectilePlayerCollisions(projectile)
-	if self.player == nil or self.player.dead then
+	if self.player == nil or
+		self.player.dead or
+		self.player.immuneToProjectiles then
 		return
 	end
 	
-	self.player:resolveProjectileCollision(projectile, self.fParticleSystem,
-		self.soundContainer, self.textureContainer:getTexture("frost"))
+	self.player:resolveProjectileCollision(
+		projectile,
+		self.fParticleSystem,
+		self.soundContainer,
+		self.textureContainer:getTexture("frost"))
 end
 
 function World:handleProjectileTileCollisions(projectile, deltaTime)
@@ -1669,13 +1677,13 @@ function World:updateProjectiles(deltaTime)
 			-- Handle projectile - tile collisions
 			self:handleProjectileTileCollisions(data, deltaTime)
 		else
-			-- You can move without being worried
+			-- It can move through tiles without being worried
 			data:moveSpecific(data:getHorizontalDist(deltaTime),
 				data:getVerticalDist(deltaTime))
 		end
 		
 		if data.fading == false then		
-			if data.isGood then
+			if data.byPlayer then
 				-- Projectile fired by the player
 				self:handleProjectileBadGuysCollisions(data)
 			else

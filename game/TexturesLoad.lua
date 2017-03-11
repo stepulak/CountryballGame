@@ -268,6 +268,10 @@ function loadTextures()
 		"assets/textures/streetlamp1.png",
 		"assets/textures/streetlamp2.png")
 	
+	textureContainer:newAnimation("water_grass", 0.8,
+		"assets/textures/water_grass1.png",
+		"assets/textures/water_grass2.png")
+		
 	-- PARALLAX BACKGROUNDS
 	textureContainer:newTexture("bg_snow", "assets/textures/bg_snow.png")
 	textureContainer:newTexture("bg_snow2", "assets/textures/bg_snow2.png")

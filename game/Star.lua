@@ -13,6 +13,8 @@ function Star:init(x, y, tileWidth, tileHeight, dirLeft, texture)
 	self.texture = texture
 	self.isFacingLeft = dirLeft
 	self.friendlyToPlayer = true
+	self.immuneToProjectiles = true
+	
 	self.color = { 
 		r = math.random(ColorMin, ColorMax), 
 		g = math.random(ColorMin, ColorMax), 

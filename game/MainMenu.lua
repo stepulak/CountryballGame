@@ -4,7 +4,7 @@ require "Credits"
 require "Release"
 require "AnimationScene"
 require "Campaign"
-require "assets/maps/_MainMenuMap"
+require "assets/maps/_MainMenu"
 require "assets/campaigns/_MainCampaign"
 
 local ButtonWidth = 400
@@ -34,13 +34,6 @@ function MainMenu:init(screen, textureContainer, soundContainer,
 	
 	self:createBackgroundWorld()
 	self:setupGuiMenu()
-	
-	--self.run = self:newGame(true, {worldLoadFunc = _MainMenuWorldLoad })
-	--[[local c = AnimationScene:new(screen.virtualWidth, screen.virtualHeight, 
-		fonts.medium, soundContainer, sinCosTable)
-	_TestIntro(c, textureContainer)
-	self:setRun(c)
-	c:start()]]
 end
 
 -- Fill the self.run with given run(nable) object
@@ -60,8 +53,8 @@ function MainMenu:createBackgroundWorld()
 		self.textureContainer, self.soundContainer,
 		self.headerContainer, self.sinCosTable, self.fonts)
 	
-	--_MainMenuWorldLoad(self.world)
-	self.world:createSampleWorld()
+	_MainMenuWorldLoad(self.world)
+	--self.world:createSampleWorld()
 	
 	self.world:postLoadHandle()
 end

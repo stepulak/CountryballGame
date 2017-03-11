@@ -9,6 +9,7 @@ function Flower:init(type, x, y, tileWidth, tileHeight, texture)
 	
 	self.texture = texture
 	self.friendlyToPlayer = true
+	self.immuneToProjectiles = true
 end
 
 function Flower:draw(camera)

@@ -53,6 +53,9 @@ function Unit:init(name,
 	self.freezeTimer = 0
 	self.notFreezable = false
 	
+	-- Immune to all projectiles (fired by player or by bad guys)
+	self.immuneToProjectiles = false
+	
 	-- Unit can be killed when you step on it
 	self.isSteppable = true
 	
@@ -322,7 +325,7 @@ end
 -- Return new projectile's attributes created by this unit
 -- If the projectile's first attribute is nil, then this
 -- unit hasn't fired any projectile yet
--- return @projectile_name, @x, @y, @size, @dirLeft, @isGood
+-- return @projectile_name, @x, @y, @size, @dirLeft, @byPlayer
 function Unit:getCreatedProjectile()
 	return nil
 end
@@ -678,11 +681,15 @@ function Unit:resolveProjectileCollision(projectile,
 	end
 end
 
-function Unit:doesCollideWithUnit(unit)
+function Unit:collisionActive(unit)
 	return rectRectCollision(self.x - self.width/2, 
 		self.y - self.height/2, self.width, self.height,
 		unit.x - unit.width/2, unit.y - unit.height/2,
 		unit.width, unit.height)
+end
+
+function Unit:canCollideWith(unit)
+	return true
 end
 
 function Unit:isPointInside(x, y)

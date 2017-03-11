@@ -11,15 +11,15 @@ Projectile = class:new()
 
 -- Projectile constructor
 -- @type ... fireball, iceball, hammer
--- @isGood ... true if it's fired by player, otherwise false
-function Projectile:init(type, x, y, size, dirLeft, isGood, anim)
+-- @byPlayer ... true if it's fired by player, otherwise false
+function Projectile:init(type, x, y, size, dirLeft, byPlayer, anim)
 	self.type = type 
 	self.x = x
 	self.y = y
 	self.size = size
 	self.texAngle = 0
 	self.anim = anim:getCopy()
-	self.isGood = isGood
+	self.byPlayer = byPlayer
 	
 	self.verticalVel = 0
 	self.horizontalVel = HorizontalVelMax

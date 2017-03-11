@@ -19,7 +19,7 @@ require "Rocket"
 
 local constructionList = {
 	["player"] = function(p)
-		return Player:new(p.x, p.y, p.tileWidth, p.tileHeight, 3, 0,
+		return Player:new(p.x, p.y, p.tileWidth, p.tileHeight, 5, 0,
 			p.tc:getAnimation("player_idle"),
 			p.tc:getAnimation("player_walking"),
 			p.tc:getAnimation("player_jumping"),

@@ -7,10 +7,15 @@ function Coin:init(x, y, tileWidth, tileHeight, anim)
 		0, 0, anim)
 	
 	self.friendlyToPlayer = true
+	self.immuneToProjectiles = true
 	self.isFacingLeft = false
 end
 
 function Coin:updateAnimations(deltaTime)
 	self.activeAnim = self.idleAnim
 	self.activeAnim:update(deltaTime)
+end
+
+function Coin:canCollideWith(unit)
+	return unit.name == "player"
 end

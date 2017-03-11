@@ -12,6 +12,7 @@ function Mushroom:init(type, x, y, tileWidth, tileHeight, dirLeft, texture)
 	self.texture = texture
 	self.isFacingLeft = dirLeft
 	self.friendlyToPlayer = true
+	self.immuneToProjectiles = true
 end
 
 function Mushroom:update(deltaTime, gravityAcc, particleSystem,
