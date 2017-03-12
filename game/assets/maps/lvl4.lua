@@ -2760,10 +2760,6 @@ world:connectTeleports(129, 3, 120, 11)
 
 -- Units begin
 local unit
-unit = createUnitFromName("coin", 1407, 27, world.tileWidth, world.tileHeight, world.textureContainer, false)
-world:addUnit(unit)
-unit = createUnitFromName("zombie", 1519.418621014, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
 unit = createUnitFromName("coin", 2547, 1107, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
 unit = createUnitFromName("coin", 2547, 1047, world.tileWidth, world.tileHeight, world.textureContainer, false)
@@ -2882,6 +2878,10 @@ unit = createUnitFromName("flying_zombie", 1245, 450, world.tileWidth, world.til
 world:addUnit(unit)
 unit = createUnitFromName("coin", 1347, 27, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
+unit = createUnitFromName("coin", 1407, 27, world.tileWidth, world.tileHeight, world.textureContainer, false)
+world:addUnit(unit)
+unit = createUnitFromName("zombie", 1890, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
 -- Units end
 
 -- Parallax background begin
@@ -2892,11 +2892,13 @@ world:setCameraVelocityParallaxBackground(1, "horizontal", 0)
 -- Background end
 -- Background begin: 2
 world:setBackgroundTexture(2, "bg_snow2")
+world:enableWeather(2, "Clouds", nil, 20)
 world:setCameraVelocityParallaxBackground(2, "vertical", 0.1)
 world:setCameraVelocityParallaxBackground(2, "horizontal", 0.2)
 -- Background end
 -- Background begin: 3
 world:setBackgroundTexture(3, "bg_snow")
+world:enableWeather(3, "Clouds", nil, 20)
 world:setCameraVelocityParallaxBackground(3, "vertical", 0.15)
 world:setCameraVelocityParallaxBackground(3, "horizontal", 0.3)
 -- Background end

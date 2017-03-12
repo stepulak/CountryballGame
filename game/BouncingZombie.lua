@@ -54,6 +54,8 @@ function BouncingZombie:hurt(type, particleSystem, soundContainer)
 		-- change it's direction to "follow" the projectile direction
 		self.isFacingLeft = true
 		self:kill(type, particleSystem, soundContainer)
+	elseif type == "projectile_top" or type == "projectile_bottom" then
+		self:kill(type, particleSystem, soundContainer)
 	else
 		self:instantDeath(particleSystem, soundContainer)
 	end

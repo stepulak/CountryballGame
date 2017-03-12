@@ -210,7 +210,7 @@ function ParallaxBackground:enableRain(backgroundLvl, heavy)
 		self.backgrounds[backgroundLvl].rainEnabled = true
 		self.backgrounds[backgroundLvl].numRainDropsMax = 
 			heavy and self.heavyRain or self.lightRain
-			
+		
 		self:createParticleSystem(backgroundLvl)
 		self.soundContainer:playEffect("rain", true)
 		

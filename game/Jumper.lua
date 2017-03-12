@@ -19,18 +19,18 @@ function Jumper:instantDeath(particleSystem, soundContainer, height)
 	particleSystem:addUnitSmashFallEffect(self.activeAnim:getActiveTexture(),
 		self.x, self.y - self.height/2 + height, self.width, height, 
 		self.isFacingLeft)
-	
+		
 	self.dead = true
+	
+	self:playStdHurtEffect(type, soundContainer)
 end
 
 function Jumper:hurt(type, particleSystem, soundContainer)
 	if type == "step_on" then
-		self:instantDeath(particleSystem, self.height/4)
+		self:instantDeath(particleSystem, soundContainer, self.height/4)
 	else
-		self:instantDeath(particleSystem)
+		self:instantDeath(particleSystem, soundContainer)
 	end
-	
-	self:playStdHurtEffect(type, soundContainer)
 end
 
 function Jumper:tryToJumpNoTimer()

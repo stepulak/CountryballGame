@@ -59,7 +59,8 @@ function SoundContainer:playEffect(name, loop, x, y)
 		effect:play()
 		
 		if loop == true then
-			effect:setLooping()
+			-- @loop can be nil!
+			effect:setLooping(true)
 		end
 		
 		if x ~= nil and y ~= nil then
@@ -84,7 +85,8 @@ function SoundContainer:playMusic(name, loop)
 		self.musicOn:setVolume(self.musicVolume)
 		
 		if loop == true then
-			self.musicOn:setLooping(loop)
+			-- @loop can be nil!
+			self.musicOn:setLooping(true)
 		end
 	end
 end
