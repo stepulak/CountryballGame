@@ -382,6 +382,12 @@ function Credits:fill()
 	self:addLineS("(fireworks.mp3)")
 	self:addLineS("Author: Michel Baradari, CC-BY 3.0")
 	self:addLineS("Source: http://opengameart.org/content/rumbleexplosion")
+	
+	self:addLineM("Hammerman shot")
+	self:addLineS("(firecracker.mp3)")
+	self:addLineS("Author: lmh.0013@gmail.com, CC-BY-SA 3.0")
+	self:addLineS("Source: http://supertux.github.io")
+	
 	self:addVerticalSpaceB()
 	
 	--

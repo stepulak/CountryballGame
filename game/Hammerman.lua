@@ -80,7 +80,7 @@ function Hammerman:updateAccordingToPlayer(deltaTime, player,
 			self.attackTimer = self.attackAnim:numTextures() *
 				self.attackAnim.updateTime
 				
-			soundContainer:playEffect("canon_shot")
+			soundContainer:playEffect("firecracker")
 		end
 	end
 end

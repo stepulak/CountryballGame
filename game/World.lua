@@ -59,16 +59,19 @@ function World:createEmptyWorld(numTilesWidth, numTilesHeight)
 		-- Extend the minimum proportions of the world so that the camera draws
 		-- everything properly
 		if self:checkMinWorldSizeX() == false then
-			self.numTilesWidth = math.floor(self.screen.virtualWidth / self.tileWidth) + 1
+			self.numTilesWidth = 
+				math.floor(self.screen.virtualWidth / self.tileWidth) + 1
 		end
 		if self:checkMinWorldSizeY() == false then
-			self.numTilesHeight = math.floor(self.screen.virtualHeight / self.tileHeight) + 1
+			self.numTilesHeight = 
+				math.floor(self.screen.virtualHeight / self.tileHeight) + 1
 		end
 		
 		print("Minimum proportions of the world have been extended")
 	end
 		
 	self:createCamera()
+	self.soundContainer:setCamera(self.camera)
 	
 	self.bouncingTilesContainer = 
 		BouncingTilesContainer:new(self.tileHeight * BouncingTileHeightQ)

@@ -50,7 +50,7 @@ function love.load()
 	
 	sinCosTable = SinCosTable:new()
 	textureContainer = loadTextures()
-	soundContainer = loadSounds()
+	soundContainer = loadSounds(screen)
 	loadTileHeaders()
 	loadFonts()
 	

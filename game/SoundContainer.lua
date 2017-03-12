@@ -4,9 +4,11 @@ require "LinkedList"
 
 SoundContainer = class:new()
 
-function SoundContainer:init()
+-- @maxHearDist3D - maximum distance (range) of the 3D effect
+--		from the center of the camera to still hear the effect...
+function SoundContainer:init(maxHearDist3D)
 	self.effects = {}
-	self.effects3D = LinkedList:new()
+	self.effects3D = {}
 	self.music = {}
 	self.musicOn = nil
 	
@@ -16,6 +18,13 @@ function SoundContainer:init()
 	self.minEffectVolume = 0
 	self.musicVolume = 0.6
 	self.masterVolume = nil
+	
+	self.maxHearDist3D = maxHearDist3D
+end
+
+-- Set camera for 3D sound, otherwise it wont work...
+function SoundContainer:setCamera(camera)
+	self.camera = camera
 end
 
 -- Multiple different effects can be played simultaneously, but
@@ -52,21 +61,20 @@ function SoundContainer:playEffect(name, loop, x, y)
 	if self.effects[name] ~= nil then
 		local effect = self.effects[name]
 		
-		if effect:isPlaying() then
-			effect:stop()
-		end
-		
-		effect:play()
-		
-		if loop == true then
-			-- @loop can be nil!
-			effect:setLooping(true)
-		end
-		
-		if x ~= nil and y ~= nil then
-			self.effects3D:pushBack({effect = effect, x = x, y = y})
-			effect:setVolume(0)
+		if x ~= nil and y ~= nil and self.camera ~= nil then
+			self:tryAdd3DEffect(effect, loop, x, y)
 		else
+			if effect:isPlaying() then
+				effect:stop()
+			end
+			
+			effect:play()
+			
+			if loop == true then
+				-- @loop can be nil!
+				effect:setLooping(true)
+			end
+			
 			-- Standart global volume
 			effect:setVolume(self.effectVolume)
 		end
@@ -91,36 +99,76 @@ function SoundContainer:playMusic(name, loop)
 	end
 end
 
-function SoundContainer:update3DSound(camera)
-	local maxHearDist = camera.virtualWidth * 1.5
-	local it = self.effects3D.head
+-- Get distance from the center of the camera
+function SoundContainer:getDistFromCamera(x, y)
+	local dX = x - (self.camera.x + self.camera.virtualWidth/2)
+	local dY = y - (self.camera.y + self.camera.virtualHeight/2)
+	return math.sqrt(dX*dX + dY*dY)
+end
+
+function SoundContainer:tryAdd3DEffect(effect, loop, x, y)
+	local e = self.effects3D[effect]
+	local replace = true
 	
-	while it ~= nil do
-		local e = it.data
+	if e ~= nil then
+		local distNew = self:getDistFromCamera(x, y)
+		local distOld = self:getDistFromCamera(e.x, e.y)
 		
-		if e.effect:isPlaying() then
-			local dX = e.x - (camera.x + camera.virtualWidth/2)
-			local dY = e.y - (camera.y + camera.virtualHeight/2)
-			local dist = math.sqrt(dX*dX + dY*dY)
-			
-			if dist >= maxHearDist then
-				e.effect:setVolume(0)
-			else
-				local volume = self.effectVolume * (1 - dist/maxHearDist)
+		local insideCam = pointInRect(x, y,
+			self.camera.x, 
+			self.camera.y,
+			self.camera.virtualWidth,
+			self.camera.virtualHeight)
+		
+		if insideCam == false and distNew >= distOld then
+			replace = false
+		end
+	end
+	
+	if replace then
+		self.effects3D[effect] = {
+			processed = false,
+			loop = loop,
+			x = x,
+			y = y,
+		}
+	end
+end
+
+function SoundContainer:update3DSound()
+	for effect, e in pairs(self.effects3D) do
+		if e ~= nil then
+			local dist = self:getDistFromCamera(e.x, e.y, camera)
+			local vol = self.effectVolume * (1 - dist/self.maxHearDist3D)
 				
-				if volume > self.minEffectVolume then
-					e.effect:setVolume(self.effectVolume * (1 - dist/maxHearDist))
-				else
-					e.effect:setVolume(0)
+			-- You see, effects "out of hear range" won't be even played
+			if e.processed == false and 
+				dist < self.maxHearDist3D and
+				vol > self.minEffectVolume then
+				
+				effect:stop()
+				effect:play()
+				
+				-- Volume will be resolved later
+				effect:setVolume(vol)
+				
+				if e.loop == true then
+					effect:setLooping(true)
 				end
+				e.processed = true
 			end
 			
-			it = it.next
-		else
-			-- Delete and skip
-			local it2 = it.next
-			self.effects3D:deleteNode(it)
-			it = it2
+			if effect:isPlaying() then
+				if vol > self.minEffectVolume and
+					dist < self.maxHearDist3D then
+					effect:setVolume(vol)
+				else
+					effect:setVolume(0)
+				end
+			else
+				-- Delete effect
+				self.effects3D[effect] = nil
+			end
 		end
 	end
 end

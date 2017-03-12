@@ -21,7 +21,7 @@ function Spiky:instantDeath(particleSystem, soundContainer)
 end
 
 function Spiky:hurt(type, particleSystem, soundContainer)
-	if type == "step_on" or type == "touch_left" or type == "touch_right" then
+	if type == "step_on" then
 		-- You cannot kill spiky like this
 		return
 	end

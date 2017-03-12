@@ -50,6 +50,9 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("mud_mid")
 world.tiles[3][11] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
+h1 = world.headerContainer:getHeader("surprise_mushroom_grow")
+world.tiles[4][6] = Tile:new(h1, h2, h3)
+h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("grass_top")
 world.tiles[4][9] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
@@ -58,6 +61,9 @@ world.tiles[4][10] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("mud_mid")
 world.tiles[4][11] = Tile:new(h1, h2, h3)
+h1, h2, h3 = nil, nil, nil
+h1 = world.headerContainer:getHeader("surprise_mushroom_grow")
+world.tiles[5][6] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("grass_top")
 world.tiles[5][9] = Tile:new(h1, h2, h3)
@@ -69,7 +75,7 @@ h1 = world.headerContainer:getHeader("mud_mid")
 world.tiles[5][11] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("surprise_mushroom_grow")
-world.tiles[4][6] = Tile:new(h1, h2, h3)
+world.tiles[6][6] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("grass_top")
 world.tiles[6][9] = Tile:new(h1, h2, h3)
@@ -80,9 +86,6 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("mud_mid")
 world.tiles[6][11] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("surprise_mushroom_grow")
-world.tiles[5][6] = Tile:new(h1, h2, h3)
-h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("grass_top")
 world.tiles[7][9] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
@@ -91,9 +94,6 @@ world.tiles[7][10] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("mud_mid")
 world.tiles[7][11] = Tile:new(h1, h2, h3)
-h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("surprise_mushroom_grow")
-world.tiles[6][6] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("grass_top")
 world.tiles[8][9] = Tile:new(h1, h2, h3)
@@ -283,9 +283,9 @@ world:addActiveObject(acObj)
 local unit
 unit = createUnitFromName("coin", 927, 327, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
-unit = createUnitFromName("fish", 968.53803636646, 493.38995059472, world.tileWidth, world.tileHeight, world.textureContainer, false)
+unit = createUnitFromName("fish", 750, 494.55356772931, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
-unit = createUnitFromName("jumper", 350, 174.77452055963, world.tileWidth, world.tileHeight, world.textureContainer, true)
+unit = createUnitFromName("jumper", 350, 168.5887124977, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 -- Units end
 
@@ -320,6 +320,7 @@ world.playerFinishLine = 1170
 -- Player finish line end
 
 -- Background music begin
+world:setBackgroundMusic("game_menu")
 -- Background music end
 
 end

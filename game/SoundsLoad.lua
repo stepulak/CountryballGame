@@ -1,8 +1,8 @@
 require "SoundContainer"
 
 -- Load all in-game sounds into SoundContainer
-function loadSounds()
-	local soundContainer = SoundContainer:new()
+function loadSounds(screen)
+	local soundContainer = SoundContainer:new(screen.virtualWidth * 1.5)
 	
 	-- Player
 	soundContainer:loadEffect("player_jump", "assets/csound/fart.mp3")
@@ -20,6 +20,7 @@ function loadSounds()
 	soundContainer:loadEffect("rain", "assets/csound/forest_rain.mp3")
 	soundContainer:loadEffect("splash", "assets/csound/splash.mp3")
 	soundContainer:loadEffect("canon_shot", "assets/csound/canon_shot.ogg")
+	soundContainer:loadEffect("firecracker", "assets/csound/firecracker.mp3")
 	soundContainer:loadEffect("freeze", "assets/csound/freeze.mp3")
 	soundContainer:loadEffect("coin_pick", "assets/csound/coin_pick.wav")
 	soundContainer:loadEffect("fireworks", "assets/csound/fireworks.mp3")
