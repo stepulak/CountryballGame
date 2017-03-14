@@ -275,6 +275,7 @@ function loadTextures()
 	-- PARALLAX BACKGROUNDS
 	textureContainer:newTexture("bg_snow", "assets/textures/bg_snow.png")
 	textureContainer:newTexture("bg_snow2", "assets/textures/bg_snow2.png")
+	textureContainer:newTexture("bg_night", "assets/textures/bg_night.png")
 	textureContainer:newTexture("bg_dark", "assets/textures/bg_dark.png")
 	textureContainer:newTexture("bg_blue", "assets/textures/bg_blue.png")
 	textureContainer:newTexture("bg_light_blue", "assets/textures/bg_light_blue.png")

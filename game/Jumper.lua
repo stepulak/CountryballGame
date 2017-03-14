@@ -21,15 +21,15 @@ function Jumper:instantDeath(particleSystem, soundContainer, height)
 		self.isFacingLeft)
 		
 	self.dead = true
-	
-	self:playStdHurtEffect(type, soundContainer)
 end
 
 function Jumper:hurt(type, particleSystem, soundContainer)
 	if type == "step_on" then
 		self:instantDeath(particleSystem, soundContainer, self.height/4)
+		self:playStdHurtEffect(type, soundContainer)
 	else
 		self:instantDeath(particleSystem, soundContainer)
+		self:playStdHurtEffect("deadly", soundContainer)
 	end
 end
 
