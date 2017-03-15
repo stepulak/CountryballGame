@@ -781,7 +781,7 @@ function World:resolveBounceSingleCoinGenerator(x, y)
 	self:swapCollidableTileAfterGeneration(x, y)
 	
 	if self.player then
-		self.player:increaseNumCoins()
+		self.player:increaseNumCoins(self.soundContainer)
 	end
 end
 
@@ -808,7 +808,7 @@ function World:resolveBounceCoinsGenerator(x, y)
 	self:createCoinEffect(x, y)
 	
 	if self.player then
-		self.player:increaseNumCoins()
+		self.player:increaseNumCoins(self.soundContainer)
 	end
 end
 

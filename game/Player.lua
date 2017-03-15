@@ -219,17 +219,18 @@ end
 -- Increase the amount of coins by one and check,
 -- if you have more than 100 coins.
 -- If you do, then increase your number of lives.
-function Player:increaseNumCoins()
+function Player:increaseNumCoins(soundContainer)
 	self.coins = self.coins + 1
 	
 	if self.coins == 100 then
 		self.coins = 0
-		self:increaseNumLives()
+		self:increaseNumLives(soundContainer)
 	end
 end
 
-function Player:increaseNumLives()
+function Player:increaseNumLives(soundContainer)
 	self.numLives = self.numLives + 1
+	soundContainer:playEffect("lifeup")
 end
 
 function Player:addHelmet()
@@ -255,8 +256,7 @@ function Player:boostPlayer(unit, soundContainer)
 	end
 	
 	if unit.name == "mushroom_life" then
-		self:increaseNumLives()
-		soundContainer:playEffect("lifeup")
+		self:increaseNumLives(soundContainer)
 	elseif unit.name == "mushroom_grow" then
 		self:addHelmet()
 		soundContainer:playEffect("boost_pick")
@@ -269,7 +269,7 @@ function Player:boostPlayer(unit, soundContainer)
 		self.flowerType = unit.name
 		soundContainer:playEffect("boost_pick")
 	elseif unit.name == "coin" then
-		self:increaseNumCoins()
+		self:increaseNumCoins(soundContainer)
 		soundContainer:playEffect("coin_pick")
 	elseif unit.name == "rocket" then
 		unit:startRocket(soundContainer)
