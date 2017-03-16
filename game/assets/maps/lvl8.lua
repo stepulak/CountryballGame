@@ -1,4 +1,6 @@
 
+function _lvl8(...)
+
 -- Automatically generated world load file
 -- Can be edited manually
 
@@ -1650,3 +1652,4 @@ world.playerFinishLine = 8970
 world:setBackgroundMusic("night")
 -- Background music end
 
+end

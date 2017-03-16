@@ -1,4 +1,6 @@
 
+function _lvl6(...)
+
 -- Automatically generated world load file
 -- Can be edited manually
 
@@ -5312,3 +5314,4 @@ world.playerFinishLine = 17430
 world:setBackgroundMusic("day")
 -- Background music end
 
+end

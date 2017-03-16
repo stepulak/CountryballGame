@@ -1,8 +1,6 @@
 require "AnimationScene"
 require "Game"
 
-local PlayerStdLives = 3
-
 Campaign = Runnable:new()
 
 function Campaign:init(screen, textureContainer, soundContainer,
@@ -118,6 +116,8 @@ function Campaign:freshStart()
 	self.activeContent = 1
 	self.playerLives = PlayerStdLives
 	self.playerCoins = 0
+	self.playerHelmet = false
+	self.playerFlower = nil
 	
 	if self.content[self.activeContent] ~= nil then
 		self:setupActiveContent()

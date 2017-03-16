@@ -1,6 +1,8 @@
 require "Unit"
 require "Projectile"
 
+PlayerStdLives = 5
+
 local AttackTime = 0.2
 local TrampolineVelQ = 1.5
 -- Invulnerability against rotating ghosts
@@ -17,8 +19,7 @@ local StarDuration = 12
 Player = Unit:new()
 
 function Player:init(x, y, 
-	tileWidth, tileHeight, 
-	numLives, coins, 
+	tileWidth, tileHeight,
 	idleAnim, walkingAnim, jumpAnim, 
 	swimmingAnim, attackAnim, 
 	deathTex, helmetTex, starTex, bubbleTex, smokeTex)
@@ -45,8 +46,8 @@ function Player:init(x, y,
 	self.attackAnim.updateTime = AttackTime 
 		/ self.attackAnim:numTextures()
 	
-	self.numLives = numLives
-	self.coins = coins
+	self.numLives = PlayerStdLives
+	self.coins = 0
 	
 	self:hardReset()
 end

@@ -1,4 +1,6 @@
 
+function _lvl5(...)
+
 -- Automatically generated world load file
 -- Can be edited manually
 
@@ -3210,7 +3212,7 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("mud_mid")
 world.tiles[172][17] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("grass_top")
+h1 = world.headerContainer:getHeader("brick")
 world.tiles[173][10] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("brick_coins")
@@ -3429,7 +3431,7 @@ h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("mud_mid")
 world.tiles[181][17] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
-h1 = world.headerContainer:getHeader("grass_top")
+h1 = world.headerContainer:getHeader("brick_secret")
 world.tiles[182][10] = Tile:new(h1, h2, h3)
 h1, h2, h3 = nil, nil, nil
 h1 = world.headerContainer:getHeader("brick_secret")
@@ -3949,6 +3951,12 @@ world:addActiveObject(acObj)
 
 -- Units begin
 local unit
+unit = createUnitFromName("fish", 11229.996612526, 866.25210618531, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
+unit = createUnitFromName("fish", 11547.379164628, 746.72909934465, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
+unit = createUnitFromName("coin", 11607, 567, world.tileWidth, world.tileHeight, world.textureContainer, false)
+world:addUnit(unit)
 unit = createUnitFromName("coin", 11667, 567, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
 unit = createUnitFromName("fish", 11674.216963766, 865.75683806506, world.tileWidth, world.tileHeight, world.textureContainer, true)
@@ -3965,7 +3973,7 @@ unit = createUnitFromName("coin", 11907, 567, world.tileWidth, world.tileHeight,
 world:addUnit(unit)
 unit = createUnitFromName("coin", 11967, 567, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
-unit = createUnitFromName("hammerman", 1170, 214.87950954982, world.tileWidth, world.tileHeight, world.textureContainer, true)
+unit = createUnitFromName("hammerman", 1170, 398.26422764065, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 unit = createUnitFromName("spiky", 2130, 930, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
@@ -3997,39 +4005,37 @@ unit = createUnitFromName("bouncing_zombie", 8070, 750, world.tileWidth, world.t
 world:addUnit(unit)
 unit = createUnitFromName("bouncing_zombie", 8430, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
+unit = createUnitFromName("spiky", 9690, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
+unit = createUnitFromName("spiky", 9810, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
+unit = createUnitFromName("spiky", 9930, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
 unit = createUnitFromName("zombie", 10104.746842275, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 unit = createUnitFromName("zombie", 10170, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
+unit = createUnitFromName("spiky", 10590, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 unit = createUnitFromName("coin", 10647, 447, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
 unit = createUnitFromName("coin", 10707, 447, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
+unit = createUnitFromName("spiky", 10710, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
+unit = createUnitFromName("spiky", 10710, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
 unit = createUnitFromName("coin", 10767, 447, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
 unit = createUnitFromName("coin", 10827, 447, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
+unit = createUnitFromName("spiky", 10830, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
+world:addUnit(unit)
 unit = createUnitFromName("coin", 10887, 447, world.tileWidth, world.tileHeight, world.textureContainer, false)
 world:addUnit(unit)
-unit = createUnitFromName("fish", 11229.996612526, 866.25210618531, world.tileWidth, world.tileHeight, world.textureContainer, true)
+unit = createUnitFromName("spiky", 10470, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
-unit = createUnitFromName("fish", 11547.379164628, 746.72909934465, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("coin", 11607, 567, world.tileWidth, world.tileHeight, world.textureContainer, false)
-world:addUnit(unit)
-unit = createUnitFromName("turtle", 10770, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("turtle", 10590, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("turtle", 10410, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("spiky", 10890, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("spiky", 9930, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("spiky", 9810, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
-world:addUnit(unit)
-unit = createUnitFromName("spiky", 9690, 750, world.tileWidth, world.tileHeight, world.textureContainer, true)
+unit = createUnitFromName("spiky", 10350, 570, world.tileWidth, world.tileHeight, world.textureContainer, true)
 world:addUnit(unit)
 -- Units end
 
@@ -4069,3 +4075,4 @@ world.playerFinishLine = 11490
 world:setBackgroundMusic("day")
 -- Background music end
 
+end

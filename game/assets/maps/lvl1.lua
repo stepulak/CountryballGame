@@ -1,4 +1,5 @@
 
+function _lvl1(...)
 -- Automatically generated world load file
 -- Can be edited manually
 
@@ -3032,3 +3033,4 @@ world.playerFinishLine = 11430
 world:setBackgroundMusic("winter2")
 -- Background music end
 
+end

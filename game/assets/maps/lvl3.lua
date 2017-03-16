@@ -1,4 +1,6 @@
 
+function _lvl3(...)
+
 -- Automatically generated world load file
 -- Can be edited manually
 
@@ -7987,3 +7989,4 @@ world.playerFinishLine = 12750
 world:setBackgroundMusic("cave")
 -- Background music end
 
+end
