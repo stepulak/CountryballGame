@@ -1,22 +1,22 @@
 # CountryballGame
 2D sidescroller platform game similar to original Super Mario series. The whole engine and game is written in Lua using Love2D framework.
 
-There are two versions of this game, one for desktop and the other for mobile phones (android).
+There are two versions of this game, one for desktop and the other for mobile phones (Android).
 
-TODO: link to android version
+TODO: link to Android version
 
-There is a main campaign available, entirely made via in-game editor. The campaign consist of animation scenes and separate levels.
-It's about polandball's adventure to his imaginary world, where, after he finishes the campaign's levels, he became the astronaut.
+There is a main campaign available, entirely made via in-game editor. The campaign consists of animation scenes and separate playable levels.
+It's about Polandball's adventure to his imaginary world, where, after he finishes the campaign's levels, he became an astronaut.
 
 The game editor can be launched via menu button (desktop version only). It's controlled via mouse, keyboard shortcuts and console commands.
 
-I believe that editor's gui options are pretty straightforward, I just need to explain shortcuts and commands a little bit... 
+I believe that mouse control/editor's gui options are pretty straightforward, I just need to explain shortcuts and commands a little bit... 
 
 # Editor's keyboard shorcuts:
 
-	'~' - Editor mode/gameplay mode switch (unavailable when campaign is on)
+	'~' - Editor mode/gameplay mode switch (unavailable in mobile version or when campaign is on)
 	
-	tab - Show object's grid and available options
+	tab - Show objects grid and available options
 	
 	't' - Enable console
 	
@@ -24,12 +24,17 @@ I believe that editor's gui options are pretty straightforward, I just need to e
 	
 	escape - Disable console
 	
-	F5 - quicksave (may overwrite old quicksavefile!)
+	F5 - Quicksave (may overwrite old quicksavefile!)
 	
-	F6 - quickload (if exists)
+	F6 - Quickload (if exists)
 	
-	WASD - camera control 
+	WASD - Camera control 
 	
+# Global shorcuts:
+	
+	F1 - Quit the program immediately
+	
+	F12 - Take a screenshot (saved in love.filesystem.getSaveDirectory())
 	
 # Console commands:
 	
