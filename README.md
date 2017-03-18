@@ -1,24 +1,38 @@
 # CountryballGame
 2D sidescroller platform game similar to original Super Mario series. The whole engine and game is written in Lua using Love2D framework.
 
+There are two versions of this game, one for desktop and the other for mobile phones (android).
+
+TODO: link to android version
+
 There is a main campaign available, entirely made via in-game editor. The campaign consist of animation scenes and separate levels.
 It's about polandball's adventure to his imaginary world, where, after he finishes the campaign's levels, he became the astronaut.
 
 The game editor can be launched via menu button (desktop version only). It's controlled via mouse, keyboard shortcuts and console commands.
 
-I believe that editor's gui options are pretty straightforward, I just need to talk about shortcuts and commands a little bit... 
+I believe that editor's gui options are pretty straightforward, I just need to explain shortcuts and commands a little bit... 
 
-Editor's keyboard shorcuts:
+# Editor's keyboard shorcuts:
+
 	'~' - Editor mode/gameplay mode switch (unavailable when campaign is on)
+	
 	tab - Show object's grid and available options
+	
 	't' - Enable console
+	
 	'1' - Show on/off grid
+	
 	escape - Disable console
+	
 	F5 - quicksave (may overwrite old quicksavefile!)
+	
 	F6 - quickload (if exists)
+	
 	WASD - camera control 
 	
-Console commands:
+	
+# Console commands:
+	
 	"camera_velocity" or "cv":
 		format: camera_velocity @backgroundLvl @movementDirection @velocity
 			@backgroundLvl - level of parallax background (1-4)
@@ -85,11 +99,11 @@ Console commands:
 		The file has to be located somewhere in love.filesystem.getSaveDirectory() + "\save\" folder
 
 	"set_music" or "sm":
-		format: @musicName
+		format: set_music @musicName
 			@musicName - name (id) of loaded music (not effect!) - see SoundsLoad.lua
 		
 	"new_world" or "nw":
-		format: @numTilesWidth @numTilesHeight
+		format: new_world @numTilesWidth @numTilesHeight
 			@numTilesWidth - number of tiles per width
 			@numTilesHeight - number of tiles per height
 	
@@ -102,6 +116,10 @@ Console commands:
 			@toX - X position of end (including)
 			@toY - Y position of end (including)
 
-	Beware of bad input formats! Each command should be foolproof (either nothing happens or error message appears), but keep in mind unexpected behaviour of the program...
-	I really recommend you to save your map often, so you can undo our operations if unpleasant things occurs...
-	
+Beware of bad input formats! Each command should be foolproof (either nothing happens or error message appears), but keep in mind unexpected behaviour of the program...
+I really recommend you to save your map often, so you can undo your operations if unpleasant things occurs...
+
+
+The source code and most of the graphics are product of mine. I've also used various sound effects and music from other autors.
+I recommend you to look at the in-game credits. If you find something that is against the licensing etc., please contact me as soon as possible and I will try to repair them.
+You can redistribute this game, source code, graphics etc., according to it's license.
