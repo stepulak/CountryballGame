@@ -518,7 +518,7 @@ function Editor:parseCommandFromConsole(cmd)
 		-- 2) format: clouds disable @backgroundLvl
 		self:changeClouds(words)
 	elseif c == "snow" or c == "rain" or c == "s" or c == "r" then
-		-- 1) format: snow|rain enable @backgroundLvl light|heavy
+		-- 1) format: snow|rain enable @backgroundLvl @heavyWeather
 		-- 2) format: snow|rain disable @backgroundLvl
 		self:changeWeather(words)
 	elseif c == "spawn_pos" or c == "sp" then
@@ -537,7 +537,7 @@ function Editor:parseCommandFromConsole(cmd)
 		-- format: load @name.lua
 		self:loadWorldFrom(words[2])
 	elseif c == "set_music" or c == "sm" then
-		-- format: set_music @music_name
+		-- format: set_music @musicName
 		self:setWorldMusic(words[2])
 	elseif c == "new_world" or c == "nw" then
 		-- format: new_world @num-tilesX @num-tilesY

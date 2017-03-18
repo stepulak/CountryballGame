@@ -180,7 +180,7 @@ function Campaign:setupActiveContent()
 	local c = self.content[self.activeContent]
 	
 	if c.type == "level" then
-		local opts = { worldLoadFunc = c.loadFunc }
+		local opts = { worldLoadFunc = c.loadFunc, editorDisabled = true }
 		
 		-- Use player from previous world
 		if self.player ~= nil then
