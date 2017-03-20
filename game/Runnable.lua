@@ -13,6 +13,9 @@ Runnable = class:new()
 function Runnable:init()
 end
 
+function Runnable:start()
+end
+
 -- Insert a quit button, which if is pressed, a quit dialog is invoked
 -- and user can end this "runnable session".
 -- @invokeAction:

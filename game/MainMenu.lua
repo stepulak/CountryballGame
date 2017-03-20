@@ -4,6 +4,7 @@ require "Credits"
 require "Release"
 require "AnimationScene"
 require "Campaign"
+require "Controls"
 require "assets/maps/_MainMenu"
 require "assets/campaigns/_MainCampaign"
 
@@ -67,11 +68,13 @@ function MainMenu:setupGuiMenu()
 	self:insertCampaignMenuButton(menuTree)
 	self:insertEditorMenuButton(menuTree)
 	self:insertCreatedLevelsMenuButton(menuTree)
+	self:insertControlsMenuButton(menuTree)
 	self:insertCreditsMenuButton(menuTree)
 	self:insertQuitMenuButton(menuTree)
 	
 	local menu = Menu:new(
-		self.screen.virtualWidth, self.screen.virtualHeight,
+		self.screen.virtualWidth,
+		self.screen.virtualHeight + 50, -- *hack*
 		ButtonWidth, ButtonHeight, ButtonOffset,
 		self.textureContainer:getTexture("button_idle"),
 		self.textureContainer:getTexture("button_click"),
@@ -194,6 +197,20 @@ function MainMenu:insertCreatedLevelsMenuButton(menuTree)
 	}
 end
 
+function MainMenu:insertControlsMenuButton(menuTree)
+	menuTree[#menuTree + 1] = {
+		label = "Controls",
+		
+		action = function()
+			if self.controls == nil then
+				self.controls = self:getControls()
+			end
+			self:setRun(self.controls)
+			self.run:start()
+		end,
+	}
+end
+
 function MainMenu:insertCreditsMenuButton(menuTree)
 	menuTree[#menuTree + 1] = {
 		label = "Credits",
@@ -225,6 +242,14 @@ function MainMenu:getCredits()
 		self.fonts, 
 		self.textureContainer,
 		self.soundContainer):fill()
+end
+
+function MainMenu:getControls()
+	return Controls:new(
+		self.screen.virtualWidth,
+		self.screen.virtualHeight,
+		self.fonts,
+		self.textureContainer)
 end
 
 function MainMenu:handleKeyPress(key)
