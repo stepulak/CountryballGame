@@ -14,7 +14,7 @@ function Controls:init(virtScrWidth, virtScrHeight, fonts, textureContainer)
 	self.gui = GuiContainer:new()
 	
 	local font = fonts.medium
-	local butHeight = font.font:getHeight() * 1.8
+	local butHeight = font.font:getHeight() * 3
 	
 	self.gui:addElement(TexturedButton:new(
 		"Back",
