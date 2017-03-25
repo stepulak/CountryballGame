@@ -119,7 +119,7 @@ end
 
 function Game:handleKeyPress(key)
 	-- "tilde" key
-	if key == "`" and IS_MOBILE_RELEASE == false 
+	if key == "end" and IS_MOBILE_RELEASE == false 
 		and self.editorDisabled == false then
 		
 		if self.activeMode == self.gameplay then
