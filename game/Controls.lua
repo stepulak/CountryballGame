@@ -68,7 +68,7 @@ function Controls:drawControls()
 	local y = 100
 	local offsetY = f.font:getHeight() * 1.2
 	
-	if MOBILE_RELEASE then
+	if IS_MOBILE_RELEASE then
 		f:drawLineCentered("Gamepad Left - Left Movement", x, y)
 		y = y + offsetY
 		f:drawLineCentered("Gamepad Right - Right Movement", x, y)
