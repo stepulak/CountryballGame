@@ -1,9 +1,8 @@
 # CountryballGame
 2D sidescroller platform game similar to original Super Mario series. The whole engine and game is written in Lua using Love2D framework.
 
-There are two versions of this game, one for desktop and the other for mobile phones (Android).
-
-TODO: link to Android version
+There are two versions of this game, one for desktop (Windows) and the other one for mobile phones (Android).
+You can download both in release section of this repository.
 
 There is a main campaign available, entirely made via in-game editor. The campaign consists of animation scenes and separate playable levels.
 It's about Polandball's adventure to his imaginary world, where, after he finishes the campaign's levels, he became an astronaut.
