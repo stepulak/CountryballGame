@@ -84,7 +84,7 @@ end
 
 function Platform:canBeBounded(unit, deltaTime)
 	local distAfter = self:verticalDistUnit(unit)
-	local distBefore = distAfter - unit.verticalVel * deltaTime
+	local distBefore = distAfter - unit.verticalVel * MIN_FPS
 	
 	-- Is the unit standing right on the platform?
 	if distAfter >= 0 and distBefore <= 0 then

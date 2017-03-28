@@ -13,7 +13,7 @@ I believe that mouse control/editor's gui options are pretty straightforward, I 
 
 # Editor's keyboard shorcuts:
 
-	'~' - Editor mode/gameplay mode switch (unavailable in mobile version or when campaign is on)
+	end - Editor mode/gameplay mode switch (unavailable in mobile version or when campaign is on)
 	
 	tab - Show objects grid and available options
 	

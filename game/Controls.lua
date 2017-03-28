@@ -14,7 +14,7 @@ function Controls:init(virtScrWidth, virtScrHeight, fonts, textureContainer)
 	self.gui = GuiContainer:new()
 	
 	local font = fonts.medium
-	local butHeight = font.font:getHeight() * 1.8
+	local butHeight = font.font:getHeight() * 3
 	
 	self.gui:addElement(TexturedButton:new(
 		"Back",
@@ -68,7 +68,7 @@ function Controls:drawControls()
 	local y = 100
 	local offsetY = f.font:getHeight() * 1.2
 	
-	if MOBILE_RELEASE then
+	if IS_MOBILE_RELEASE then
 		f:drawLineCentered("Gamepad Left - Left Movement", x, y)
 		y = y + offsetY
 		f:drawLineCentered("Gamepad Right - Right Movement", x, y)

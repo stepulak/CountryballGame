@@ -91,6 +91,12 @@ function Player:softReset()
 	self.sprintEnabled = false
 	self.movementAndCollisionDisabled = false
 	self.disappeared = false
+	
+	self.isJumping = false
+	self.isFalling = false
+	self.verticalVel = 0
+	self.tryToJumpTimer = 0
+	self.jumpOffPlatformTimer = 0
 end 
 
 function Player:setTotallyInvulnerable(time)
