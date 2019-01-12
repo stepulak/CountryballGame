@@ -4,8 +4,6 @@
 There are two versions of this game, one for desktop (Windows) and the other one for mobile phones (Android).
 You can download both in release section of this repository.
 
-Also the Android version is now available on Google Play: https://play.google.com/store/apps/details?id=com.stepulak.countryball
-
 There is a main campaign available, entirely made via in-game editor. The campaign consists of animation scenes and separate playable levels.
 It's about Polandball's adventure to his imaginary world, where, after he finishes the campaign's levels, he became an astronaut.
 
