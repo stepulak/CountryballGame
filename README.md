@@ -1,4 +1,4 @@
-# CountryballGame
+# Polandball: The Journey Into Space
 2D sidescroller platform game similar to original Super Mario series. The whole engine and game is written in Lua using Love2D framework.
 
 There are two versions of this game, one for desktop (Windows) and the other one for mobile phones (Android).
